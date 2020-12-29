@@ -6,20 +6,20 @@ import (
 	"github.com/facebookincubator/ent/schema/field"
 )
 
-// Titlename holds the schema definition for the Titlename entity.
-type Titlename struct {
+// Nametitle holds the schema definition for the Nametitle entity.
+type Nametitle struct {
 	ent.Schema
 }
 
-// Fields of the Titlename.
-func (Titlename) Fields() []ent.Field {
+// Fields of the Nametitle.
+func (Nametitle) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("Title").Unique(),
 	}
 }
 
-// Edges of the Titlename.
-func (Titlename) Edges() []ent.Edge {
+// Edges of the Nametitle.
+func (Nametitle) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.To("employee", Employee.Type),
 	}
