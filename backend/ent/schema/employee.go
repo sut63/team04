@@ -28,6 +28,6 @@ func (Employee) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.From("department", Department.Type).Ref("employee").Unique(),
 		edge.From("place", Place.Type).Ref("employee").Unique(),
-		edge.From("titlename", Titlename.Type).Ref("employee").Unique(),
+		edge.From("nametitle", Nametitle.Type).Ref("employee").Unique(),
 	}
 }
