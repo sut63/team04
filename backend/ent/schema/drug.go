@@ -14,9 +14,9 @@ type Drug struct {
 // Fields of the Drug.
 func (Drug) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("name").Unique(),
-		field.String("howto").Unique(),
-		field.String("property").Unique(),
+		field.String("DrugName").Unique(),
+		field.String("Howto").Unique(),
+		field.String("Property").Unique(),
 	}
 }
 
