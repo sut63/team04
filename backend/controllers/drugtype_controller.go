@@ -44,7 +44,7 @@ func (ctl *DrugTypeController) CreateDrugType(c *gin.Context) {
 
 	e, err := ctl.client.DrugType.
 		Create().
-		SetName(obj.Name).
+		SetDrugTypeName(obj.DrugTypeName).
 		Save(context.Background())
 
 	if err != nil {
@@ -202,7 +202,7 @@ func (ctl *DrugTypeController) UpdateDrugType(c *gin.Context) {
 	fmt.Println(obj.ID)
 	u, err := ctl.client.DrugType.
 		UpdateOneID(int(id)).
-		SetName(obj.Name).
+		SetDrugTypeName(obj.DrugTypeName).
 		Save(context.Background())
 	if err != nil {
 		c.JSON(400, gin.H{
