@@ -76,7 +76,7 @@ func (ctl *NametitleController) GetNametitle(c *gin.Context) {
 	}
 	n, err := ctl.client.Nametitle.
 		Query().
-		Where(title.IDEQ(int(id))).
+		Where(nametitle.IDEQ(int(id))).
 		Only(context.Background())
 	if err != nil {
 		c.JSON(404, gin.H{
