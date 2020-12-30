@@ -15,7 +15,7 @@ type Severity struct {
 //Fields of the Severity
 func (Severity) Fields() []ent.Field {
     return []ent.Field{
-        field.String("SeverityName ").Unique(),
+        field.String("SeverityName").Unique(),
 
     }
 }
