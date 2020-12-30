@@ -14,7 +14,7 @@ type Diseasetype struct {
 //Fields of the Diseasetype
 func (Diseasetype) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("DiseaseTypeName ").Unique(),
+		field.String("DiseaseTypeName").Unique(),
 	}
 }
 

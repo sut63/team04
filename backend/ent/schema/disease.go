@@ -28,6 +28,6 @@ func (Disease) Edges() []ent.Edge {
 		edge.From("diseasetype", Diseasetype.Type).Ref("disease").Unique(),
 		edge.To("area", Area.Type),
 		edge.To("drug", Drug.Type),
-		edge.To("diagnosis", Diagnosis.Type),
+		edge.To("diagnosis", Diagnosis.Type).Unique(),
 	}
 }
