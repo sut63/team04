@@ -68,7 +68,7 @@ func (ctl *DrugController) CreateDrug(c *gin.Context) {
 
 	if err != nil {
 		c.JSON(400, gin.H{
-			"error": "video not found",
+			"error": "disease not found",
 		})
 		return
 	}
@@ -80,7 +80,7 @@ func (ctl *DrugController) CreateDrug(c *gin.Context) {
 
 	if err != nil {
 		c.JSON(400, gin.H{
-			"error": "resolution not found",
+			"error": "employee not found",
 		})
 		return
 	}
@@ -90,7 +90,7 @@ func (ctl *DrugController) CreateDrug(c *gin.Context) {
 		SetDisease(di).
 		SetDrugtype(dt).
 		SetEmployee(e).
-		SetName(obj.Name).
+		SetDrugName(obj.DrugName).
 		SetHowto(obj.Howto).
 		SetProperty(obj.Property).
 		Save(context.Background())
@@ -222,7 +222,7 @@ func (ctl *DrugController) UpdateDrug(c *gin.Context) {
 	fmt.Println(obj.ID)
 	u, err := ctl.client.Drug.
 		UpdateOneID(int(id)).
-		SetName(obj.Name).
+		SetDrugName(obj.DrugName).
 		Save(context.Background())
 	if err != nil {
 		c.JSON(400, gin.H{
