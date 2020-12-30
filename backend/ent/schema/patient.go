@@ -30,5 +30,6 @@ func (Patient) Edges() []ent.Edge {
 		edge.From("bloodtype", Bloodtype.Type).Ref("patient").Unique(),
 		edge.From("gender", Gender.Type).Ref("patient").Unique(),
 		edge.From("nametitle", Nametitle.Type).Ref("patient").Unique(),
+		edge.To("diagnosis", Diagnosis.Type),
 	}
 }
