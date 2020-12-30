@@ -43,7 +43,7 @@ func (ctl *DepartmentController) CreateDepartment(c *gin.Context) {
 
 	d, err := ctl.client.Department.
 		Create().
-		SetName(obj.Name).
+		SetDepartmentName(obj.DepartmentName).
 		Save(context.Background())
 
 	if err != nil {
