@@ -24,5 +24,7 @@ func (Diagnosis) Fields() []ent.Field {
 func (Diagnosis) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.From("disease", Disease.Type).Ref("diagnosis").Unique(),
+		edge.From("patient", Patient.Type).Ref("diagnosis").Unique(),
+		edge.From("employee", Employee.Type).Ref("diagnosis").Unique(),
 	}
 }

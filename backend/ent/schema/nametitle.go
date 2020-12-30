@@ -22,5 +22,6 @@ func (Nametitle) Fields() []ent.Field {
 func (Nametitle) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.To("employee", Employee.Type),
+		edge.To("patient", Patient.Type),
 	}
 }

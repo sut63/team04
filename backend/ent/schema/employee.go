@@ -29,5 +29,10 @@ func (Employee) Edges() []ent.Edge {
 		edge.From("department", Department.Type).Ref("employee").Unique(),
 		edge.From("place", Place.Type).Ref("employee").Unique(),
 		edge.From("nametitle", Nametitle.Type).Ref("employee").Unique(),
+		edge.To("area", Area.Type),
+		edge.To("disease", Disease.Type),
+		edge.To("drug", Drug.Type),
+		edge.To("diagnosis", Diagnosis.Type),
+		edge.To("patient", Patient.Type),
 	}
 }
