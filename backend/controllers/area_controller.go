@@ -93,7 +93,7 @@ func (ctl *AreaController) CreateArea(c *gin.Context) {
 	}
 	a, err := ctl.client.Area.
 			Create().
-			SetName(obj.Name).
+			SetAreaName(obj.AreaName).
 			SetLevel(l).
 			SetStatistic(st).
 			SetDisease(d).
