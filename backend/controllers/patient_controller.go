@@ -5,12 +5,12 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/Sujitnapa21/app/ent"
-	"github.com/Sujitnapa21/app/ent/bloodtype"
-	"github.com/Sujitnapa21/app/ent/employee"
-	"github.com/Sujitnapa21/app/ent/gender"
-	"github.com/Sujitnapa21/app/ent/nametitle"
-	"github.com/Sujitnapa21/app/ent/category"
+	"github.com/B6001186/Contagions/ent"
+	"github.com/B6001186/Contagions/ent/bloodtype"
+	"github.com/B6001186/Contagions/ent/employee"
+	"github.com/B6001186/Contagions/ent/gender"
+	"github.com/B6001186/Contagions/ent/nametitle"
+	"github.com/B6001186/Contagions/ent/category"
 	"github.com/gin-gonic/gin"
 )
 
@@ -66,9 +66,9 @@ func (ctl *PatientController) CreatePatient(c *gin.Context) {
 		return
 	}
 
-	n, err := ctl.client.NameTitle.
+	n, err := ctl.client.Nametitle.
 		Query().
-		Where(nametitle.IDEQ(int(obj.NameTitle))).
+		Where(nametitle.IDEQ(int(obj.Nametitle))).
 		Only(context.Background())
 
 	if err != nil {
@@ -92,7 +92,7 @@ func (ctl *PatientController) CreatePatient(c *gin.Context) {
 
 	b, err := ctl.client.Bloodtype.
 		Query().
-		Where(bloodtype.IDEQ(int(obj.BloodType))).
+		Where(bloodtype.IDEQ(int(obj.Bloodtype))).
 		Only(context.Background())
 
 	if err != nil {
@@ -101,6 +101,7 @@ func (ctl *PatientController) CreatePatient(c *gin.Context) {
 		})
 		return
 	}
+
 	e, err := ctl.client.Employee.
 		Query().
 		Where(employee.IDEQ(int(obj.Employee))).

@@ -23,9 +23,9 @@ type EmployeeController struct {
 // Employee  defines the struct for the employee controller
 type Employee struct {
 	Place        int
-	Namtitle     int
+	Nametitle        int
 	Department   int
-	UserId       string
+	UserID       string
 	EmployeeName         string
 	Tel          string
 	Email        string
@@ -97,7 +97,7 @@ func (ctl *EmployeeController) CreateEmployee(c *gin.Context) {
 
 	e, err := ctl.client.Employee.
 		Create().
-		SetUserId(obj.UserId).
+		SetUserId(obj.UserID).
 		SetEmployeeName(obj.EmployeeName).
 		SetTel(obj.Tel).
 		SetEmail(obj.Email).
@@ -151,7 +151,7 @@ func (ctl *EmployeeController) ListEmployee(c *gin.Context) {
 	employees, err := ctl.client.Employee.
 		Query().
 		WithPlace().
-		WithTitlename().
+		WithNametitle().
 		WithDepartment().
 		Limit(limit).
 		Offset(offset).

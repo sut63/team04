@@ -4,11 +4,11 @@ import (
    "context"
    "fmt"
    "strconv"
-   "github.com/nutzann/app/ent"
-   "github.com/nutzann/app/ent/disease"
-   "github.com/nutzann/app/ent/employee"
-   "github.com/nutzann/app/ent/level"
-   "github.com/nutzann/app/ent/statistic"
+   "github.com/B6001186/Contagions/ent"
+   "github.com/B6001186/Contagions/ent/disease"
+   "github.com/B6001186/Contagions/ent/employee"
+   "github.com/B6001186/Contagions/ent/level"
+   "github.com/B6001186/Contagions/ent/statistic"
    "github.com/gin-gonic/gin"
 )
  

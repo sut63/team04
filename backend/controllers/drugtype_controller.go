@@ -7,8 +7,8 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/methi2554/app/ent"
-	"github.com/methi2554/app/ent/drugtype"
+	"github.com/B6001186/Contagions/ent"
+	"github.com/B6001186/Contagions/ent/drugtype"
 )
 
 // DrugTypeController defines the struct for the drugtype controller
@@ -57,7 +57,7 @@ func (ctl *DrugTypeController) CreateDrugType(c *gin.Context) {
 	c.JSON(200, e)
 }
 
-// GetDrugtype handles GET requests to retrieve a drugtype entity
+// GetDrugType handles GET requests to retrieve a drugtype entity
 // @Summary Get a drugtype entity by ID
 // @Description get drugtype by ID
 // @ID get-drugtype

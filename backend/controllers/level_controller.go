@@ -4,8 +4,8 @@ import (
    "context"
    "fmt"
    "strconv"
-   "github.com/nutzann/app/ent"
-   "github.com/nutzann/app/ent/level"
+   "github.com/B6001186/Contagions/ent"
+   "github.com/B6001186/Contagions/ent/level"
    "github.com/gin-gonic/gin"
 )
 // LevelController defines the struct for the level controller 
