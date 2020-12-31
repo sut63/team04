@@ -4,8 +4,8 @@ import (
    "context"
    "fmt"
    "strconv"
-   "github.com/nutzann/app/ent"
-   "github.com/nutzann/app/ent/statistic"
+   "github.com/B6001186/Contagions/ent"
+   "github.com/B6001186/Contagions/ent/statistic"
    "github.com/gin-gonic/gin"
 )
 // StatisticController defines the struct for the statistic controller 

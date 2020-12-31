@@ -5,10 +5,10 @@ import (
 	"context"
 	"strconv"
 
-	"github.com/KOB4k/app/ent"
-	"github.com/KOB4k/app/ent/diseasetype"
-	"github.com/KOB4k/app/ent/employee"
-	"github.com/KOB4k/app/ent/severity"
+	"github.com/B6001186/Contagions/ent"
+	"github.com/B6001186/Contagions/ent/diseasetype"
+	"github.com/B6001186/Contagions/ent/employee"
+	"github.com/B6001186/Contagions/ent/severity"
 	"github.com/gin-gonic/gin"
 )
 

@@ -30,10 +30,6 @@ func (Patient) Edges() []ent.Edge {
 		edge.From("bloodtype", Bloodtype.Type).Ref("patient").Unique(),
 		edge.From("gender", Gender.Type).Ref("patient").Unique(),
 		edge.From("nametitle", Nametitle.Type).Ref("patient").Unique(),
-<<<<<<< HEAD
-		edge.To("diagnosis", Diagnosis.Type),
-=======
-		
->>>>>>> 4edc4b2... แก้ไขชื่อตัวแปรในตาราง Patient ของระบบข้อมูลผู้ป่วย-close #89
+		edge.To("diagnosis", Diagnosis.Type),		
 	}
 }

@@ -7,10 +7,10 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/methi2554/app/ent"
-	"github.com/methi2554/app/ent/disease"
-	"github.com/methi2554/app/ent/drugtype"
-	"github.com/methi2554/app/ent/employee"
+	"github.com/B6001186/Contagions/ent"
+	"github.com/B6001186/Contagions/ent/disease"
+	"github.com/B6001186/Contagions/ent/drugtype"
+	"github.com/B6001186/Contagions/ent/employee"
 )
 
 // DrugController defines the struct for the drug controller

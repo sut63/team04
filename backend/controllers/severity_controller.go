@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/KOB4k/app/ent"
-	"github.com/KOB4k/app/ent/severity"
+	"github.com/B6001186/Contagions/ent"
+	"github.com/B6001186/Contagions/ent/severity"
 	"github.com/gin-gonic/gin"
 )
 

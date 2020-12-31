@@ -5,8 +5,8 @@ import (
 	"context"
 	"strconv"
 
-	"github.com/siriwannam/app/ent"
-	"github.com/siriwannam/app/ent/diagnosis"
+	"github.com/B6001186/Contagions/ent"
+	"github.com/B6001186/Contagions/ent/diagnosis"
 	"github.com/gin-gonic/gin"
 )
 
