@@ -40,7 +40,7 @@ func (ctl *CategoryController) CreateCategory(c *gin.Context) {
 		return
 	}
 
-	b, err := ctl.client.Category.
+	ct, err := ctl.client.Category.
 		Create().
 		SetCategoryName(obj.CategoryName).
 		Save(context.Background())
@@ -51,7 +51,7 @@ func (ctl *CategoryController) CreateCategory(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, b)
+	c.JSON(200, ct)
 }
 
 // GetCategory handles GET requests to retrieve a category entity

@@ -54,7 +54,7 @@ func (ctl *PatientController) CreatePatient(c *gin.Context) {
 		return
 	}
 
-	c, err := ctl.client.Category.
+	ct, err := ctl.client.Category.
 		Query().
 		Where(category.IDEQ(int(obj.Category))).
 		Only(context.Background())
@@ -117,7 +117,7 @@ func (ctl *PatientController) CreatePatient(c *gin.Context) {
 	p, err := ctl.client.Patient.
 		Create().
 		SetIdcard(obj.Idcard).
-		SetCategory(c).
+		SetCategory(ct).
 		SetNametitle(n).
 		SetName(obj.Name).
 		SetGender(g).
