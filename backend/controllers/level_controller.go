@@ -40,7 +40,7 @@ func (ctl *LevelController) CreateLevel(c *gin.Context) {
   
 	l, err := ctl.client.Level.
 		Create().
-		SetName(obj.Name).
+		SetLevelName(obj.LevelName).
 		Save(context.Background())
 	if err != nil {
 		c.JSON(400, gin.H{
