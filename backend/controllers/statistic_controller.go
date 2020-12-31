@@ -40,7 +40,7 @@ func (ctl *StatisticController) CreateStatistic(c *gin.Context) {
   
 	st, err := ctl.client.Statistic.
 		Create().
-		SetName(obj.Name).
+		SetStatisticName(obj.StatisticName).
 		Save(context.Background())
 	if err != nil {
 		c.JSON(400, gin.H{
