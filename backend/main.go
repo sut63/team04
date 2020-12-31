@@ -4,13 +4,45 @@ import (
 	"context"
 	"log"
 
+	"github.com/B6001186/Contagions/controllers"
+	_ "github.com/B6001186/Contagions/docs"
+	"github.com/B6001186/Contagions/ent"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	_ "github.com/mattn/go-sqlite3"
 
-	"github.com/Sujitnapa21/app/controllers"
-	"github.com/Sujitnapa21/app/ent"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
+// Departments  defines the struct for the departments
+type Departments struct {
+	Department []Department
+}
+
+// Department  defines the struct for the department
+type Department struct {
+	DepartmentName string
+}
+
+// Places  defines the struct for the places
+type Places struct {
+	Place []Place
+}
+
+// Place  defines the struct for the place
+type Place struct {
+	PlaceName string
+}
+
+// Nametitles  defines the struct for the Nametitles
+type Nametitles struct {
+	Nametitle []Nametitle
+}
+
+// Nametitle  defines the struct for the Nametitle
+type Nametitle struct {
+	title string
+}
 
 // Employees  defines the struct for the employees
 type Employees struct {
@@ -29,16 +61,6 @@ type Statuss struct {
 
 // Status  defines the struct for the  status
 type Status struct {
-	Name string
-}
-
-// NameTitles  defines the struct for the nametitles
-type NameTitles struct {
-	NameTitle []NameTitle
-}
-
-// NameTitle  defines the struct for the nametitle
-type NameTitle struct {
 	Name string
 }
 
@@ -108,7 +130,7 @@ func main() {
 	router := gin.Default()
 	router.Use(cors.Default())
 
-	client, err := ent.Open("sqlite3", "file:contagion.db?&cache=shared&_fk=1")
+	client, err := ent.Open("sqlite3", "file:contagions.db?&cache=shared&_fk=1")
 	if err != nil {
 		log.Fatalf("fail to open sqlite3: %v", err)
 	}
@@ -124,7 +146,10 @@ func main() {
 	controllers.NewEmployeeController(v1, client)
 	controllers.NewGenderController(v1, client)
 	controllers.NewStatusController(v1, client)
-	controllers.NewNameTitleController(v1, client)
+	controllers.NewNametitleController(v1, client)
+	controllers.NewEmployeeController(v1, client)
+	controllers.NewDepartmentController(v1, client)
+	controllers.NewPlaceController(v1, client)
 
 	// Set Employees Data
 	employees := Employees{
@@ -137,7 +162,7 @@ func main() {
 	for _, e := range employees.Employee {
 		client.Employee.
 			Create().
-			SetUserID(e.UserID).
+			SetUserId(e.UserID).
 			Save(context.Background())
 	}
 
@@ -158,21 +183,26 @@ func main() {
 			Save(context.Background())
 	}
 
-	// Set NameTitles Data
-	nametitles := NameTitles{
-		NameTitle: []NameTitle{
-			NameTitle{"เด็กชาย"},
-			NameTitle{"เด็กหญิง"},
-			NameTitle{"นาย"},
-			NameTitle{"นาง"},
-			NameTitle{"นางสาว"},
+	// Set Nametitles Data
+	nametitles := Nametitles{
+		Nametitle: []Nametitle{
+			Nametitle{"เด็กชาย"},
+			Nametitle{"เด็กหญิง"},
+			Nametitle{"นาย"},
+			Nametitle{"นาง"},
+			Nametitle{"นางสาว"},
+			Nametitle{"นพ."},
+			Nametitle{"พญ."},
+			Nametitle{"พย."},
+			Nametitle{"พยช."},
+			Nametitle{"อื่น ๆ"},
 		},
 	}
 
-	for _, n := range nametitles.NameTitle {
-		client.NameTitle.
+	for _, n := range nametitles.Nametitle {
+		client.Nametitle.
 			Create().
-			SetName(n.Name).
+			SetTitle(n.title).
 			Save(context.Background())
 	}
 
@@ -208,6 +238,43 @@ func main() {
 			Save(context.Background())
 	}
 
-	//router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	// Set Departments Data
+	departments := Departments{
+		Department: []Department{
+			Department{"แพทย์"},
+			Department{"เภสัชกร"},
+			Department{"เจ้าหน้าที่เวชระเบียน"},
+			Department{"แพทย์ระบาดวิทยา"},	
+			Department{"พยาบาล"},
+		},
+	}
+
+	for _, d := range departments.Department {
+		client.Department.
+			Create().
+			SetDepartmentName(d.DepartmentName).
+			Save(context.Background())
+	}
+
+	// Set Places Data
+	places := Places{
+		Place: []Place{
+			Place{"ตึก A"},
+			Place{"ตึก B"},
+			Place{"ตึก C"},
+			Place{"ตึก D"},
+			Place{"ตึก E"},
+		},
+	}
+
+	for _, p := range places.Place {
+		client.Place.
+			Create().
+			SetPlaceName(p.PlaceName).
+			Save(context.Background())
+	}
+
+
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	router.Run()
 }
