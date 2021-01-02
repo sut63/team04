@@ -6658,7 +6658,7 @@ type PatientMutation struct {
 	typ              string
 	id               *int
 	_Idcard          *string
-	_Name            *string
+	_PatientName     *string
 	_Address         *string
 	_Congenital      *string
 	_Allergic        *string
@@ -6795,41 +6795,41 @@ func (m *PatientMutation) ResetIdcard() {
 	m._Idcard = nil
 }
 
-// SetName sets the Name field.
-func (m *PatientMutation) SetName(s string) {
-	m._Name = &s
+// SetPatientName sets the PatientName field.
+func (m *PatientMutation) SetPatientName(s string) {
+	m._PatientName = &s
 }
 
-// Name returns the Name value in the mutation.
-func (m *PatientMutation) Name() (r string, exists bool) {
-	v := m._Name
+// PatientName returns the PatientName value in the mutation.
+func (m *PatientMutation) PatientName() (r string, exists bool) {
+	v := m._PatientName
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldName returns the old Name value of the Patient.
+// OldPatientName returns the old PatientName value of the Patient.
 // If the Patient object wasn't provided to the builder, the object is fetched
 // from the database.
 // An error is returned if the mutation operation is not UpdateOne, or database query fails.
-func (m *PatientMutation) OldName(ctx context.Context) (v string, err error) {
+func (m *PatientMutation) OldPatientName(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldName is allowed only on UpdateOne operations")
+		return v, fmt.Errorf("OldPatientName is allowed only on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldName requires an ID field in the mutation")
+		return v, fmt.Errorf("OldPatientName requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldName: %w", err)
+		return v, fmt.Errorf("querying old value for OldPatientName: %w", err)
 	}
-	return oldValue.Name, nil
+	return oldValue.PatientName, nil
 }
 
-// ResetName reset all changes of the "Name" field.
-func (m *PatientMutation) ResetName() {
-	m._Name = nil
+// ResetPatientName reset all changes of the "PatientName" field.
+func (m *PatientMutation) ResetPatientName() {
+	m._PatientName = nil
 }
 
 // SetAddress sets the Address field.
@@ -7198,8 +7198,8 @@ func (m *PatientMutation) Fields() []string {
 	if m._Idcard != nil {
 		fields = append(fields, patient.FieldIdcard)
 	}
-	if m._Name != nil {
-		fields = append(fields, patient.FieldName)
+	if m._PatientName != nil {
+		fields = append(fields, patient.FieldPatientName)
 	}
 	if m._Address != nil {
 		fields = append(fields, patient.FieldAddress)
@@ -7220,8 +7220,8 @@ func (m *PatientMutation) Field(name string) (ent.Value, bool) {
 	switch name {
 	case patient.FieldIdcard:
 		return m.Idcard()
-	case patient.FieldName:
-		return m.Name()
+	case patient.FieldPatientName:
+		return m.PatientName()
 	case patient.FieldAddress:
 		return m.Address()
 	case patient.FieldCongenital:
@@ -7239,8 +7239,8 @@ func (m *PatientMutation) OldField(ctx context.Context, name string) (ent.Value,
 	switch name {
 	case patient.FieldIdcard:
 		return m.OldIdcard(ctx)
-	case patient.FieldName:
-		return m.OldName(ctx)
+	case patient.FieldPatientName:
+		return m.OldPatientName(ctx)
 	case patient.FieldAddress:
 		return m.OldAddress(ctx)
 	case patient.FieldCongenital:
@@ -7263,12 +7263,12 @@ func (m *PatientMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetIdcard(v)
 		return nil
-	case patient.FieldName:
+	case patient.FieldPatientName:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetName(v)
+		m.SetPatientName(v)
 		return nil
 	case patient.FieldAddress:
 		v, ok := value.(string)
@@ -7344,8 +7344,8 @@ func (m *PatientMutation) ResetField(name string) error {
 	case patient.FieldIdcard:
 		m.ResetIdcard()
 		return nil
-	case patient.FieldName:
-		m.ResetName()
+	case patient.FieldPatientName:
+		m.ResetPatientName()
 		return nil
 	case patient.FieldAddress:
 		m.ResetAddress()

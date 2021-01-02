@@ -15,7 +15,7 @@ type Patient struct {
 func (Patient) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("Idcard"),
-		field.String("Name"),
+		field.String("PatientName"),
 		field.String("Address"),
 		field.String("Congenital"),
 		field.String("Allergic"),

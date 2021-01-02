@@ -39,9 +39,9 @@ func (pu *PatientUpdate) SetIdcard(s string) *PatientUpdate {
 	return pu
 }
 
-// SetName sets the Name field.
-func (pu *PatientUpdate) SetName(s string) *PatientUpdate {
-	pu.mutation.SetName(s)
+// SetPatientName sets the PatientName field.
+func (pu *PatientUpdate) SetPatientName(s string) *PatientUpdate {
+	pu.mutation.SetPatientName(s)
 	return pu
 }
 
@@ -300,11 +300,11 @@ func (pu *PatientUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: patient.FieldIdcard,
 		})
 	}
-	if value, ok := pu.mutation.Name(); ok {
+	if value, ok := pu.mutation.PatientName(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: patient.FieldName,
+			Column: patient.FieldPatientName,
 		})
 	}
 	if value, ok := pu.mutation.Address(); ok {
@@ -565,9 +565,9 @@ func (puo *PatientUpdateOne) SetIdcard(s string) *PatientUpdateOne {
 	return puo
 }
 
-// SetName sets the Name field.
-func (puo *PatientUpdateOne) SetName(s string) *PatientUpdateOne {
-	puo.mutation.SetName(s)
+// SetPatientName sets the PatientName field.
+func (puo *PatientUpdateOne) SetPatientName(s string) *PatientUpdateOne {
+	puo.mutation.SetPatientName(s)
 	return puo
 }
 
@@ -824,11 +824,11 @@ func (puo *PatientUpdateOne) sqlSave(ctx context.Context) (pa *Patient, err erro
 			Column: patient.FieldIdcard,
 		})
 	}
-	if value, ok := puo.mutation.Name(); ok {
+	if value, ok := puo.mutation.PatientName(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: patient.FieldName,
+			Column: patient.FieldPatientName,
 		})
 	}
 	if value, ok := puo.mutation.Address(); ok {
