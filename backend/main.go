@@ -66,14 +66,14 @@ type Employee struct {
 	EmployeeName string
 }
 
-// Statuss  defines the struct for the statuss
-type Statuss struct {
-	Status []Status
+// Categorys  defines the struct for the categorys
+type Categorys struct {
+	Category []Category
 }
 
-// Status  defines the struct for the  status
-type Status struct {
-	Name string
+// Category  defines the struct for the  category
+type Category struct {
+	CategoryName string
 }
 
 // Genders  defines the struct for the genders
@@ -220,7 +220,7 @@ func main() {
 	controllers.NewBloodtypeController(v1, client)
 	controllers.NewEmployeeController(v1, client)
 	controllers.NewGenderController(v1, client)
-	// controllers.NewStatusController(v1, client)
+	controllers.NewCategoryController(v1, client)
 	controllers.NewNametitleController(v1, client)
 	controllers.NewDepartmentController(v1, client)
 	controllers.NewPlaceController(v1, client)
@@ -248,22 +248,22 @@ func main() {
 			Save(context.Background())
 	}
 
-	// // Set Statuss Data
-	// statuss := Statuss{
-	// 	Status: []Status{
-	// 		Status{"นักเรียน"},
-	// 		Status{"นักศึกษา"},
-	// 		Status{"บุคลากร"},
-	// 		Status{"บุคคลทั่วไป"},
-	// 	},
-	// }
+	// Set Categorys Data
+	categorys := Categorys{
+		Category: []Category{
+			Category{"นักเรียน"},
+			Category{"นักศึกษา"},
+			Category{"บุคลากร"},
+			Category{"บุคคลทั่วไป"},
+	 	},
+	}
 
-	// for _, s := range statuss.Status {
-	// 	client.Status.
-	// 		Create().
-	// 		SetName(s.Name).
-	// 		Save(context.Background())
-	// }
+	for _, ct := range categorys.Category {
+	 	client.Category.
+	 		Create().
+			SetCategoryName(ct.CategoryName).
+	 		Save(context.Background())
+	}
 
 	// Set Nametitles Data
 	nametitles := Nametitles{
