@@ -72,7 +72,7 @@ type Genders struct {
 
 // Gender  defines the struct for the gender
 type Gender struct {
-	Name string
+	GenderName string
 }
 
 // Bloodtypes  defines the struct for the bloodtypes
@@ -82,7 +82,7 @@ type Bloodtypes struct {
 
 // Bloodtype  defines the struct for the bloodtype
 type Bloodtype struct {
-	Name string
+	BloodtypeName string
 }
 
 // Patients  defines the struct for the Patients
@@ -106,6 +106,29 @@ type Diseases struct {
 type Disease struct {
 	DiseaseName string
 }
+
+// Diseasetypes  defines the struct for the diseasetypes
+type Diseasetypes struct {
+	Diseasetype []Diseasetype
+}
+
+// Diseasetype  defines the struct for the diseasetype
+type Diseasetype struct {
+	DiseaseTypeName  string
+}
+
+// Severitys  defines the struct for the severitys
+type Severitys struct {
+	Severity []Severity
+}
+
+// Severity  defines the struct for the severity
+type Severity struct {
+	SeverityName string
+}
+
+
+
 // @title SUT SA Example API Patient
 // @version 1.0
 // @description This is a sample server for SUT SE 2563
@@ -167,12 +190,15 @@ func main() {
 	controllers.NewBloodtypeController(v1, client)
 	controllers.NewEmployeeController(v1, client)
 	controllers.NewGenderController(v1, client)
-	controllers.NewStatusController(v1, client)
+	// controllers.NewStatusController(v1, client)
 	controllers.NewNametitleController(v1, client)
 	controllers.NewDepartmentController(v1, client)
 	controllers.NewPlaceController(v1, client)
-	controllers.NewDiseaseController(v1, client)
 	controllers.NewPatientController(v1, client)
+	controllers.NewDiseaseController(v1, client)
+	controllers.NewDiseasetypeController(v1, client)
+	controllers.NewSeverityController(v1, client)	
+
 
 	// Set Employees Data
 	employees := Employees{
@@ -189,22 +215,22 @@ func main() {
 			Save(context.Background())
 	}
 
-	// Set Statuss Data
-	statuss := Statuss{
-		Status: []Status{
-			Status{"นักเรียน"},
-			Status{"นักศึกษา"},
-			Status{"บุคลากร"},
-			Status{"บุคคลทั่วไป"},
-		},
-	}
+	// // Set Statuss Data
+	// statuss := Statuss{
+	// 	Status: []Status{
+	// 		Status{"นักเรียน"},
+	// 		Status{"นักศึกษา"},
+	// 		Status{"บุคลากร"},
+	// 		Status{"บุคคลทั่วไป"},
+	// 	},
+	// }
 
-	for _, s := range statuss.Status {
-		client.Status.
-			Create().
-			SetName(s.Name).
-			Save(context.Background())
-	}
+	// for _, s := range statuss.Status {
+	// 	client.Status.
+	// 		Create().
+	// 		SetName(s.Name).
+	// 		Save(context.Background())
+	// }
 
 	// Set Nametitles Data
 	nametitles := Nametitles{
@@ -240,7 +266,7 @@ func main() {
 	for _, g := range genders.Gender {
 		client.Gender.
 			Create().
-			SetName(g.Name).
+			SetGenderName(g.GenderName).
 			Save(context.Background())
 	}
 
@@ -257,7 +283,7 @@ func main() {
 	for _, b := range bloodtypes.Bloodtype {
 		client.Bloodtype.
 			Create().
-			SetName(b.Name).
+			SetBloodtypeName(b.BloodtypeName).
 			Save(context.Background())
 	}
 
@@ -326,6 +352,41 @@ func main() {
 		SetPatientName(pa.PatientName).
 		Save(context.Background())
 	}
+
+
+	// Set Diseasetypes Data
+	diseasetypes := Diseasetypes{
+		Diseasetype: []Diseasetype{
+			Diseasetype{"โรคติดต่อ"},
+			Diseasetype{"โรคติดต่อต้องแจ้งความ"},
+			Diseasetype{"โรคติดต่ออันตราย"},
+		},
+	}
+
+	for _, dt := range diseasetypes.Diseasetype {
+		client.Diseasetype.
+			Create().
+			SetDiseaseTypeName(dt.DiseaseTypeName).
+			Save(context.Background())
+	}
+	
+	// Set Severity Data
+	severitys := Severitys{
+		Severity: []Severity{
+			Severity{"เริ่มต้น"},
+			Severity{"รุนแรง"},
+			Severity{"รุนแรงมาก"},
+		},
+	}
+
+	for _, s := range severitys.Severity {
+		client.Severity.
+			Create().
+			SetSeverityName(s.SeverityName).
+			Save(context.Background())
+	}	
+
+
 
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
