@@ -138,6 +138,26 @@ type Severity struct {
 	SeverityName string
 }
 
+// Levels  defines the struct for the level
+type Levels struct {
+	Level []Level
+}
+
+// Level  defines the struct for the  levels
+type Level struct {
+	LevelName string
+}
+
+// Statistics defines the struct for the statistic
+type Statistics struct {
+	Statistic []Statistic
+}
+
+// Statistic  defines the struct for the  statistics
+type Statistic struct {
+	StatisticName string
+}
+
 // @title SUT SA Example API Patient
 // @version 1.0
 // @description This is a sample server for SUT SE 2563
@@ -195,6 +215,7 @@ func main() {
 	}
 
 	v1 := router.Group("/api/v1")
+	controllers.NewAreaController(v1, client)
 	controllers.NewPatientController(v1, client)
 	controllers.NewBloodtypeController(v1, client)
 	controllers.NewEmployeeController(v1, client)
@@ -209,6 +230,8 @@ func main() {
 	controllers.NewSeverityController(v1, client)
 	controllers.NewDrugTypeController(v1, client)
 	controllers.NewDrugController(v1, client)
+	controllers.NewLevelController(v1, client)
+	controllers.NewStatisticController(v1, client)
 
 	// Set Employees Data
 	employees := Employees{
@@ -407,6 +430,39 @@ func main() {
 		client.DrugType.
 			Create().
 			SetDrugTypeName(dte.DrugTypeName).
+			Save(context.Background())
+	}
+
+	// Set Levels Data
+	levels := Levels{
+		Level: []Level{
+			Level{"ความเสี่ยงระดับต่ำ"},
+			Level{"ความเสี่ยงระดับกลาง"},
+			Level{"ความเสี่ยงระดับสูง"},
+		},
+	}
+
+	for _, l := range levels.Level {
+		client.Level.
+			Create().
+			SetLevelName(l.LevelName).
+			Save(context.Background())
+	}
+	// Set Statistics Data
+	statistics := Statistics{
+		Statistic: []Statistic{
+			Statistic{"ประชากรติดจำนวนน้อยมาก"},
+			Statistic{"ประชากรติดจำนวนน้อย"},
+			Statistic{"ประชากรติดจำนวนปานกลาง"},
+			Statistic{"ประชากรติดจำนวนมาก"},
+			Statistic{"ประชากรติดจำนวนมากที่สุด"},
+		},
+	}
+
+	for _, st := range statistics.Statistic {
+		client.Statistic.
+			Create().
+			SetStatisticName(st.StatisticName).
 			Save(context.Background())
 	}
 
