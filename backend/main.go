@@ -52,6 +52,7 @@ type Employees struct {
 // Employee  defines the struct for the employee
 type Employee struct {
 	UserID string
+	EmployeeName string
 }
 
 // Statuss  defines the struct for the statuss
@@ -84,6 +85,27 @@ type Bloodtype struct {
 	Name string
 }
 
+// Patients  defines the struct for the Patients
+type Patients struct {
+	Patient []Patient
+}
+
+// Patient  defines the struct for the Patient
+type Patient struct {
+	PatientName string
+	Congenital string
+	Allergic string
+}
+
+// Diseases  defines the struct for the diseases
+type Diseases struct {
+	Disease []Disease
+}
+
+// Disease  defines the struct for the Disease
+type Disease struct {
+	DiseaseName string
+}
 // @title SUT SA Example API Patient
 // @version 1.0
 // @description This is a sample server for SUT SE 2563
@@ -147,15 +169,16 @@ func main() {
 	controllers.NewGenderController(v1, client)
 	controllers.NewStatusController(v1, client)
 	controllers.NewNametitleController(v1, client)
-	controllers.NewEmployeeController(v1, client)
 	controllers.NewDepartmentController(v1, client)
 	controllers.NewPlaceController(v1, client)
+	controllers.NewDiseaseController(v1, client)
+	controllers.NewPatientController(v1, client)
 
 	// Set Employees Data
 	employees := Employees{
 		Employee: []Employee{
-			Employee{"D12345"},
-			Employee{"D54231"},
+			Employee{"D12345","siriwan"},
+			Employee{"D54231","sujitnapa"},
 		},
 	}
 
@@ -272,6 +295,36 @@ func main() {
 			Create().
 			SetPlaceName(p.PlaceName).
 			Save(context.Background())
+	}
+
+	// Set Diseases Data
+	diseases := Diseases{
+		Disease: []Disease{
+			Disease{"D12345"},
+			Disease{"D54231"},
+		},
+	}
+
+	for _, d := range diseases.Disease {
+		client.Disease.
+		Create().
+		SetDiseaseName(d.DiseaseName).
+		Save(context.Background())
+	}
+
+	// Set Patients Data
+	patients := Patients{
+		Patient: []Patient{
+			Patient{"D12345","เบาหวาน","ความดัน"},
+			Patient{"D54231","อ้วน","โรคหัวใจ"},
+		},
+	}
+
+	for _, pa := range patients.Patient {
+		client.Patient.
+		Create().
+		SetPatientName(pa.PatientName).
+		Save(context.Background())
 	}
 
 

@@ -31,9 +31,9 @@ func (pc *PatientCreate) SetIdcard(s string) *PatientCreate {
 	return pc
 }
 
-// SetName sets the Name field.
-func (pc *PatientCreate) SetName(s string) *PatientCreate {
-	pc.mutation.SetName(s)
+// SetPatientName sets the PatientName field.
+func (pc *PatientCreate) SetPatientName(s string) *PatientCreate {
+	pc.mutation.SetPatientName(s)
 	return pc
 }
 
@@ -175,8 +175,8 @@ func (pc *PatientCreate) Save(ctx context.Context) (*Patient, error) {
 	if _, ok := pc.mutation.Idcard(); !ok {
 		return nil, &ValidationError{Name: "Idcard", err: errors.New("ent: missing required field \"Idcard\"")}
 	}
-	if _, ok := pc.mutation.Name(); !ok {
-		return nil, &ValidationError{Name: "Name", err: errors.New("ent: missing required field \"Name\"")}
+	if _, ok := pc.mutation.PatientName(); !ok {
+		return nil, &ValidationError{Name: "PatientName", err: errors.New("ent: missing required field \"PatientName\"")}
 	}
 	if _, ok := pc.mutation.Address(); !ok {
 		return nil, &ValidationError{Name: "Address", err: errors.New("ent: missing required field \"Address\"")}
@@ -255,13 +255,13 @@ func (pc *PatientCreate) createSpec() (*Patient, *sqlgraph.CreateSpec) {
 		})
 		pa.Idcard = value
 	}
-	if value, ok := pc.mutation.Name(); ok {
+	if value, ok := pc.mutation.PatientName(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: patient.FieldName,
+			Column: patient.FieldPatientName,
 		})
-		pa.Name = value
+		pa.PatientName = value
 	}
 	if value, ok := pc.mutation.Address(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{

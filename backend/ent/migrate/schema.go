@@ -312,7 +312,7 @@ var (
 	PatientsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "idcard", Type: field.TypeString},
-		{Name: "name", Type: field.TypeString},
+		{Name: "patient_name", Type: field.TypeString},
 		{Name: "address", Type: field.TypeString},
 		{Name: "congenital", Type: field.TypeString},
 		{Name: "allergic", Type: field.TypeString},

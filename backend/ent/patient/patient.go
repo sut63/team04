@@ -9,8 +9,8 @@ const (
 	FieldID = "id"
 	// FieldIdcard holds the string denoting the idcard field in the database.
 	FieldIdcard = "idcard"
-	// FieldName holds the string denoting the name field in the database.
-	FieldName = "name"
+	// FieldPatientName holds the string denoting the patientname field in the database.
+	FieldPatientName = "patient_name"
 	// FieldAddress holds the string denoting the address field in the database.
 	FieldAddress = "address"
 	// FieldCongenital holds the string denoting the congenital field in the database.
@@ -81,7 +81,7 @@ const (
 var Columns = []string{
 	FieldID,
 	FieldIdcard,
-	FieldName,
+	FieldPatientName,
 	FieldAddress,
 	FieldCongenital,
 	FieldAllergic,

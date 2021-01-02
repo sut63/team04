@@ -24,7 +24,7 @@ type PatientController struct {
 type Patient struct {
 	Idcard     string
 	Category     int
-	Name       string
+	PatientName       string
 	Nametitle  int
 	Gender     int
 	Bloodtype  int
@@ -114,12 +114,12 @@ func (ctl *PatientController) CreatePatient(c *gin.Context) {
 		return
 	}
 
-	p, err := ctl.client.Patient.
+	pa, err := ctl.client.Patient.
 		Create().
 		SetIdcard(obj.Idcard).
 		SetCategory(ct).
 		SetNametitle(n).
-		SetName(obj.Name).
+		SetPatientName(obj.PatientName).
 		SetGender(g).
 		SetBloodtype(b).
 		SetAddress(obj.Address).
@@ -135,7 +135,7 @@ func (ctl *PatientController) CreatePatient(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, p)
+	c.JSON(200, pa)
 }
 
 // ListPatient handles request to get a list of patient entities
@@ -254,7 +254,7 @@ func (ctl *PatientController) UpdatePatient(c *gin.Context) {
 	fmt.Println(obj.ID)
 	p, err := ctl.client.Patient.
 		UpdateOneID(int(id)).
-		SetName(obj.Name).
+		SetPatientName(obj.PatientName).
 		Save(context.Background())
 	if err != nil {
 		c.JSON(400, gin.H{

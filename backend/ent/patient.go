@@ -22,8 +22,8 @@ type Patient struct {
 	ID int `json:"id,omitempty"`
 	// Idcard holds the value of the "Idcard" field.
 	Idcard string `json:"Idcard,omitempty"`
-	// Name holds the value of the "Name" field.
-	Name string `json:"Name,omitempty"`
+	// PatientName holds the value of the "PatientName" field.
+	PatientName string `json:"PatientName,omitempty"`
 	// Address holds the value of the "Address" field.
 	Address string `json:"Address,omitempty"`
 	// Congenital holds the value of the "Congenital" field.
@@ -143,7 +143,7 @@ func (*Patient) scanValues() []interface{} {
 	return []interface{}{
 		&sql.NullInt64{},  // id
 		&sql.NullString{}, // Idcard
-		&sql.NullString{}, // Name
+		&sql.NullString{}, // PatientName
 		&sql.NullString{}, // Address
 		&sql.NullString{}, // Congenital
 		&sql.NullString{}, // Allergic
@@ -179,9 +179,9 @@ func (pa *Patient) assignValues(values ...interface{}) error {
 		pa.Idcard = value.String
 	}
 	if value, ok := values[1].(*sql.NullString); !ok {
-		return fmt.Errorf("unexpected type %T for field Name", values[1])
+		return fmt.Errorf("unexpected type %T for field PatientName", values[1])
 	} else if value.Valid {
-		pa.Name = value.String
+		pa.PatientName = value.String
 	}
 	if value, ok := values[2].(*sql.NullString); !ok {
 		return fmt.Errorf("unexpected type %T for field Address", values[2])
@@ -289,8 +289,8 @@ func (pa *Patient) String() string {
 	builder.WriteString(fmt.Sprintf("id=%v", pa.ID))
 	builder.WriteString(", Idcard=")
 	builder.WriteString(pa.Idcard)
-	builder.WriteString(", Name=")
-	builder.WriteString(pa.Name)
+	builder.WriteString(", PatientName=")
+	builder.WriteString(pa.PatientName)
 	builder.WriteString(", Address=")
 	builder.WriteString(pa.Address)
 	builder.WriteString(", Congenital=")
