@@ -14,6 +14,17 @@ import (
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
+
+// DrugTypes  defines the struct for the drugTypes
+type DrugTypes struct {
+	DrugType []DrugType
+}
+
+// DrugType  defines the struct for the drugType
+type DrugType struct {
+	DrugTypeName string
+}
+
 // Departments  defines the struct for the departments
 type Departments struct {
 	Department []Department
@@ -51,7 +62,7 @@ type Employees struct {
 
 // Employee  defines the struct for the employee
 type Employee struct {
-	UserID string
+	UserID       string
 	EmployeeName string
 }
 
@@ -93,8 +104,8 @@ type Patients struct {
 // Patient  defines the struct for the Patient
 type Patient struct {
 	PatientName string
-	Congenital string
-	Allergic string
+	Congenital  string
+	Allergic    string
 }
 
 // Diseases  defines the struct for the diseases
@@ -114,7 +125,7 @@ type Diseasetypes struct {
 
 // Diseasetype  defines the struct for the diseasetype
 type Diseasetype struct {
-	DiseaseTypeName  string
+	DiseaseTypeName string
 }
 
 // Severitys  defines the struct for the severitys
@@ -126,8 +137,6 @@ type Severitys struct {
 type Severity struct {
 	SeverityName string
 }
-
-
 
 // @title SUT SA Example API Patient
 // @version 1.0
@@ -197,14 +206,15 @@ func main() {
 	controllers.NewPatientController(v1, client)
 	controllers.NewDiseaseController(v1, client)
 	controllers.NewDiseasetypeController(v1, client)
-	controllers.NewSeverityController(v1, client)	
-
+	controllers.NewSeverityController(v1, client)
+	controllers.NewDrugTypeController(v1, client)
+	controllers.NewDrugController(v1, client)
 
 	// Set Employees Data
 	employees := Employees{
 		Employee: []Employee{
-			Employee{"D12345","siriwan"},
-			Employee{"D54231","sujitnapa"},
+			Employee{"D12345", "siriwan"},
+			Employee{"D54231", "sujitnapa"},
 		},
 	}
 
@@ -293,7 +303,7 @@ func main() {
 			Department{"แพทย์"},
 			Department{"เภสัชกร"},
 			Department{"เจ้าหน้าที่เวชระเบียน"},
-			Department{"แพทย์ระบาดวิทยา"},	
+			Department{"แพทย์ระบาดวิทยา"},
 			Department{"พยาบาล"},
 		},
 	}
@@ -333,26 +343,25 @@ func main() {
 
 	for _, d := range diseases.Disease {
 		client.Disease.
-		Create().
-		SetDiseaseName(d.DiseaseName).
-		Save(context.Background())
+			Create().
+			SetDiseaseName(d.DiseaseName).
+			Save(context.Background())
 	}
 
 	// Set Patients Data
 	patients := Patients{
 		Patient: []Patient{
-			Patient{"D12345","เบาหวาน","ความดัน"},
-			Patient{"D54231","อ้วน","โรคหัวใจ"},
+			Patient{"D12345", "เบาหวาน", "ความดัน"},
+			Patient{"D54231", "อ้วน", "โรคหัวใจ"},
 		},
 	}
 
 	for _, pa := range patients.Patient {
 		client.Patient.
-		Create().
-		SetPatientName(pa.PatientName).
-		Save(context.Background())
+			Create().
+			SetPatientName(pa.PatientName).
+			Save(context.Background())
 	}
-
 
 	// Set Diseasetypes Data
 	diseasetypes := Diseasetypes{
@@ -369,7 +378,7 @@ func main() {
 			SetDiseaseTypeName(dt.DiseaseTypeName).
 			Save(context.Background())
 	}
-	
+
 	// Set Severity Data
 	severitys := Severitys{
 		Severity: []Severity{
@@ -384,10 +393,22 @@ func main() {
 			Create().
 			SetSeverityName(s.SeverityName).
 			Save(context.Background())
-	}	
+	}
 
-
-
+	// Set drugtype Data
+	drugtypes := DrugTypes{
+		DrugType: []DrugType{
+			DrugType{"ยาเม็ด"},
+			DrugType{"ยาน้ำ"},
+			DrugType{"วัคซีน"},
+		},
+	}
+	for _, dte := range drugtypes.DrugType {
+		client.DrugType.
+			Create().
+			SetDrugTypeName(dte.DrugTypeName).
+			Save(context.Background())
+	}
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	router.Run()
