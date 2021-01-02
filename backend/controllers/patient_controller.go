@@ -280,7 +280,7 @@ func (ctl *PatientController) register() {
 	patients := ctl.router.Group("/patients")
 	patients.POST("", ctl.CreatePatient)
 	patients.GET("", ctl.ListPatient)
-	patients.PUT("id", ctl.ListPatient)
+	patients.PUT("id", ctl.UpdatePatient)
 	patients.DELETE("id", ctl.ListPatient)
 
 }

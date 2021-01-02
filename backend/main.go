@@ -224,7 +224,6 @@ func main() {
 	controllers.NewNametitleController(v1, client)
 	controllers.NewDepartmentController(v1, client)
 	controllers.NewPlaceController(v1, client)
-	controllers.NewPatientController(v1, client)
 	controllers.NewDiseaseController(v1, client)
 	controllers.NewDiseasetypeController(v1, client)
 	controllers.NewSeverityController(v1, client)
