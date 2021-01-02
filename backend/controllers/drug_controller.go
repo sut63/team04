@@ -6,11 +6,11 @@ import (
 
 	"strconv"
 
-	"github.com/gin-gonic/gin"
 	"github.com/B6001186/Contagions/ent"
 	"github.com/B6001186/Contagions/ent/disease"
 	"github.com/B6001186/Contagions/ent/drugtype"
 	"github.com/B6001186/Contagions/ent/employee"
+	"github.com/gin-gonic/gin"
 )
 
 // DrugController defines the struct for the drug controller
@@ -49,7 +49,7 @@ func (ctl *DrugController) CreateDrug(c *gin.Context) {
 		return
 	}
 
-	dt, err := ctl.client.DrugType.
+	dte, err := ctl.client.DrugType.
 		Query().
 		Where(drugtype.IDEQ(int(obj.DrugType))).
 		Only(context.Background())
@@ -85,10 +85,10 @@ func (ctl *DrugController) CreateDrug(c *gin.Context) {
 		return
 	}
 
-	d, err := ctl.client.Drug.
+	dr, err := ctl.client.Drug.
 		Create().
 		SetDisease(di).
-		SetDrugtype(dt).
+		SetDrugtype(dte).
 		SetEmployee(e).
 		SetDrugName(obj.DrugName).
 		SetHowto(obj.Howto).
@@ -104,7 +104,7 @@ func (ctl *DrugController) CreateDrug(c *gin.Context) {
 
 	c.JSON(200, gin.H{
 		"status": true,
-		"data":   d,
+		"data":   dr,
 	})
 }
 
@@ -236,14 +236,14 @@ func (ctl *DrugController) UpdateDrug(c *gin.Context) {
 
 // NewDrugController creates and registers handles for the drug controller
 func NewDrugController(router gin.IRouter, client *ent.Client) *DrugController {
-	dc := &DrugController{
+	drc := &DrugController{
 		client: client,
 		router: router,
 	}
 
-	dc.register()
+	drc.register()
 
-	return dc
+	return drc
 
 }
 
