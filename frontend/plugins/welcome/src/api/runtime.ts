@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
- * SUT SA Example API Playlist Vidoe
+ * SUT SA Example API Patient
  * This is a sample server for SUT SE 2563
  *
  * The version of the OpenAPI document: 1.0
