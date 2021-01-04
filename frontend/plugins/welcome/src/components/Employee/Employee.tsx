@@ -263,7 +263,7 @@ const Employee: FC<{}> = () => {
                 <InputLabel>คำนำหน้าชื่อ</InputLabel>
                 <Select
                   error={!employee.nametitle && showInputError}
-                  name="titlename"
+                  name="nametitle"
                   label="คำนำหน้าชื่อ"
                   value={employee.nametitle || ''}
                   onChange={handleInputChange}
@@ -284,7 +284,7 @@ const Employee: FC<{}> = () => {
                 <TextField
                   required
                   error={!employee.employeeName && showInputError}
-                  name="name"
+                  name="employeeName"
                   label="ชื่อ-นามสกุล"
                   variant="outlined"
                   type="string"
@@ -398,8 +398,8 @@ const Employee: FC<{}> = () => {
                   name="password"
                   label="รหัสผ่าน"
                   variant="outlined"
-                  type="string"
                   size="medium"
+                  type="password"
                   value={employee.password || ''}
                   onChange={handleInputChange}
                 />
