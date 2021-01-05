@@ -1711,8 +1711,8 @@ type DiagnosisMutation struct {
 	_SurveillancePeriod *string
 	_DiagnosisDate      *string
 	clearedFields       map[string]struct{}
-	disease             map[int]struct{}
-	removeddisease      map[int]struct{}
+	disease             *int
+	cleareddisease      bool
 	patient             *int
 	clearedpatient      bool
 	employee            *int
@@ -1911,38 +1911,35 @@ func (m *DiagnosisMutation) ResetDiagnosisDate() {
 	m._DiagnosisDate = nil
 }
 
-// AddDiseaseIDs adds the disease edge to Disease by ids.
-func (m *DiagnosisMutation) AddDiseaseIDs(ids ...int) {
-	if m.disease == nil {
-		m.disease = make(map[int]struct{})
-	}
-	for i := range ids {
-		m.disease[ids[i]] = struct{}{}
-	}
+// SetDiseaseID sets the disease edge to Disease by id.
+func (m *DiagnosisMutation) SetDiseaseID(id int) {
+	m.disease = &id
 }
 
-// RemoveDiseaseIDs removes the disease edge to Disease by ids.
-func (m *DiagnosisMutation) RemoveDiseaseIDs(ids ...int) {
-	if m.removeddisease == nil {
-		m.removeddisease = make(map[int]struct{})
-	}
-	for i := range ids {
-		m.removeddisease[ids[i]] = struct{}{}
-	}
+// ClearDisease clears the disease edge to Disease.
+func (m *DiagnosisMutation) ClearDisease() {
+	m.cleareddisease = true
 }
 
-// RemovedDisease returns the removed ids of disease.
-func (m *DiagnosisMutation) RemovedDiseaseIDs() (ids []int) {
-	for id := range m.removeddisease {
-		ids = append(ids, id)
+// DiseaseCleared returns if the edge disease was cleared.
+func (m *DiagnosisMutation) DiseaseCleared() bool {
+	return m.cleareddisease
+}
+
+// DiseaseID returns the disease id in the mutation.
+func (m *DiagnosisMutation) DiseaseID() (id int, exists bool) {
+	if m.disease != nil {
+		return *m.disease, true
 	}
 	return
 }
 
 // DiseaseIDs returns the disease ids in the mutation.
+// Note that ids always returns len(ids) <= 1 for unique edges, and you should use
+// DiseaseID instead. It exists only for internal usage by the builders.
 func (m *DiagnosisMutation) DiseaseIDs() (ids []int) {
-	for id := range m.disease {
-		ids = append(ids, id)
+	if id := m.disease; id != nil {
+		ids = append(ids, *id)
 	}
 	return
 }
@@ -1950,7 +1947,7 @@ func (m *DiagnosisMutation) DiseaseIDs() (ids []int) {
 // ResetDisease reset all changes of the "disease" edge.
 func (m *DiagnosisMutation) ResetDisease() {
 	m.disease = nil
-	m.removeddisease = nil
+	m.cleareddisease = false
 }
 
 // SetPatientID sets the patient edge to Patient by id.
@@ -2198,11 +2195,9 @@ func (m *DiagnosisMutation) AddedEdges() []string {
 func (m *DiagnosisMutation) AddedIDs(name string) []ent.Value {
 	switch name {
 	case diagnosis.EdgeDisease:
-		ids := make([]ent.Value, 0, len(m.disease))
-		for id := range m.disease {
-			ids = append(ids, id)
+		if id := m.disease; id != nil {
+			return []ent.Value{*id}
 		}
-		return ids
 	case diagnosis.EdgePatient:
 		if id := m.patient; id != nil {
 			return []ent.Value{*id}
@@ -2219,9 +2214,6 @@ func (m *DiagnosisMutation) AddedIDs(name string) []ent.Value {
 // mutation.
 func (m *DiagnosisMutation) RemovedEdges() []string {
 	edges := make([]string, 0, 3)
-	if m.removeddisease != nil {
-		edges = append(edges, diagnosis.EdgeDisease)
-	}
 	return edges
 }
 
@@ -2229,12 +2221,6 @@ func (m *DiagnosisMutation) RemovedEdges() []string {
 // the given edge name.
 func (m *DiagnosisMutation) RemovedIDs(name string) []ent.Value {
 	switch name {
-	case diagnosis.EdgeDisease:
-		ids := make([]ent.Value, 0, len(m.removeddisease))
-		for id := range m.removeddisease {
-			ids = append(ids, id)
-		}
-		return ids
 	}
 	return nil
 }
@@ -2243,6 +2229,9 @@ func (m *DiagnosisMutation) RemovedIDs(name string) []ent.Value {
 // mutation.
 func (m *DiagnosisMutation) ClearedEdges() []string {
 	edges := make([]string, 0, 3)
+	if m.cleareddisease {
+		edges = append(edges, diagnosis.EdgeDisease)
+	}
 	if m.clearedpatient {
 		edges = append(edges, diagnosis.EdgePatient)
 	}
@@ -2256,6 +2245,8 @@ func (m *DiagnosisMutation) ClearedEdges() []string {
 // cleared in this mutation.
 func (m *DiagnosisMutation) EdgeCleared(name string) bool {
 	switch name {
+	case diagnosis.EdgeDisease:
+		return m.cleareddisease
 	case diagnosis.EdgePatient:
 		return m.clearedpatient
 	case diagnosis.EdgeEmployee:
@@ -2268,6 +2259,9 @@ func (m *DiagnosisMutation) EdgeCleared(name string) bool {
 // error if the edge name is not defined in the schema.
 func (m *DiagnosisMutation) ClearEdge(name string) error {
 	switch name {
+	case diagnosis.EdgeDisease:
+		m.ClearDisease()
+		return nil
 	case diagnosis.EdgePatient:
 		m.ClearPatient()
 		return nil
@@ -2317,8 +2311,8 @@ type DiseaseMutation struct {
 	removedarea        map[int]struct{}
 	drug               map[int]struct{}
 	removeddrug        map[int]struct{}
-	diagnosis          *int
-	cleareddiagnosis   bool
+	diagnosis          map[int]struct{}
+	removeddiagnosis   map[int]struct{}
 	done               bool
 	oldValue           func(context.Context) (*Disease, error)
 }
@@ -2714,35 +2708,38 @@ func (m *DiseaseMutation) ResetDrug() {
 	m.removeddrug = nil
 }
 
-// SetDiagnosisID sets the diagnosis edge to Diagnosis by id.
-func (m *DiseaseMutation) SetDiagnosisID(id int) {
-	m.diagnosis = &id
+// AddDiagnosiIDs adds the diagnosis edge to Diagnosis by ids.
+func (m *DiseaseMutation) AddDiagnosiIDs(ids ...int) {
+	if m.diagnosis == nil {
+		m.diagnosis = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.diagnosis[ids[i]] = struct{}{}
+	}
 }
 
-// ClearDiagnosis clears the diagnosis edge to Diagnosis.
-func (m *DiseaseMutation) ClearDiagnosis() {
-	m.cleareddiagnosis = true
+// RemoveDiagnosiIDs removes the diagnosis edge to Diagnosis by ids.
+func (m *DiseaseMutation) RemoveDiagnosiIDs(ids ...int) {
+	if m.removeddiagnosis == nil {
+		m.removeddiagnosis = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.removeddiagnosis[ids[i]] = struct{}{}
+	}
 }
 
-// DiagnosisCleared returns if the edge diagnosis was cleared.
-func (m *DiseaseMutation) DiagnosisCleared() bool {
-	return m.cleareddiagnosis
-}
-
-// DiagnosisID returns the diagnosis id in the mutation.
-func (m *DiseaseMutation) DiagnosisID() (id int, exists bool) {
-	if m.diagnosis != nil {
-		return *m.diagnosis, true
+// RemovedDiagnosis returns the removed ids of diagnosis.
+func (m *DiseaseMutation) RemovedDiagnosisIDs() (ids []int) {
+	for id := range m.removeddiagnosis {
+		ids = append(ids, id)
 	}
 	return
 }
 
 // DiagnosisIDs returns the diagnosis ids in the mutation.
-// Note that ids always returns len(ids) <= 1 for unique edges, and you should use
-// DiagnosisID instead. It exists only for internal usage by the builders.
 func (m *DiseaseMutation) DiagnosisIDs() (ids []int) {
-	if id := m.diagnosis; id != nil {
-		ids = append(ids, *id)
+	for id := range m.diagnosis {
+		ids = append(ids, id)
 	}
 	return
 }
@@ -2750,7 +2747,7 @@ func (m *DiseaseMutation) DiagnosisIDs() (ids []int) {
 // ResetDiagnosis reset all changes of the "diagnosis" edge.
 func (m *DiseaseMutation) ResetDiagnosis() {
 	m.diagnosis = nil
-	m.cleareddiagnosis = false
+	m.removeddiagnosis = nil
 }
 
 // Op returns the operation name.
@@ -2953,9 +2950,11 @@ func (m *DiseaseMutation) AddedIDs(name string) []ent.Value {
 		}
 		return ids
 	case disease.EdgeDiagnosis:
-		if id := m.diagnosis; id != nil {
-			return []ent.Value{*id}
+		ids := make([]ent.Value, 0, len(m.diagnosis))
+		for id := range m.diagnosis {
+			ids = append(ids, id)
 		}
+		return ids
 	}
 	return nil
 }
@@ -2969,6 +2968,9 @@ func (m *DiseaseMutation) RemovedEdges() []string {
 	}
 	if m.removeddrug != nil {
 		edges = append(edges, disease.EdgeDrug)
+	}
+	if m.removeddiagnosis != nil {
+		edges = append(edges, disease.EdgeDiagnosis)
 	}
 	return edges
 }
@@ -2989,6 +2991,12 @@ func (m *DiseaseMutation) RemovedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case disease.EdgeDiagnosis:
+		ids := make([]ent.Value, 0, len(m.removeddiagnosis))
+		for id := range m.removeddiagnosis {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
@@ -3006,9 +3014,6 @@ func (m *DiseaseMutation) ClearedEdges() []string {
 	if m.cleareddiseasetype {
 		edges = append(edges, disease.EdgeDiseasetype)
 	}
-	if m.cleareddiagnosis {
-		edges = append(edges, disease.EdgeDiagnosis)
-	}
 	return edges
 }
 
@@ -3022,8 +3027,6 @@ func (m *DiseaseMutation) EdgeCleared(name string) bool {
 		return m.clearedseverity
 	case disease.EdgeDiseasetype:
 		return m.cleareddiseasetype
-	case disease.EdgeDiagnosis:
-		return m.cleareddiagnosis
 	}
 	return false
 }
@@ -3040,9 +3043,6 @@ func (m *DiseaseMutation) ClearEdge(name string) error {
 		return nil
 	case disease.EdgeDiseasetype:
 		m.ClearDiseasetype()
-		return nil
-	case disease.EdgeDiagnosis:
-		m.ClearDiagnosis()
 		return nil
 	}
 	return fmt.Errorf("unknown Disease unique edge %s", name)

@@ -65,7 +65,7 @@ const (
 	// DrugColumn is the table column denoting the drug relation/edge.
 	DrugColumn = "disease_drug"
 	// DiagnosisTable is the table the holds the diagnosis relation/edge.
-	DiagnosisTable = "diseases"
+	DiagnosisTable = "diagnoses"
 	// DiagnosisInverseTable is the table name for the Diagnosis entity.
 	// It exists in this package in order to avoid circular dependency with the "diagnosis" package.
 	DiagnosisInverseTable = "diagnoses"
@@ -83,7 +83,6 @@ var Columns = []string{
 
 // ForeignKeys holds the SQL foreign-keys that are owned by the Disease type.
 var ForeignKeys = []string{
-	"disease_diagnosis",
 	"diseasetype_disease",
 	"employee_disease",
 	"severity_disease",

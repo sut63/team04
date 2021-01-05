@@ -95,6 +95,7 @@ var (
 		{Name: "diagnostic_messages", Type: field.TypeString},
 		{Name: "surveillance_period", Type: field.TypeString},
 		{Name: "diagnosis_date", Type: field.TypeString},
+		{Name: "disease_diagnosis", Type: field.TypeInt, Nullable: true},
 		{Name: "employee_diagnosis", Type: field.TypeInt, Nullable: true},
 		{Name: "patient_diagnosis", Type: field.TypeInt, Nullable: true},
 	}
@@ -105,15 +106,22 @@ var (
 		PrimaryKey: []*schema.Column{DiagnosesColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{
 			{
-				Symbol:  "diagnoses_employees_diagnosis",
+				Symbol:  "diagnoses_diseases_diagnosis",
 				Columns: []*schema.Column{DiagnosesColumns[4]},
+
+				RefColumns: []*schema.Column{DiseasesColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:  "diagnoses_employees_diagnosis",
+				Columns: []*schema.Column{DiagnosesColumns[5]},
 
 				RefColumns: []*schema.Column{EmployeesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "diagnoses_patients_diagnosis",
-				Columns: []*schema.Column{DiagnosesColumns[5]},
+				Columns: []*schema.Column{DiagnosesColumns[6]},
 
 				RefColumns: []*schema.Column{PatientsColumns[0]},
 				OnDelete:   schema.SetNull,
@@ -126,7 +134,6 @@ var (
 		{Name: "disease_name", Type: field.TypeString},
 		{Name: "symptom", Type: field.TypeString},
 		{Name: "contagion", Type: field.TypeString},
-		{Name: "disease_diagnosis", Type: field.TypeInt, Nullable: true},
 		{Name: "diseasetype_disease", Type: field.TypeInt, Nullable: true},
 		{Name: "employee_disease", Type: field.TypeInt, Nullable: true},
 		{Name: "severity_disease", Type: field.TypeInt, Nullable: true},
@@ -138,29 +145,22 @@ var (
 		PrimaryKey: []*schema.Column{DiseasesColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{
 			{
-				Symbol:  "diseases_diagnoses_diagnosis",
-				Columns: []*schema.Column{DiseasesColumns[4]},
-
-				RefColumns: []*schema.Column{DiagnosesColumns[0]},
-				OnDelete:   schema.SetNull,
-			},
-			{
 				Symbol:  "diseases_diseasetypes_disease",
-				Columns: []*schema.Column{DiseasesColumns[5]},
+				Columns: []*schema.Column{DiseasesColumns[4]},
 
 				RefColumns: []*schema.Column{DiseasetypesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "diseases_employees_disease",
-				Columns: []*schema.Column{DiseasesColumns[6]},
+				Columns: []*schema.Column{DiseasesColumns[5]},
 
 				RefColumns: []*schema.Column{EmployeesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "diseases_severities_disease",
-				Columns: []*schema.Column{DiseasesColumns[7]},
+				Columns: []*schema.Column{DiseasesColumns[6]},
 
 				RefColumns: []*schema.Column{SeveritiesColumns[0]},
 				OnDelete:   schema.SetNull,
@@ -428,12 +428,12 @@ func init() {
 	AreasTable.ForeignKeys[1].RefTable = EmployeesTable
 	AreasTable.ForeignKeys[2].RefTable = LevelsTable
 	AreasTable.ForeignKeys[3].RefTable = StatisticsTable
-	DiagnosesTable.ForeignKeys[0].RefTable = EmployeesTable
-	DiagnosesTable.ForeignKeys[1].RefTable = PatientsTable
-	DiseasesTable.ForeignKeys[0].RefTable = DiagnosesTable
-	DiseasesTable.ForeignKeys[1].RefTable = DiseasetypesTable
-	DiseasesTable.ForeignKeys[2].RefTable = EmployeesTable
-	DiseasesTable.ForeignKeys[3].RefTable = SeveritiesTable
+	DiagnosesTable.ForeignKeys[0].RefTable = DiseasesTable
+	DiagnosesTable.ForeignKeys[1].RefTable = EmployeesTable
+	DiagnosesTable.ForeignKeys[2].RefTable = PatientsTable
+	DiseasesTable.ForeignKeys[0].RefTable = DiseasetypesTable
+	DiseasesTable.ForeignKeys[1].RefTable = EmployeesTable
+	DiseasesTable.ForeignKeys[2].RefTable = SeveritiesTable
 	DrugsTable.ForeignKeys[0].RefTable = DiseasesTable
 	DrugsTable.ForeignKeys[1].RefTable = DrugTypesTable
 	DrugsTable.ForeignKeys[2].RefTable = EmployeesTable

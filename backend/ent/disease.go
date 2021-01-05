@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/B6001186/Contagions/ent/diagnosis"
 	"github.com/B6001186/Contagions/ent/disease"
 	"github.com/B6001186/Contagions/ent/diseasetype"
 	"github.com/B6001186/Contagions/ent/employee"
@@ -28,7 +27,6 @@ type Disease struct {
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the DiseaseQuery when eager-loading is set.
 	Edges               DiseaseEdges `json:"edges"`
-	disease_diagnosis   *int
 	diseasetype_disease *int
 	employee_disease    *int
 	severity_disease    *int
@@ -47,7 +45,7 @@ type DiseaseEdges struct {
 	// Drug holds the value of the drug edge.
 	Drug []*Drug
 	// Diagnosis holds the value of the diagnosis edge.
-	Diagnosis *Diagnosis
+	Diagnosis []*Diagnosis
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
 	loadedTypes [6]bool
@@ -114,14 +112,9 @@ func (e DiseaseEdges) DrugOrErr() ([]*Drug, error) {
 }
 
 // DiagnosisOrErr returns the Diagnosis value or an error if the edge
-// was not loaded in eager-loading, or loaded but was not found.
-func (e DiseaseEdges) DiagnosisOrErr() (*Diagnosis, error) {
+// was not loaded in eager-loading.
+func (e DiseaseEdges) DiagnosisOrErr() ([]*Diagnosis, error) {
 	if e.loadedTypes[5] {
-		if e.Diagnosis == nil {
-			// The edge diagnosis was loaded in eager-loading,
-			// but was not found.
-			return nil, &NotFoundError{label: diagnosis.Label}
-		}
 		return e.Diagnosis, nil
 	}
 	return nil, &NotLoadedError{edge: "diagnosis"}
@@ -140,7 +133,6 @@ func (*Disease) scanValues() []interface{} {
 // fkValues returns the types for scanning foreign-keys values from sql.Rows.
 func (*Disease) fkValues() []interface{} {
 	return []interface{}{
-		&sql.NullInt64{}, // disease_diagnosis
 		&sql.NullInt64{}, // diseasetype_disease
 		&sql.NullInt64{}, // employee_disease
 		&sql.NullInt64{}, // severity_disease
@@ -177,24 +169,18 @@ func (d *Disease) assignValues(values ...interface{}) error {
 	values = values[3:]
 	if len(values) == len(disease.ForeignKeys) {
 		if value, ok := values[0].(*sql.NullInt64); !ok {
-			return fmt.Errorf("unexpected type %T for edge-field disease_diagnosis", value)
-		} else if value.Valid {
-			d.disease_diagnosis = new(int)
-			*d.disease_diagnosis = int(value.Int64)
-		}
-		if value, ok := values[1].(*sql.NullInt64); !ok {
 			return fmt.Errorf("unexpected type %T for edge-field diseasetype_disease", value)
 		} else if value.Valid {
 			d.diseasetype_disease = new(int)
 			*d.diseasetype_disease = int(value.Int64)
 		}
-		if value, ok := values[2].(*sql.NullInt64); !ok {
+		if value, ok := values[1].(*sql.NullInt64); !ok {
 			return fmt.Errorf("unexpected type %T for edge-field employee_disease", value)
 		} else if value.Valid {
 			d.employee_disease = new(int)
 			*d.employee_disease = int(value.Int64)
 		}
-		if value, ok := values[3].(*sql.NullInt64); !ok {
+		if value, ok := values[2].(*sql.NullInt64); !ok {
 			return fmt.Errorf("unexpected type %T for edge-field severity_disease", value)
 		} else if value.Valid {
 			d.severity_disease = new(int)

@@ -40,19 +40,23 @@ func (dc *DiagnosisCreate) SetDiagnosisDate(s string) *DiagnosisCreate {
 	return dc
 }
 
-// AddDiseaseIDs adds the disease edge to Disease by ids.
-func (dc *DiagnosisCreate) AddDiseaseIDs(ids ...int) *DiagnosisCreate {
-	dc.mutation.AddDiseaseIDs(ids...)
+// SetDiseaseID sets the disease edge to Disease by id.
+func (dc *DiagnosisCreate) SetDiseaseID(id int) *DiagnosisCreate {
+	dc.mutation.SetDiseaseID(id)
 	return dc
 }
 
-// AddDisease adds the disease edges to Disease.
-func (dc *DiagnosisCreate) AddDisease(d ...*Disease) *DiagnosisCreate {
-	ids := make([]int, len(d))
-	for i := range d {
-		ids[i] = d[i].ID
+// SetNillableDiseaseID sets the disease edge to Disease by id if the given value is not nil.
+func (dc *DiagnosisCreate) SetNillableDiseaseID(id *int) *DiagnosisCreate {
+	if id != nil {
+		dc = dc.SetDiseaseID(*id)
 	}
-	return dc.AddDiseaseIDs(ids...)
+	return dc
+}
+
+// SetDisease sets the disease edge to Disease.
+func (dc *DiagnosisCreate) SetDisease(d *Disease) *DiagnosisCreate {
+	return dc.SetDiseaseID(d.ID)
 }
 
 // SetPatientID sets the patient edge to Patient by id.
@@ -195,7 +199,7 @@ func (dc *DiagnosisCreate) createSpec() (*Diagnosis, *sqlgraph.CreateSpec) {
 	}
 	if nodes := dc.mutation.DiseaseIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
+			Rel:     sqlgraph.M2O,
 			Inverse: true,
 			Table:   diagnosis.DiseaseTable,
 			Columns: []string{diagnosis.DiseaseColumn},
