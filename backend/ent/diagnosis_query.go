@@ -4,7 +4,6 @@ package ent
 
 import (
 	"context"
-	"database/sql/driver"
 	"errors"
 	"fmt"
 	"math"
@@ -71,7 +70,7 @@ func (dq *DiagnosisQuery) QueryDisease() *DiseaseQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(diagnosis.Table, diagnosis.FieldID, dq.sqlQuery()),
 			sqlgraph.To(disease.Table, disease.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, true, diagnosis.DiseaseTable, diagnosis.DiseaseColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, diagnosis.DiseaseTable, diagnosis.DiseaseColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(dq.driver.Dialect(), step)
 		return fromU, nil
@@ -400,7 +399,7 @@ func (dq *DiagnosisQuery) sqlAll(ctx context.Context) ([]*Diagnosis, error) {
 			dq.withEmployee != nil,
 		}
 	)
-	if dq.withPatient != nil || dq.withEmployee != nil {
+	if dq.withDisease != nil || dq.withPatient != nil || dq.withEmployee != nil {
 		withFKs = true
 	}
 	if withFKs {
@@ -431,30 +430,27 @@ func (dq *DiagnosisQuery) sqlAll(ctx context.Context) ([]*Diagnosis, error) {
 	}
 
 	if query := dq.withDisease; query != nil {
-		fks := make([]driver.Value, 0, len(nodes))
-		nodeids := make(map[int]*Diagnosis)
+		ids := make([]int, 0, len(nodes))
+		nodeids := make(map[int][]*Diagnosis)
 		for i := range nodes {
-			fks = append(fks, nodes[i].ID)
-			nodeids[nodes[i].ID] = nodes[i]
+			if fk := nodes[i].disease_diagnosis; fk != nil {
+				ids = append(ids, *fk)
+				nodeids[*fk] = append(nodeids[*fk], nodes[i])
+			}
 		}
-		query.withFKs = true
-		query.Where(predicate.Disease(func(s *sql.Selector) {
-			s.Where(sql.InValues(diagnosis.DiseaseColumn, fks...))
-		}))
+		query.Where(disease.IDIn(ids...))
 		neighbors, err := query.All(ctx)
 		if err != nil {
 			return nil, err
 		}
 		for _, n := range neighbors {
-			fk := n.disease_diagnosis
-			if fk == nil {
-				return nil, fmt.Errorf(`foreign-key "disease_diagnosis" is nil for node %v`, n.ID)
-			}
-			node, ok := nodeids[*fk]
+			nodes, ok := nodeids[n.ID]
 			if !ok {
-				return nil, fmt.Errorf(`unexpected foreign-key "disease_diagnosis" returned %v for node %v`, *fk, n.ID)
+				return nil, fmt.Errorf(`unexpected foreign-key "disease_diagnosis" returned %v`, n.ID)
 			}
-			node.Edges.Disease = append(node.Edges.Disease, n)
+			for i := range nodes {
+				nodes[i].Edges.Disease = n
+			}
 		}
 	}
 

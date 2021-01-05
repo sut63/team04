@@ -591,7 +591,7 @@ func HasDiagnosis() predicate.Disease {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
 			sqlgraph.To(DiagnosisTable, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, false, DiagnosisTable, DiagnosisColumn),
+			sqlgraph.Edge(sqlgraph.O2M, false, DiagnosisTable, DiagnosisColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
@@ -603,7 +603,7 @@ func HasDiagnosisWith(preds ...predicate.Diagnosis) predicate.Disease {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
 			sqlgraph.To(DiagnosisInverseTable, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, false, DiagnosisTable, DiagnosisColumn),
+			sqlgraph.Edge(sqlgraph.O2M, false, DiagnosisTable, DiagnosisColumn),
 		)
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {

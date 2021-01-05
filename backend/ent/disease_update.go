@@ -138,23 +138,19 @@ func (du *DiseaseUpdate) AddDrug(d ...*Drug) *DiseaseUpdate {
 	return du.AddDrugIDs(ids...)
 }
 
-// SetDiagnosisID sets the diagnosis edge to Diagnosis by id.
-func (du *DiseaseUpdate) SetDiagnosisID(id int) *DiseaseUpdate {
-	du.mutation.SetDiagnosisID(id)
+// AddDiagnosiIDs adds the diagnosis edge to Diagnosis by ids.
+func (du *DiseaseUpdate) AddDiagnosiIDs(ids ...int) *DiseaseUpdate {
+	du.mutation.AddDiagnosiIDs(ids...)
 	return du
 }
 
-// SetNillableDiagnosisID sets the diagnosis edge to Diagnosis by id if the given value is not nil.
-func (du *DiseaseUpdate) SetNillableDiagnosisID(id *int) *DiseaseUpdate {
-	if id != nil {
-		du = du.SetDiagnosisID(*id)
+// AddDiagnosis adds the diagnosis edges to Diagnosis.
+func (du *DiseaseUpdate) AddDiagnosis(d ...*Diagnosis) *DiseaseUpdate {
+	ids := make([]int, len(d))
+	for i := range d {
+		ids[i] = d[i].ID
 	}
-	return du
-}
-
-// SetDiagnosis sets the diagnosis edge to Diagnosis.
-func (du *DiseaseUpdate) SetDiagnosis(d *Diagnosis) *DiseaseUpdate {
-	return du.SetDiagnosisID(d.ID)
+	return du.AddDiagnosiIDs(ids...)
 }
 
 // Mutation returns the DiseaseMutation object of the builder.
@@ -210,10 +206,19 @@ func (du *DiseaseUpdate) RemoveDrug(d ...*Drug) *DiseaseUpdate {
 	return du.RemoveDrugIDs(ids...)
 }
 
-// ClearDiagnosis clears the diagnosis edge to Diagnosis.
-func (du *DiseaseUpdate) ClearDiagnosis() *DiseaseUpdate {
-	du.mutation.ClearDiagnosis()
+// RemoveDiagnosiIDs removes the diagnosis edge to Diagnosis by ids.
+func (du *DiseaseUpdate) RemoveDiagnosiIDs(ids ...int) *DiseaseUpdate {
+	du.mutation.RemoveDiagnosiIDs(ids...)
 	return du
+}
+
+// RemoveDiagnosis removes diagnosis edges to Diagnosis.
+func (du *DiseaseUpdate) RemoveDiagnosis(d ...*Diagnosis) *DiseaseUpdate {
+	ids := make([]int, len(d))
+	for i := range d {
+		ids[i] = d[i].ID
+	}
+	return du.RemoveDiagnosiIDs(ids...)
 }
 
 // Save executes the query and returns the number of rows/vertices matched by this operation.
@@ -488,9 +493,9 @@ func (du *DiseaseUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if du.mutation.DiagnosisCleared() {
+	if nodes := du.mutation.RemovedDiagnosisIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
+			Rel:     sqlgraph.O2M,
 			Inverse: false,
 			Table:   disease.DiagnosisTable,
 			Columns: []string{disease.DiagnosisColumn},
@@ -502,11 +507,14 @@ func (du *DiseaseUpdate) sqlSave(ctx context.Context) (n int, err error) {
 				},
 			},
 		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
 	if nodes := du.mutation.DiagnosisIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
+			Rel:     sqlgraph.O2M,
 			Inverse: false,
 			Table:   disease.DiagnosisTable,
 			Columns: []string{disease.DiagnosisColumn},
@@ -646,23 +654,19 @@ func (duo *DiseaseUpdateOne) AddDrug(d ...*Drug) *DiseaseUpdateOne {
 	return duo.AddDrugIDs(ids...)
 }
 
-// SetDiagnosisID sets the diagnosis edge to Diagnosis by id.
-func (duo *DiseaseUpdateOne) SetDiagnosisID(id int) *DiseaseUpdateOne {
-	duo.mutation.SetDiagnosisID(id)
+// AddDiagnosiIDs adds the diagnosis edge to Diagnosis by ids.
+func (duo *DiseaseUpdateOne) AddDiagnosiIDs(ids ...int) *DiseaseUpdateOne {
+	duo.mutation.AddDiagnosiIDs(ids...)
 	return duo
 }
 
-// SetNillableDiagnosisID sets the diagnosis edge to Diagnosis by id if the given value is not nil.
-func (duo *DiseaseUpdateOne) SetNillableDiagnosisID(id *int) *DiseaseUpdateOne {
-	if id != nil {
-		duo = duo.SetDiagnosisID(*id)
+// AddDiagnosis adds the diagnosis edges to Diagnosis.
+func (duo *DiseaseUpdateOne) AddDiagnosis(d ...*Diagnosis) *DiseaseUpdateOne {
+	ids := make([]int, len(d))
+	for i := range d {
+		ids[i] = d[i].ID
 	}
-	return duo
-}
-
-// SetDiagnosis sets the diagnosis edge to Diagnosis.
-func (duo *DiseaseUpdateOne) SetDiagnosis(d *Diagnosis) *DiseaseUpdateOne {
-	return duo.SetDiagnosisID(d.ID)
+	return duo.AddDiagnosiIDs(ids...)
 }
 
 // Mutation returns the DiseaseMutation object of the builder.
@@ -718,10 +722,19 @@ func (duo *DiseaseUpdateOne) RemoveDrug(d ...*Drug) *DiseaseUpdateOne {
 	return duo.RemoveDrugIDs(ids...)
 }
 
-// ClearDiagnosis clears the diagnosis edge to Diagnosis.
-func (duo *DiseaseUpdateOne) ClearDiagnosis() *DiseaseUpdateOne {
-	duo.mutation.ClearDiagnosis()
+// RemoveDiagnosiIDs removes the diagnosis edge to Diagnosis by ids.
+func (duo *DiseaseUpdateOne) RemoveDiagnosiIDs(ids ...int) *DiseaseUpdateOne {
+	duo.mutation.RemoveDiagnosiIDs(ids...)
 	return duo
+}
+
+// RemoveDiagnosis removes diagnosis edges to Diagnosis.
+func (duo *DiseaseUpdateOne) RemoveDiagnosis(d ...*Diagnosis) *DiseaseUpdateOne {
+	ids := make([]int, len(d))
+	for i := range d {
+		ids[i] = d[i].ID
+	}
+	return duo.RemoveDiagnosiIDs(ids...)
 }
 
 // Save executes the query and returns the updated entity.
@@ -994,9 +1007,9 @@ func (duo *DiseaseUpdateOne) sqlSave(ctx context.Context) (d *Disease, err error
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if duo.mutation.DiagnosisCleared() {
+	if nodes := duo.mutation.RemovedDiagnosisIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
+			Rel:     sqlgraph.O2M,
 			Inverse: false,
 			Table:   disease.DiagnosisTable,
 			Columns: []string{disease.DiagnosisColumn},
@@ -1008,11 +1021,14 @@ func (duo *DiseaseUpdateOne) sqlSave(ctx context.Context) (d *Disease, err error
 				},
 			},
 		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
 	if nodes := duo.mutation.DiagnosisIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
+			Rel:     sqlgraph.O2M,
 			Inverse: false,
 			Table:   disease.DiagnosisTable,
 			Columns: []string{disease.DiagnosisColumn},

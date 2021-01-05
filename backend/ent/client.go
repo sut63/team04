@@ -759,7 +759,7 @@ func (c *DiagnosisClient) QueryDisease(d *Diagnosis) *DiseaseQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(diagnosis.Table, diagnosis.FieldID, id),
 			sqlgraph.To(disease.Table, disease.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, true, diagnosis.DiseaseTable, diagnosis.DiseaseColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, diagnosis.DiseaseTable, diagnosis.DiseaseColumn),
 		)
 		fromV = sqlgraph.Neighbors(d.driver.Dialect(), step)
 		return fromV, nil
@@ -970,7 +970,7 @@ func (c *DiseaseClient) QueryDiagnosis(d *Disease) *DiagnosisQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(disease.Table, disease.FieldID, id),
 			sqlgraph.To(diagnosis.Table, diagnosis.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, false, disease.DiagnosisTable, disease.DiagnosisColumn),
+			sqlgraph.Edge(sqlgraph.O2M, false, disease.DiagnosisTable, disease.DiagnosisColumn),
 		)
 		fromV = sqlgraph.Neighbors(d.driver.Dialect(), step)
 		return fromV, nil

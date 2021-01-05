@@ -167,7 +167,7 @@ func (dq *DiseaseQuery) QueryDiagnosis() *DiagnosisQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(disease.Table, disease.FieldID, dq.sqlQuery()),
 			sqlgraph.To(diagnosis.Table, diagnosis.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, false, disease.DiagnosisTable, disease.DiagnosisColumn),
+			sqlgraph.Edge(sqlgraph.O2M, false, disease.DiagnosisTable, disease.DiagnosisColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(dq.driver.Dialect(), step)
 		return fromU, nil
@@ -496,7 +496,7 @@ func (dq *DiseaseQuery) sqlAll(ctx context.Context) ([]*Disease, error) {
 			dq.withDiagnosis != nil,
 		}
 	)
-	if dq.withEmployee != nil || dq.withSeverity != nil || dq.withDiseasetype != nil || dq.withDiagnosis != nil {
+	if dq.withEmployee != nil || dq.withSeverity != nil || dq.withDiseasetype != nil {
 		withFKs = true
 	}
 	if withFKs {
@@ -658,27 +658,30 @@ func (dq *DiseaseQuery) sqlAll(ctx context.Context) ([]*Disease, error) {
 	}
 
 	if query := dq.withDiagnosis; query != nil {
-		ids := make([]int, 0, len(nodes))
-		nodeids := make(map[int][]*Disease)
+		fks := make([]driver.Value, 0, len(nodes))
+		nodeids := make(map[int]*Disease)
 		for i := range nodes {
-			if fk := nodes[i].disease_diagnosis; fk != nil {
-				ids = append(ids, *fk)
-				nodeids[*fk] = append(nodeids[*fk], nodes[i])
-			}
+			fks = append(fks, nodes[i].ID)
+			nodeids[nodes[i].ID] = nodes[i]
 		}
-		query.Where(diagnosis.IDIn(ids...))
+		query.withFKs = true
+		query.Where(predicate.Diagnosis(func(s *sql.Selector) {
+			s.Where(sql.InValues(disease.DiagnosisColumn, fks...))
+		}))
 		neighbors, err := query.All(ctx)
 		if err != nil {
 			return nil, err
 		}
 		for _, n := range neighbors {
-			nodes, ok := nodeids[n.ID]
+			fk := n.disease_diagnosis
+			if fk == nil {
+				return nil, fmt.Errorf(`foreign-key "disease_diagnosis" is nil for node %v`, n.ID)
+			}
+			node, ok := nodeids[*fk]
 			if !ok {
-				return nil, fmt.Errorf(`unexpected foreign-key "disease_diagnosis" returned %v`, n.ID)
+				return nil, fmt.Errorf(`unexpected foreign-key "disease_diagnosis" returned %v for node %v`, *fk, n.ID)
 			}
-			for i := range nodes {
-				nodes[i].Edges.Diagnosis = n
-			}
+			node.Edges.Diagnosis = append(node.Edges.Diagnosis, n)
 		}
 	}
 
