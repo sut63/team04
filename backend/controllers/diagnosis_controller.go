@@ -6,7 +6,11 @@ import (
 	"strconv"
 
 	"github.com/B6001186/Contagions/ent"
-	"github.com/B6001186/Contagions/ent/diagnosis"
+	"github.com/B6001186/Contagions/ent/employee"
+	"github.com/B6001186/Contagions/ent/disease"
+	"github.com/B6001186/Contagions/ent/patient"
+
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -18,7 +22,12 @@ type DiagnosisController struct {
 
 // Diagnosis defines the struct for the diagnosis controller
 type Diagnosis struct {
-	Name string
+	DiagnosticMessages	string
+	SurveillancePeriod	string
+	DiagnosisDate		string
+	Disease 		int
+	Patient 		int
+	Employee		int
 }
 
 // CreateDiagnosis handles POST requests for adding diagnosis entities
@@ -33,19 +42,57 @@ type Diagnosis struct {
 // @Failure 500 {object} gin.H
 // @Router /diagnosiss [post]
 func (ctl *DiagnosisController) CreateDiagnosis(c *gin.Context) {
-	obj := ent.Diagnosis{}
+	obj := Diagnosis{}
 	if err := c.ShouldBind(&obj); err != nil {
 		c.JSON(400, gin.H{
 			"error": "diagnosis binding failed",
 		})
 		return
 	}
+	e, err := ctl.client.Employee.
+        Query().
+        Where(employee.IDEQ(int(obj.Employee))).
+        Only(context.Background())
 
-	d, err := ctl.client.Diagnosis.
+    if err != nil {
+        c.JSON(400, gin.H{
+            "error": "employee not found",
+        })
+        return
+	}
+	d, err := ctl.client.Disease.
+            Query().
+            Where(disease.IDEQ(int(obj.Disease))).
+            Only(context.Background())
+
+    if err != nil {
+            c.JSON(400, gin.H{
+                    "error": "disease not found",
+            })
+            return
+	}
+	pa, err := ctl.client.Patient.
+            Query().
+            Where(patient.IDEQ(int(obj.Patient))).
+            Only(context.Background())
+
+    if err != nil {
+            c.JSON(400, gin.H{
+                    "error": "patient not found",
+            })
+            return
+	}
+
+	dia, err := ctl.client.Diagnosis.
 		Create().
 		SetDiagnosticMessages(obj.DiagnosticMessages).
-
+		SetSurveillancePeriod(obj.SurveillancePeriod).
+		SetDiagnosisDate(obj.DiagnosisDate).
+		SetEmployee(e).
+		SetDisease(d).
+		SetPatient(pa).
 		Save(context.Background())
+
 	if err != nil {
 		c.JSON(400, gin.H{
 			"error": "saving failed",
@@ -53,40 +100,7 @@ func (ctl *DiagnosisController) CreateDiagnosis(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, d)
-}
-
-// GetDiagnosis handles GET requests to retrieve a diagnosis entity
-// @Summary Get a diagnosis entity by ID
-// @Description get diagnosis by ID
-// @ID get-diagnosis
-// @Produce  json
-// @Param id path int true "Diagnosis ID"
-// @Success 200 {object} ent.Diagnosis
-// @Failure 400 {object} gin.H
-// @Failure 404 {object} gin.H
-// @Failure 500 {object} gin.H
-// @Router /diagnosiss/{id} [get]
-func (ctl *DiagnosisController) GetDiagnosis(c *gin.Context) {
-	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
-	if err != nil {
-		c.JSON(400, gin.H{
-			"error": err.Error(),
-		})
-		return
-	}
-	d, err := ctl.client.Diagnosis.
-		Query().
-		Where(diagnosis.IDEQ(int(id))).
-		Only(context.Background())
-	if err != nil {
-		c.JSON(404, gin.H{
-			"error": err.Error(),
-		})
-		return
-	}
-
-	c.JSON(200, d)
+	c.JSON(200, dia)
 }
 
 // ListDiagnosis handles request to get a list of diagnosis entities
@@ -121,9 +135,13 @@ func (ctl *DiagnosisController) ListDiagnosis(c *gin.Context) {
 
 	diagnosiss, err := ctl.client.Diagnosis.
 		Query().
+		WithEmployee().
+		WithDisease().
+		WithPatient().
 		Limit(limit).
 		Offset(offset).
 		All(context.Background())
+
 	if err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
@@ -195,10 +213,13 @@ func (ctl *DiagnosisController) UpdateDiagnosis(c *gin.Context) {
 	}
 	obj.ID = int(id)
 	fmt.Println(obj.ID)
-	d, err := ctl.client.Diagnosis.
+	u, err := ctl.client.Diagnosis.
 		UpdateOneID(int(id)).
 		SetDiagnosticMessages(obj.DiagnosticMessages).
+		SetSurveillancePeriod(obj.SurveillancePeriod).
+		SetDiagnosisDate(obj.DiagnosisDate).
 		Save(context.Background())
+		
 	if err != nil {
 		c.JSON(400, gin.H{
 			"error": "update failed",
@@ -206,7 +227,7 @@ func (ctl *DiagnosisController) UpdateDiagnosis(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, d)
+	c.JSON(200, u)
 }
 
 
@@ -225,7 +246,6 @@ func (ctl *DiagnosisController) register() {
 
 	diagnosiss.GET("", ctl.ListDiagnosis)
 	diagnosiss.POST("", ctl.CreateDiagnosis)
-	diagnosiss.GET(":id", ctl.GetDiagnosis)
 	diagnosiss.PUT("id", ctl.UpdateDiagnosis)
 	diagnosiss.DELETE(":id", ctl.DeleteDiagnosis)
 }
