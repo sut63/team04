@@ -35,11 +35,11 @@ import {
  */
 export interface EntDiagnosisEdges {
     /**
-     * Disease holds the value of the disease edge.
-     * @type {Array<EntDisease>}
+     * 
+     * @type {EntDisease}
      * @memberof EntDiagnosisEdges
      */
-    disease?: Array<EntDisease>;
+    disease?: EntDisease;
     /**
      * 
      * @type {EntEmployee}
@@ -64,7 +64,7 @@ export function EntDiagnosisEdgesFromJSONTyped(json: any, ignoreDiscriminator: b
     }
     return {
         
-        'disease': !exists(json, 'disease') ? undefined : ((json['disease'] as Array<any>).map(EntDiseaseFromJSON)),
+        'disease': !exists(json, 'disease') ? undefined : EntDiseaseFromJSON(json['disease']),
         'employee': !exists(json, 'employee') ? undefined : EntEmployeeFromJSON(json['employee']),
         'patient': !exists(json, 'patient') ? undefined : EntPatientFromJSON(json['patient']),
     };
@@ -79,7 +79,7 @@ export function EntDiagnosisEdgesToJSON(value?: EntDiagnosisEdges | null): any {
     }
     return {
         
-        'disease': value.disease === undefined ? undefined : ((value.disease as Array<any>).map(EntDiseaseToJSON)),
+        'disease': EntDiseaseToJSON(value.disease),
         'employee': EntEmployeeToJSON(value.employee),
         'patient': EntPatientToJSON(value.patient),
     };

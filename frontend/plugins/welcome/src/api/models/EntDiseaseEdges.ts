@@ -53,11 +53,11 @@ export interface EntDiseaseEdges {
      */
     area?: Array<EntArea>;
     /**
-     * 
-     * @type {EntDiagnosis}
+     * Diagnosis holds the value of the diagnosis edge.
+     * @type {Array<EntDiagnosis>}
      * @memberof EntDiseaseEdges
      */
-    diagnosis?: EntDiagnosis;
+    diagnosis?: Array<EntDiagnosis>;
     /**
      * 
      * @type {EntDiseasetype}
@@ -95,7 +95,7 @@ export function EntDiseaseEdgesFromJSONTyped(json: any, ignoreDiscriminator: boo
     return {
         
         'area': !exists(json, 'area') ? undefined : ((json['area'] as Array<any>).map(EntAreaFromJSON)),
-        'diagnosis': !exists(json, 'diagnosis') ? undefined : EntDiagnosisFromJSON(json['diagnosis']),
+        'diagnosis': !exists(json, 'diagnosis') ? undefined : ((json['diagnosis'] as Array<any>).map(EntDiagnosisFromJSON)),
         'diseasetype': !exists(json, 'diseasetype') ? undefined : EntDiseasetypeFromJSON(json['diseasetype']),
         'drug': !exists(json, 'drug') ? undefined : ((json['drug'] as Array<any>).map(EntDrugFromJSON)),
         'employee': !exists(json, 'employee') ? undefined : EntEmployeeFromJSON(json['employee']),
@@ -113,7 +113,7 @@ export function EntDiseaseEdgesToJSON(value?: EntDiseaseEdges | null): any {
     return {
         
         'area': value.area === undefined ? undefined : ((value.area as Array<any>).map(EntAreaToJSON)),
-        'diagnosis': EntDiagnosisToJSON(value.diagnosis),
+        'diagnosis': value.diagnosis === undefined ? undefined : ((value.diagnosis as Array<any>).map(EntDiagnosisToJSON)),
         'diseasetype': EntDiseasetypeToJSON(value.diseasetype),
         'drug': value.drug === undefined ? undefined : ((value.drug as Array<any>).map(EntDrugToJSON)),
         'employee': EntEmployeeToJSON(value.employee),

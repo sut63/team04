@@ -204,10 +204,6 @@ export interface GetDepartmentRequest {
     id: number;
 }
 
-export interface GetDiagnosisRequest {
-    id: number;
-}
-
 export interface GetDiseasetypeRequest {
     id: number;
 }
@@ -1521,38 +1517,6 @@ export class DefaultApi extends runtime.BaseAPI {
      */
     async getDepartment(requestParameters: GetDepartmentRequest): Promise<EntDepartment> {
         const response = await this.getDepartmentRaw(requestParameters);
-        return await response.value();
-    }
-
-    /**
-     * get diagnosis by ID
-     * Get a diagnosis entity by ID
-     */
-    async getDiagnosisRaw(requestParameters: GetDiagnosisRequest): Promise<runtime.ApiResponse<EntDiagnosis>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getDiagnosis.');
-        }
-
-        const queryParameters: runtime.HTTPQuery = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/diagnosiss/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        });
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => EntDiagnosisFromJSON(jsonValue));
-    }
-
-    /**
-     * get diagnosis by ID
-     * Get a diagnosis entity by ID
-     */
-    async getDiagnosis(requestParameters: GetDiagnosisRequest): Promise<EntDiagnosis> {
-        const response = await this.getDiagnosisRaw(requestParameters);
         return await response.value();
     }
 
