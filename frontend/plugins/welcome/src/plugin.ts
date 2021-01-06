@@ -3,6 +3,7 @@ import WelcomePage from './components/WelcomePage';
 // import WatchVideo from './components/WatchVideo'
 import SignIn from './components/SignIn'
 import Drug from './components/Drug'
+import Patient from './components/Patient'
 
 
 export const plugin = createPlugin({
@@ -12,5 +13,6 @@ export const plugin = createPlugin({
 //    router.registerRoute('/watch_video', WatchVideo);
 //    router.registerRoute('/signin', SignIn);
     router.registerRoute('/drug', Drug);
+    router.registerRoute('/patient', Patient);
   },
 });
