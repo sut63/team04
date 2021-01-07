@@ -702,49 +702,6 @@ var doc = `{
             }
         },
         "/diagnosiss/{id}": {
-            "get": {
-                "description": "get diagnosis by ID",
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "Get a diagnosis entity by ID",
-                "operationId": "get-diagnosis",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Diagnosis ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/ent.Diagnosis"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/gin.H"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/gin.H"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/gin.H"
-                        }
-                    }
-                }
-            },
             "put": {
                 "description": "update diagnosis by ID",
                 "consumes": [
@@ -3403,10 +3360,8 @@ var doc = `{
             "properties": {
                 "disease": {
                     "description": "Disease holds the value of the disease edge.",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/ent.Disease"
-                    }
+                    "type": "object",
+                    "$ref": "#/definitions/ent.Disease"
                 },
                 "employee": {
                     "description": "Employee holds the value of the employee edge.",
@@ -3458,8 +3413,10 @@ var doc = `{
                 },
                 "diagnosis": {
                     "description": "Diagnosis holds the value of the diagnosis edge.",
-                    "type": "object",
-                    "$ref": "#/definitions/ent.Diagnosis"
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ent.Diagnosis"
+                    }
                 },
                 "diseasetype": {
                     "description": "Diseasetype holds the value of the diseasetype edge.",
