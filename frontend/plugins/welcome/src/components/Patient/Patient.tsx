@@ -79,9 +79,9 @@ import { EntGender } from '../../api/models/EntGender'; //import interface Gende
 
 interface Patient {
   idcard: string;
-  status: number;
+  category: number;
   nametitle: number;
-  name: string;
+  patientname: string;
   bloodtype: number;
   gender: number;
   address: string;
@@ -123,7 +123,7 @@ const Patient: FC<{}> = () => {
 
   const getCategory = async () => {
     const res = await api.listCategory({ limit: 4, offset: 0 });
-    setStatuss(res);
+    setCategorys(res);
   };
 
   const getNametitle = async () => {
@@ -169,8 +169,8 @@ const Patient: FC<{}> = () => {
   // function save data
   function save() {
     setShowInputError(true)
-    let { idcard, name, address, congenital, allergic } = patient;
-    if (!idcard || !name || !address || !congenital || !allergic) {
+    let { idcard, patientname, address, congenital, allergic } = patient;
+    if (!idcard || !patientname || !address || !congenital || !allergic) {
       Toast.fire({
         icon: 'error',
         title: 'กรุณากรอกข้อมูลให้ครบถ้วน',
@@ -297,7 +297,7 @@ const Patient: FC<{}> = () => {
                 {nametitles.map(item => {
                   return (
                     <MenuItem key={item.id} value={item.id}>
-                      {item.titleName}
+                      {item.title}
                     </MenuItem>
                   );
                 })}
@@ -308,13 +308,13 @@ const Patient: FC<{}> = () => {
           <Grid item xs={10}>
             <TextField
               required={true}
-              error={!patient.name && showInputError}
-              name="patientName"
+              error={!patient.patientname && showInputError}
+              name="patientname"
               label="ชื่อ-นามสกุล"
               variant="outlined"
               fullWidth
               multiline
-              value={patient.patientName || ""}
+              value={patient.patientname || ""}
               onChange={handleChange}
             />
           </Grid>
