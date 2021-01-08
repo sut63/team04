@@ -127,7 +127,7 @@ const Patient: FC<{}> = () => {
   };
 
   const getNametitle = async () => {
-    const res = await api.listNametitle({ limit: 5, offset: 0 });
+    const res = await api.listNametitle({ limit: 10, offset: 0 });
     setNametitles(res);
   };
 
