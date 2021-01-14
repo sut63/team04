@@ -79,12 +79,12 @@ import { EntDiseasetype } from '../../api/models/EntDiseasetype'; //import inter
 import { EntSeverity } from '../../api/models/EntSeverity'; //import interface Severity
 
 interface Disease {
-  name: string;
-  symptom: string;
-  contagion: string;
-  diseasetype: number;
-  employee: number;
-  severity: number;
+  DiseaseName: string;
+  Symptom: string;
+  Contagion: string;
+  Diseasetype: number;
+  Employee: number;
+  Severity: number;
 }
 
 const Disease: FC<{}> = () => {
@@ -112,7 +112,7 @@ const Disease: FC<{}> = () => {
   });
 
   const getEmployee = async () => {
-    const res = await api.listEmployee({ limit: 2, offset: 0 });
+    const res = await api.listEmployee({ limit: 5, offset: 0 });
     setEmployees(res);
   };
 
@@ -153,8 +153,8 @@ const Disease: FC<{}> = () => {
   function save() {
 
     setShowInputError(true)
-    let { name, symptom, contagion } = disease;
-    if (!name || !symptom || !contagion) {
+    let { DiseaseName, Symptom, Contagion } = disease;
+    if (!DiseaseName || !Symptom || !Contagion) {
       Toast.fire({
         icon: 'error',
         title: 'กรุณากรอกข้อมูลให้ครบถ้วน',
@@ -196,7 +196,7 @@ const Disease: FC<{}> = () => {
     window.location.href = "http://localhost:3000/";
   }
 
-// go to Welcome 
+  // go to Welcome 
   function redirecTables() {
     //redirec Page ... http://localhost:3000/Table
     window.location.href = "http://localhost:3000/Table";
@@ -258,7 +258,7 @@ const Disease: FC<{}> = () => {
                 <InputLabel >รหัสพนักงาน</InputLabel>
                 <Select
                   name="employee"
-                  value={disease.employee || ''}
+                  value={disease.Employee  || ''}
                   onChange={handleChange}
                   label="รหัสพนักงาน"
                 >
@@ -271,111 +271,111 @@ const Disease: FC<{}> = () => {
                   })}
                 </Select>
               </FormControl>
-            </Grid>
+          </Grid>
 
-            <Grid item xs={10}>
-              <TextField
-                required={true}
-                error={!disease.name && showInputError}
-                id="name"
-                name="name"
-                type="string"
-                label="ชื่อโรค"
-                variant="outlined"
-                fullWidth
-                multiline
-                value={disease.name || ""}
+          <Grid item xs={10}>
+            <TextField
+              required={true}
+              error={!disease.DiseaseName && showInputError}
+              id="name"
+              name="name"
+              type="string"
+              label="ชื่อโรค"
+              variant="outlined"
+              fullWidth
+              multiline
+              value={disease.DiseaseName || ""}
+              onChange={handleChange}
+            />
+          </Grid>
+
+          <Grid item xs={12}>
+            <FormControl variant="outlined" className={classes.formControl}>
+              <InputLabel >ระดับความรุนแรง</InputLabel>
+              <Select
+                name="severity"
+                value={disease.Severity || ''}
                 onChange={handleChange}
-              />
-            </Grid>
-
-            <Grid item xs={12}>
-              <FormControl variant="outlined" className={classes.formControl}>
-                <InputLabel >ระดับความรุนแรง</InputLabel>
-                <Select
-                  name="severity"
-                  value={disease.severity || ''}
-                  onChange={handleChange}
-                  label="ระดับความรุนแรง"
-                  fullWidth
-                >
-                  {severitys.map(item => {
-                    return (
-                      <MenuItem key={item.id} value={item.id}>
-                        {item.name}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-              </FormControl>
-            </Grid>
-
-            <Grid item xs={10}>
-              <TextField
-                required={true}
-                error={!disease.symptom && showInputError}
-                name="symptom"
-                label="อาการ"
-                variant="outlined"
+                label="ระดับความรุนแรง"
                 fullWidth
-                multiline
-                value={disease.symptom || ""}
-                onChange={handleChange}
-              />
-            </Grid>
-
-            <Grid item xs={10}>
-              <TextField
-                required={true}
-                error={!disease.contagion && showInputError}
-                name="contagion"
-                label="การแพร่กระจาย"
-                variant="outlined"
-                fullWidth
-                multiline
-                value={disease.contagion || ""}
-                onChange={handleChange}
-              />
-            </Grid>
-
-            <Grid item xs={12}>
-              <FormControl variant="outlined" className={classes.formControl}>
-                <InputLabel >ประเภทโรคติดต่อ</InputLabel>
-                <Select
-                  name="diseasetype"
-                  value={disease.diseasetype || ''}
-                  onChange={handleChange}
-                  label="ประเภทโรคติดต่อ"
-                  fullWidth
-                >
-                  {diseasetypes.map(item => {
-                    return (
-                      <MenuItem key={item.id} value={item.id}>
-                        {item.name}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-              </FormControl>
-            </Grid>
-
-            <Grid item xs={10} >
-              <Button
-                name="saveData"
-                size="large"
-                variant="contained"
-                color="primary"
-                disableElevation
-                className={classes.buttonSty}
-                onClick={save}
               >
-                บันทึกข้อมูล
+                {severitys.map(item => {
+                  return (
+                    <MenuItem key={item.id} value={item.id}>
+                      {item.severityName}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+            </FormControl>
+          </Grid>
+
+          <Grid item xs={10}>
+            <TextField
+              required={true}
+              error={!disease.Symptom && showInputError}
+              name="symptom"
+              label="อาการ"
+              variant="outlined"
+              fullWidth
+              multiline
+              value={disease.Symptom || ""}
+              onChange={handleChange}
+            />
+          </Grid>
+
+          <Grid item xs={10}>
+            <TextField
+              required={true}
+              error={!disease.Contagion && showInputError}
+              name="contagion"
+              label="การแพร่กระจาย"
+              variant="outlined"
+              fullWidth
+              multiline
+              value={disease.Contagion || ""}
+              onChange={handleChange}
+            />
+          </Grid>
+
+          <Grid item xs={12}>
+            <FormControl variant="outlined" className={classes.formControl}>
+              <InputLabel >ประเภทโรคติดต่อ</InputLabel>
+              <Select
+                name="diseasetype"
+                value={disease.Diseasetype || ''}
+                onChange={handleChange}
+                label="ประเภทโรคติดต่อ"
+                fullWidth
+              >
+                {diseasetypes.map(item => {
+                  return (
+                    <MenuItem key={item.id} value={item.id}>
+                      {item.diseaseTypeName}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+            </FormControl>
+          </Grid>
+
+          <Grid item xs={10} >
+            <Button
+              name="saveData"
+              size="large"
+              variant="contained"
+              color="primary"
+              disableElevation
+              className={classes.buttonSty}
+              onClick={save}
+            >
+              บันทึกข้อมูล
               </Button>
-            </Grid>
+          </Grid>
           </Grid>
         </Container>
       </Content>
-    </div>
+    </div >
   );
 };
 

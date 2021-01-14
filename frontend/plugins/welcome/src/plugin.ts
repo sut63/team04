@@ -5,6 +5,7 @@ import SignIn from './components/SignIn'
 import Drug from './components/Drug'
 import Patient from './components/Patient'
 import Diagnosis from './components/Diagnosis'
+import Disease from './components/Disease'
 
 export const plugin = createPlugin({
   id: 'welcome',
@@ -15,6 +16,6 @@ export const plugin = createPlugin({
     router.registerRoute('/drug', Drug);
     router.registerRoute('/patient', Patient);
     router.registerRoute('/diagnosis', Diagnosis);
-
+    router.registerRoute('/disease', Disease);
   },
 });
