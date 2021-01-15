@@ -10,7 +10,6 @@ import {
   FormControl,
   Select,
   InputLabel,
-  MenuItem,
   TextField,
   Avatar,
   Button,
@@ -18,6 +17,11 @@ import {
   Toolbar,
   Typography,
   IconButton,
+  ListItemIcon,
+  ListItemText,
+  Menu,
+  MenuProps,
+  MenuItem,
 } from '@material-ui/core';
 import { palette } from '@material-ui/system';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
@@ -32,8 +36,14 @@ import { EntDrugType } from '../../api/models/EntDrugType'; // import interface 
 import { EntDisease } from '../../api/models/EntDisease'; // import interface Disease
 import { EntDrug } from '../../api';
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
+import LocalPharmacyRoundedIcon from '@material-ui/icons/LocalPharmacyRounded';
+import { withStyles } from '@material-ui/core/styles';
+import SearchIcon from '@material-ui/icons/Search';
+
+
 const useStyles = makeStyles(theme => ({
   root: {
+    marginTop: theme.spacing(10),
     flexGrow: 1,
   },
   textField: {
@@ -90,6 +100,37 @@ const Toast = Swal.mixin({
   },
 });
 
+const StyledMenu = withStyles({
+  paper: {
+    border: '1px solid #d3d4d5',
+  },
+})((props: MenuProps) => (
+  <Menu
+    elevation={0}
+    getContentAnchorEl={null}
+    anchorOrigin={{
+      vertical: 'bottom',
+      horizontal: 'center',
+    }}
+    transformOrigin={{
+      vertical: 'top',
+      horizontal: 'center',
+    }}
+    {...props}
+  />
+));
+
+const StyledMenuItem = withStyles((theme) => ({
+  root: {
+    '&:focus': {
+      backgroundColor: theme.palette.primary.main,
+      '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
+        color: theme.palette.common.white,
+      },
+    },
+  },
+}))(MenuItem);
+
 interface Drug {
   employee: number;
   name: string;
@@ -108,6 +149,13 @@ const Drug: FC<{}> = () => {
   const [employees, setEmployees] = React.useState<EntEmployee[]>([]);
   const [diseases, setDiseases] = React.useState<EntDisease[]>([]);
   const [drugtypes, setDrugTypes] = React.useState<EntDrugType[]>([]);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const getEmployee = async () => {
     const res = await http.listEmployee({ limit: 3, offset: 0 });
@@ -145,6 +193,13 @@ const Drug: FC<{}> = () => {
     setDrug({});
     setShowInputError(false);
   }
+  function redirectToDrug() {
+    window.location.href = "http://localhost:3000/drug"
+}
+
+function redirectToSearchDrug() {
+  window.location.href = "http://localhost:3000/searchdrug"
+}
 
   // function save data
   function save() {
@@ -195,21 +250,38 @@ const Drug: FC<{}> = () => {
     
     <div className={classes.root}>
       
-      <AppBar position="static">
+      <AppBar position="fixed" >
         <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="primary"
-            aria-label="menu"
-          >
-            <MenuIcon />
+          <IconButton 
+        onClick={handleClick}>
+              <MenuIcon />
           </IconButton>
-          <Typography variant="h6" className={classes.title}>
-            ระบบบันทึกข้อมูลยาโรคติดต่อ
+          <StyledMenu
+        id="customized-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
 
+        <StyledMenuItem button onClick={redirectToDrug}>
+          <ListItemIcon>
+            <LocalPharmacyRoundedIcon fontSize="default" />
+          </ListItemIcon>
+          <ListItemText primary="Add Drug" />
+        </StyledMenuItem>
+
+        <StyledMenuItem button onClick={redirectToSearchDrug}>
+          <ListItemIcon>
+            <SearchIcon fontSize="default" />
+          </ListItemIcon>
+          <ListItemText primary="Search Drug" />
+        </StyledMenuItem>
+      </StyledMenu>
+
+          <Typography variant="h4" className={classes.title}>
+            ระบบจัดการโรคติดต่อ
           </Typography>
-          <div>
             <IconButton
               aria-label="account of current user"
               aria-controls="menu-appbar"
@@ -217,11 +289,12 @@ const Drug: FC<{}> = () => {
               color="inherit"
             >
               <AccountCircle />
-              <Link variant="h6" onClick={redirecLogOut} className={classes.logoutButton}>
+              <Typography>
+                <Link variant="h6" onClick={redirecLogOut} className={classes.logoutButton}>
                   LOGOUT
                 </Link>
+              </Typography>
             </IconButton>
-          </div>
         </Toolbar>
       </AppBar>
       <Container maxWidth="sm">
@@ -249,7 +322,7 @@ const Drug: FC<{}> = () => {
                 {employees.map(item => {
                   return (
                     <MenuItem key={item.id} value={item.id}>
-                    {item.employeeName}
+                    {item.userId}
                     </MenuItem>
                   );
                 })}
