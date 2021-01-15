@@ -15,7 +15,12 @@ import {
   FormControl,
   InputLabel,
   Select,
+  ListItemIcon,
+  ListItemText,
+  Menu,
+  MenuProps,
   MenuItem,
+  Drawer,
   Button
 } from '@material-ui/core';
 import { DefaultApi } from '../../api/apis';
@@ -23,11 +28,16 @@ import { EntDisease } from '../../api/models/EntDisease';
 import { EntEmployee } from '../../api/models/EntEmployee';
 import { EntLevel } from '../../api/models/EntLevel';
 import { EntStatistic } from '../../api/models/EntStatistic';
+import { withStyles } from '@material-ui/core/styles';
+import SearchIcon from '@material-ui/icons/Search';
+import AddLocationRoundedIcon from '@material-ui/icons/AddLocationRounded';
+import SentimentVeryDissatisfiedRoundedIcon from '@material-ui/icons/SentimentVeryDissatisfiedRounded';
 
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
+    marginTop: theme.spacing(10),
   },
   textField: {
     marginLeft: theme.spacing(1),
@@ -73,6 +83,37 @@ const useStyles = makeStyles(theme => ({
 
 }));
 
+const StyledMenu = withStyles({
+  paper: {
+    border: '1px solid #d3d4d5',
+  },
+})((props: MenuProps) => (
+  <Menu
+    elevation={0}
+    getContentAnchorEl={null}
+    anchorOrigin={{
+      vertical: 'bottom',
+      horizontal: 'center',
+    }}
+    transformOrigin={{
+      vertical: 'top',
+      horizontal: 'center',
+    }}
+    {...props}
+  />
+));
+
+const StyledMenuItem = withStyles((theme) => ({
+  root: {
+    '&:focus': {
+      backgroundColor: theme.palette.primary.main,
+      '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
+        color: theme.palette.common.white,
+      },
+    },
+  },
+}))(MenuItem);
+
 interface area {
   employee: number;
   areaName: string;
@@ -91,6 +132,13 @@ const Area: FC<{}> = () => {
   const [statistics, setStatistics] = React.useState<EntStatistic[]>([]);
   const [diseases, setDiseases] = React.useState<EntDisease[]>([]);
   const [employees, setEmployees] = React.useState<EntEmployee[]>([]);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   // alert setting
 
@@ -159,6 +207,7 @@ const Area: FC<{}> = () => {
       });
       return;
     }
+
     const apiUrl = 'http://localhost:8080/api/v1/areas';
     const requestOptions = {
       method: 'POST',
@@ -189,17 +238,72 @@ const Area: FC<{}> = () => {
 function redirecLogOut() {
     //redirec Page ... http://localhost:3000/
     window.location.href = "http://localhost:3000/";  }
+function redirectToArea() {
+      window.location.href = "http://localhost:3000/area"
+  }
+  
+  function redirectToSearchArea() {
+    window.location.href = "http://localhost:3000/searcharea"
+  }
+  
+  function redirectToDisease() {
+      window.location.href = "http://localhost:3000/disease"
+  }
+  
+  function redirectToSearchDisease() {
+    window.location.href = "http://localhost:3000/searchdisease"
+  }
+  
 return (
   <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar position="fixed" >
         <Toolbar>
-          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-            <MenuIcon />
+          <IconButton 
+        onClick={handleClick}>
+              <MenuIcon />
           </IconButton>
+          <StyledMenu
+        id="customized-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+
+
+        <StyledMenuItem button onClick={redirectToDisease}>
+          <ListItemIcon>
+            <SentimentVeryDissatisfiedRoundedIcon fontSize="default" />
+          </ListItemIcon>
+          <ListItemText primary="Add Disease" />
+        </StyledMenuItem>
+
+        <StyledMenuItem button onClick={redirectToSearchDisease}>
+          <ListItemIcon>
+            <SearchIcon fontSize="default" />
+          </ListItemIcon>
+          <ListItemText primary="Search Disease" />
+        </StyledMenuItem>
+
+        <StyledMenuItem button onClick={redirectToArea}>
+          <ListItemIcon>
+            <AddLocationRoundedIcon fontSize="default" />
+          </ListItemIcon>
+          <ListItemText primary="Add Area" />
+        </StyledMenuItem>
+
+        <StyledMenuItem button onClick={redirectToSearchArea}>
+          <ListItemIcon>
+            <SearchIcon fontSize="default" />
+          </ListItemIcon>
+          <ListItemText primary="Search Area" />
+        </StyledMenuItem>
+
+      </StyledMenu>
+    
           <Typography variant="h4" className={classes.title}>
             ระบบจัดการโรคติดต่อ
           </Typography>
-          <div>
             <IconButton
               aria-label="account of current user"
               aria-controls="menu-appbar"
@@ -213,7 +317,6 @@ return (
                 </Link>
               </Typography>
             </IconButton>
-          </div>
         </Toolbar>
       </AppBar>
       <Container maxWidth="sm">
@@ -317,7 +420,7 @@ return (
                 {employees.map(item => {
                   return (
                     <MenuItem key={item.id} value={item.id}>
-                      {item.userId}{item.employeeName}
+                      {item.employeeName}
                     </MenuItem>
                   );
                 })}
