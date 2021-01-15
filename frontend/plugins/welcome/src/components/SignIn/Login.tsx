@@ -127,7 +127,7 @@ const Login: FC<{}> = () => {
       });
       
       //redirec Page ... http://localhost:3000/Table
-      window.location.href = "http://localhost:3000/Disease";
+      window.location.href = "http://localhost:3000/Area";
       console.log("LOGIN TO DISEASE");
       
       window.localStorage.setItem("usernameRole","Medical") // local
@@ -143,7 +143,7 @@ const Login: FC<{}> = () => {
       });
       
       //redirec Page ... http://localhost:3000/Table
-      window.location.href = "http://localhost:3000/Disease";
+      window.location.href = "http://localhost:3000/Area";
       console.log("LOGIN TO DISEASE");
       
       window.localStorage.setItem("usernameRole","Epidemiolgist") // local

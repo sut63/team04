@@ -5,7 +5,8 @@ import Drug from './components/Drug'
 import Patient from './components/Patient'
 import Diagnosis from './components/Diagnosis'
 import Disease from './components/Disease'
-import Login from './components/SignIn/Login';
+import Login from './components/SignIn/Login'
+import Area from './components/Area';
 
 export const plugin = createPlugin({
   id: 'welcome',
@@ -17,5 +18,6 @@ export const plugin = createPlugin({
     router.registerRoute('/patient', Patient);
     router.registerRoute('/diagnosis', Diagnosis);
     router.registerRoute('/disease', Disease);
+    router.registerRoute('/area', Area);
   },
 });

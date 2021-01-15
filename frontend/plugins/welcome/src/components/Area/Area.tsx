@@ -384,16 +384,14 @@ return (
             </FormControl>
           </Grid>
 
-          <Grid item xs={9}>
+          <Grid item xs={12}>
             <FormControl variant="outlined" className={classes.formControl}>
               <InputLabel>โรคติดต่อ</InputLabel>
               <Select
-                error={!areas.disease && showInputError}
                 name="disease"
-                value={areas.disease || ''} 
+                value={areas.disease || ''}
                 onChange={handleInputChange}
                 label="โรคติดต่อ"
-                fullWidth
               >
                 {diseases.map(item => {
                   return (
@@ -406,41 +404,34 @@ return (
             </FormControl>
           </Grid>
 
-          <Grid item xs={9}>
-            <FormControl variant="outlined" className={classes.formControl}>
-              <InputLabel>ผู้บันทึก</InputLabel>
-              <Select
-                error={!areas.employee && showInputError}
-                name="employee"
-                value={areas.employee || ''}
-                onChange={handleInputChange}
-                label="ผู้บันทึก"
+          <Grid item xs={10}>
+              <TextField
+                required={true}
+                disabled // ห้ามแก้ไข
+                // id="name"
+                name="name"
+                type="string"
+                label="รหัส"
+                variant="outlined"
                 fullWidth
-              >
-                {employees.map(item => {
-                  return (
-                    <MenuItem key={item.id} value={item.id}>
-                      {item.employeeName}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-            </FormControl>
+                multiline
+                value={ window.localStorage.getItem("username") || ""}
+                onChange={handleInputChange}
+              />
           </Grid>
-
-          <Grid item xs={3}></Grid>
-          <Grid item xs={9}>
-          <Button
-              name="saveData"
-              size="large"
-              variant="contained"
-              color="primary"
-              disableElevation
-              className={classes.buttonSty}
-              onClick={save}
-            >
-              บันทึกข้อมูล
-              </Button>
+          <Grid item xs={10} >
+              <Button
+                name="saveData"
+                size="large"
+                variant="contained"
+                color="primary"
+                disableElevation
+                className={classes.buttonSty}
+                onClick={save}
+              >
+                บันทึก
+            </Button>
+            
           </Grid>
         </Grid>
       </Container>
