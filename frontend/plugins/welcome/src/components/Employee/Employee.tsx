@@ -19,16 +19,24 @@ import {
   Toolbar,
   Typography,
   IconButton,
+  Menu,
+  MenuProps,
+  ListItemIcon,
+  ListItemText,
 } from '@material-ui/core';
 import { DefaultApi } from '../../api/apis';
 import { EntDepartment } from '../../api/models/EntDepartment';
 import { EntNametitle } from '../../api/models/EntNametitle';
 import { EntPlace } from '../../api/models/EntPlace';
+import GroupAddRoundedIcon from '@material-ui/icons/GroupAddRounded';
+import { withStyles } from '@material-ui/core/styles';
+import SearchIcon from '@material-ui/icons/Search';
 
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
+    marginTop: theme.spacing(10),
   },
   textField: {
     marginLeft: theme.spacing(1),
@@ -83,6 +91,37 @@ const useStyles = makeStyles(theme => ({
 
 }));
 
+const StyledMenu = withStyles({
+  paper: {
+    border: '1px solid #d3d4d5',
+  },
+})((props: MenuProps) => (
+  <Menu
+    elevation={0}
+    getContentAnchorEl={null}
+    anchorOrigin={{
+      vertical: 'bottom',
+      horizontal: 'center',
+    }}
+    transformOrigin={{
+      vertical: 'top',
+      horizontal: 'center',
+    }}
+    {...props}
+  />
+));
+
+const StyledMenuItem = withStyles((theme) => ({
+  root: {
+    '&:focus': {
+      backgroundColor: theme.palette.primary.main,
+      '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
+        color: theme.palette.common.white,
+      },
+    },
+  },
+}))(MenuItem);
+
 interface Employee {
   birthdayDate: Date;
   email: string;
@@ -104,6 +143,17 @@ const Employee: FC<{}> = () => {
   const [nametitles, setNametitles] = React.useState<EntNametitle[]>([]);
   const [places, setPlaces] = React.useState<EntPlace[]>([]);
   const [showInputError, setShowInputError] = React.useState(false); // for error input show
+
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
 
   const getNametitle = async () => {
     const res = await http.listNametitle({ limit: 10, offset: 0 });
@@ -143,7 +193,7 @@ const Employee: FC<{}> = () => {
 
   const Toast = Swal.mixin({
     toast: true,
-    position: 'top-end',
+    position: undefined,
     showConfirmButton: false,
     timer: 3000,
     timerProgressBar: true,
@@ -191,6 +241,14 @@ const Employee: FC<{}> = () => {
       })
   }
 
+  function redirectToEmployee() {
+    window.location.href = "http://localhost:3000/employee";
+}
+
+function redirectToSearchEmployee() {
+  window.location.href = "http://localhost:3000/searchemployee";
+}
+
   function redirecLogOut() {
     // redirect Page ... http://localhost:3000/
     window.location.href = "http://localhost:3000/";
@@ -198,21 +256,43 @@ const Employee: FC<{}> = () => {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar position="fixed" >
         <Toolbar>
-          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-            <MenuIcon />
+          <IconButton 
+        onClick={handleClick}>
+              <MenuIcon />
           </IconButton>
+          <StyledMenu
+        id="customized-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+
+        <StyledMenuItem button onClick={redirectToEmployee}>
+          <ListItemIcon>
+            <GroupAddRoundedIcon fontSize="default" />
+          </ListItemIcon>
+          <ListItemText primary="Add Employee" />
+        </StyledMenuItem>
+
+        <StyledMenuItem button onClick={redirectToSearchEmployee}>
+          <ListItemIcon>
+            <SearchIcon fontSize="default" />
+          </ListItemIcon>
+          <ListItemText primary="Search Employee" />
+        </StyledMenuItem>
+      </StyledMenu>
+
           <Typography variant="h4" className={classes.title}>
             ระบบจัดการโรคติดต่อ
           </Typography>
-          <div>
             <IconButton
               aria-label="account of current user"
               aria-controls="menu-appbar"
               aria-haspopup="true"
               color="inherit"
-              size="medium"
             >
               <AccountCircle />
               <Typography>
@@ -221,10 +301,8 @@ const Employee: FC<{}> = () => {
                 </Link>
               </Typography>
             </IconButton>
-          </div>
         </Toolbar>
       </AppBar>
-
       <Content>
         <Button
           size="large"
@@ -400,6 +478,7 @@ const Employee: FC<{}> = () => {
                   variant="outlined"
                   size="medium"
                   type="password"
+                  autoComplete="current-password"
                   value={employee.password || ''}
                   onChange={handleInputChange}
                 />
