@@ -1,6 +1,7 @@
 import { createPlugin } from '@backstage/core';
 //import WelcomePage from './components/WelcomePage';
 // import WatchVideo from './components/WatchVideo'
+import Employee from './components/Employee';
 import Drug from './components/Drug'
 import Patient from './components/Patient'
 import Diagnosis from './components/Diagnosis'
@@ -10,6 +11,7 @@ import Login from './components/SignIn/Login';
 export const plugin = createPlugin({
   id: 'welcome',
   register({ router }) {
+    router.registerRoute('/employee', Employee);
 //    router.registerRoute('/', WelcomePage);
 //    router.registerRoute('/watch_video', WatchVideo);
     router.registerRoute('/', Login);
