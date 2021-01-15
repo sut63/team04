@@ -244,6 +244,7 @@ func main() {
 		client.Employee.
 			Create().
 			SetUserId(e.UserID).
+			SetEmployeeName(e.EmployeeName).
 			Save(context.Background())
 	}
 
