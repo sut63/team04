@@ -31,6 +31,7 @@ import SearchIcon from '@material-ui/icons/Search';
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
+    marginTop: theme.spacing(10),
   },
   textField: {
     marginLeft: theme.spacing(1),
@@ -108,24 +109,7 @@ const StyledMenuItem = withStyles((theme) => ({
   },
 }))(MenuItem);
 
-const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  function redirectToPatient() {
-    window.location.href = "http://localhost:3000/patient"
-}
-
-function redirectToSearchPatient() {
-  window.location.href = "http://localhost:3000/searchpatient"
-}
 
 
 import { DefaultApi } from '../../api/apis'; // Api Gennerate From Command
@@ -160,6 +144,24 @@ const Patient: FC<{}> = () => {
   const [nametitles, setNametitles] = React.useState<EntNametitle[]>([]);
   const [bloodtypes, setBloodtypes] = React.useState<EntBloodtype[]>([]);
   const [genders, setGenders] = React.useState<EntGender[]>([]);
+
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  function redirectToPatient() {
+    window.location.href = "http://localhost:3000/patient"
+}
+
+function redirectToSearchPatient() {
+  window.location.href = "http://localhost:3000/searchpatient"
+}
 
   // alert setting
   const Toast = Swal.mixin({
@@ -235,6 +237,12 @@ const Patient: FC<{}> = () => {
       });
       return;
     }
+
+       
+//เช็คแล้วเก็บค่าไว้ใน employee
+patient.employee = employees.filter(emp => emp.userId === window.localStorage.getItem("username"))[0].id;
+
+
     const apiUrl = 'http://localhost:8080/api/v1/patients';
     const requestOptions = {
       method: 'POST',
@@ -481,6 +489,23 @@ const Patient: FC<{}> = () => {
             />
           </Grid>
 
+
+          <Grid item xs={10}>
+              <TextField
+                required={true}
+                disabled // ห้ามแก้ไข
+                // id="name"
+                name="name"
+                type="string"
+                label="ผู้บันทึกข้อมูล"
+                variant="outlined"
+                fullWidth
+                multiline
+                value={ window.localStorage.getItem("username") || ""}
+                onChange={handleChange}
+              />
+            </Grid>
+{/* 
           <Grid item xs={12}>
             <FormControl variant="outlined" className={classes.formControl}>
               <InputLabel >ผู้บันทึกข้อมูล</InputLabel>
@@ -500,7 +525,7 @@ const Patient: FC<{}> = () => {
                 })}
               </Select>
             </FormControl>
-          </Grid>
+          </Grid> */}
 
           <Grid item xs={10}>
             <Button

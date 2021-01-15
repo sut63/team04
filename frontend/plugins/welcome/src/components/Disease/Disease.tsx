@@ -228,6 +228,7 @@ function redirectToSearchDisease() {
       });
       return;
     }
+    
 //เช็คแล้วเก็บค่าไว้ใน employee
 disease.Employee = employees.filter(emp => emp.userId === window.localStorage.getItem("username"))[0].id;
 
