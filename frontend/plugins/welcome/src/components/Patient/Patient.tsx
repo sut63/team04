@@ -5,10 +5,14 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import Link from '@material-ui/core/Link';
 import Swal from 'sweetalert2'; // alert
 import {
+  Menu,
+  MenuProps,
   AppBar,
   Toolbar,
   Typography,
   IconButton,
+  ListItemIcon,
+  ListItemText,
   Grid,
   TextField,
   Container,
@@ -18,6 +22,10 @@ import {
   MenuItem,
   Button
 } from '@material-ui/core';
+import HomeIcon from '@material-ui/icons/Home';
+import LocalHotelRoundedIcon from '@material-ui/icons/LocalHotelRounded';
+import { withStyles } from '@material-ui/core/styles';
+import SearchIcon from '@material-ui/icons/Search';
 
 // css style 
 const useStyles = makeStyles(theme => ({
@@ -69,6 +77,56 @@ const useStyles = makeStyles(theme => ({
   },
 
 }));
+const StyledMenu = withStyles({
+  paper: {
+    border: '1px solid #d3d4d5',
+  },
+})((props: MenuProps) => (
+  <Menu
+    elevation={0}
+    getContentAnchorEl={null}
+    anchorOrigin={{
+      vertical: 'bottom',
+      horizontal: 'center',
+    }}
+    transformOrigin={{
+      vertical: 'top',
+      horizontal: 'center',
+    }}
+    {...props}
+  />
+));
+
+const StyledMenuItem = withStyles((theme) => ({
+  root: {
+    '&:focus': {
+      backgroundColor: theme.palette.primary.main,
+      '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
+        color: theme.palette.common.white,
+      },
+    },
+  },
+}))(MenuItem);
+
+const classes = useStyles();
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  function redirectToPatient() {
+    window.location.href = "http://localhost:3000/patient"
+}
+
+function redirectToSearchPatient() {
+  window.location.href = "http://localhost:3000/searchpatient"
+}
+
 
 import { DefaultApi } from '../../api/apis'; // Api Gennerate From Command
 import { EntEmployee } from '../../api/models/EntEmployee'; //import interface Employee 
@@ -212,24 +270,44 @@ const Patient: FC<{}> = () => {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+       <AppBar position="fixed" >
         <Toolbar>
-          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-            <MenuIcon />
+          <IconButton 
+        onClick={handleClick}>
+              <MenuIcon />
           </IconButton>
-          <Typography variant="h6" className={classes.title}>
-            ระบบข้อมูลผู้ป่วย
+          <StyledMenu
+        id="customized-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+
+        <StyledMenuItem button onClick={redirectToPatient}>
+          <ListItemIcon>
+            <LocalHotelRoundedIcon fontSize="default" />
+          </ListItemIcon>
+          <ListItemText primary="Add Patient" />
+        </StyledMenuItem>
+
+        <StyledMenuItem button onClick={redirectToSearchPatient}>
+          <ListItemIcon>
+            <SearchIcon fontSize="default" />
+          </ListItemIcon>
+          <ListItemText primary="Search Patient" />
+        </StyledMenuItem>
+      </StyledMenu>
+
+          <Typography variant="h4" className={classes.title}>
+            ระบบจัดการโรคติดต่อ
           </Typography>
-          <div>
             <IconButton
               aria-label="account of current user"
               aria-controls="menu-appbar"
               aria-haspopup="true"
               color="inherit"
-
             >
-
-
               <AccountCircle />
               <Typography>
                 <Link variant="h6" onClick={redirecLogOut} className={classes.logoutButton}>
@@ -237,7 +315,6 @@ const Patient: FC<{}> = () => {
                 </Link>
               </Typography>
             </IconButton>
-          </div>
         </Toolbar>
       </AppBar>
       <Container maxWidth="sm">
