@@ -143,6 +143,20 @@ const Login: FC<{}> = () => {
       
     }
 
+    else if ((login.username == "N12345" && login.password == "12345n")
+    ) {
+
+      Toast.fire({
+        icon: 'success',
+        title: 'เข้าสู่ระบบสำเร็จ',
+      });
+      
+      //redirec Page ... http://localhost:3000/Table
+      window.location.href = "http://localhost:3000/Patient";
+      console.log("LOGIN TO Patient");
+      
+    }
+
     else if ((login.username == "M12345" && login.password == "12345m")
     ) {
 
