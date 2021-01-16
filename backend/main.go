@@ -63,7 +63,6 @@ type Employees struct {
 // Employee  defines the struct for the employee
 type Employee struct {
 	UserID       string
-	EmployeeName string
 }
 
 // Categorys  defines the struct for the categorys
@@ -103,7 +102,7 @@ type Patients struct {
 
 // Patient  defines the struct for the Patient
 type Patient struct {
-	PatientName string
+	Idcard string
 	Congenital  string
 	Allergic    string
 }
@@ -235,8 +234,11 @@ func main() {
 	// Set Employees Data
 	employees := Employees{
 		Employee: []Employee{
-			Employee{"D12345", "siriwan"},
-			Employee{"D54231", "sujitnapa"},
+			Employee{"N12345"},
+			Employee{"M12345"},
+			Employee{"E12345"},
+			Employee{"MR12345"},
+			Employee{"P12345"},
 		},
 	}
 
@@ -244,7 +246,6 @@ func main() {
 		client.Employee.
 			Create().
 			SetUserId(e.UserID).
-			SetEmployeeName(e.EmployeeName).
 			Save(context.Background())
 	}
 
@@ -359,8 +360,11 @@ func main() {
 	// Set Diseases Data
 	diseases := Diseases{
 		Disease: []Disease{
-			Disease{"D12345"},
-			Disease{"D54231"},
+			Disease{"โควิด-19"},
+			Disease{"เอดส์"},
+			Disease{"ไข้เลือดออก"},
+			Disease{"ตาแดง"},
+			Disease{"วัณโรค"},
 		},
 	}
 
@@ -374,15 +378,20 @@ func main() {
 	// Set Patients Data
 	patients := Patients{
 		Patient: []Patient{
-			Patient{"D12345", "เบาหวาน", "ความดัน"},
-			Patient{"D54231", "อ้วน", "โรคหัวใจ"},
+			Patient{"1200000000001", "เบาหวาน", "ความดัน"},
+			Patient{"1200000000002", "อ้วน", "โรคหัวใจ"},
+			Patient{"1200000000003", "ไม่มี", "โรคหัวใจ"},
+			Patient{"1200000000004", "ไม่มี", "ไม่มี"},
+			Patient{"1200000000005", "ไม่มี", "ภูมิแพ้"},
 		},
 	}
 
 	for _, pa := range patients.Patient {
 		client.Patient.
 			Create().
-			SetPatientName(pa.PatientName).
+			SetIdcard(pa.Idcard).
+			SetCongenital(pa.Congenital).
+			SetAllergic(pa.Allergic).
 			Save(context.Background())
 	}
 

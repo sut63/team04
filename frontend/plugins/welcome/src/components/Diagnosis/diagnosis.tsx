@@ -84,13 +84,13 @@ const useStyles = makeStyles(theme => ({
 }));
 
 interface Diagnosis {
-  diagnosis: Date;
+
   DiagnosticMessages: string;
   SurveillancePeriod: string;
-  DiagnosisDate: string;
-  disease: string;
-  employee: string;
-  patient: string;
+  DiagnosisDate: Date;
+  disease: number;
+  employee: number;
+  patient: number;
   
 
 }
@@ -338,7 +338,25 @@ const Diagnosis: FC<{}> = () => {
               </FormControl>
             </Grid>
 
-            
+            <Grid item xs={12}>
+            <FormControl variant="outlined" className={classes.formControl}>
+              <InputLabel>ผู้บันทึกข้อมูล</InputLabel>
+              <Select
+                name="employee"
+                value={diagnosis.employee || ''}
+                onChange={handleChange}
+                label="ผู้บันทึกข้อมูล"
+              >
+                {employee.map(item => {
+                  return (
+                    <MenuItem key={item.id} value={item.id}>
+                    {item.employeeName}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+            </FormControl>
+          </Grid>
 
 
             <Grid item xs={10} >
