@@ -103,8 +103,6 @@ type Patients struct {
 // Patient  defines the struct for the Patient
 type Patient struct {
 	Idcard string
-	Congenital  string
-	Allergic    string
 }
 
 // Diseases  defines the struct for the diseases
@@ -378,11 +376,11 @@ func main() {
 	// Set Patients Data
 	patients := Patients{
 		Patient: []Patient{
-			Patient{"1200000000001", "เบาหวาน", "ความดัน"},
-			Patient{"1200000000002", "อ้วน", "โรคหัวใจ"},
-			Patient{"1200000000003", "ไม่มี", "โรคหัวใจ"},
-			Patient{"1200000000004", "ไม่มี", "ไม่มี"},
-			Patient{"1200000000005", "ไม่มี", "ภูมิแพ้"},
+			Patient{"1200000000001"},
+			Patient{"1200000000002"},
+			Patient{"1200000000003"},
+			Patient{"1200000000004"},
+			Patient{"1200000000005"},
 		},
 	}
 
@@ -390,8 +388,6 @@ func main() {
 		client.Patient.
 			Create().
 			SetIdcard(pa.Idcard).
-			SetCongenital(pa.Congenital).
-			SetAllergic(pa.Allergic).
 			Save(context.Background())
 	}
 
