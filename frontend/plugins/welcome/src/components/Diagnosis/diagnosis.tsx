@@ -19,16 +19,24 @@ import {
   Toolbar,
   Typography,
   IconButton,
+  Menu,
+  MenuProps,
+  ListItemIcon,
+  ListItemText,
 } from '@material-ui/core';
 
 import { DefaultApi } from '../../api/apis';
 import { EntDisease } from '../../api/models/EntDisease';
 import { EntEmployee } from '../../api/models/EntEmployee';
 import { EntPatient } from '../../api/models/EntPatient';
+import LocalHospitalRoundedIcon from '@material-ui/icons/LocalHospitalRounded';
+import { withStyles } from '@material-ui/core/styles';
+import SearchIcon from '@material-ui/icons/Search';
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
+    marginTop: theme.spacing(10),
   },
   textField: {
     marginLeft: theme.spacing(1),
@@ -82,12 +90,42 @@ const useStyles = makeStyles(theme => ({
   },
 
 }));
+const StyledMenu = withStyles({
+  paper: {
+    border: '1px solid #d3d4d5',
+  },
+})((props: MenuProps) => (
+  <Menu
+    elevation={0}
+    getContentAnchorEl={null}
+    anchorOrigin={{
+      vertical: 'bottom',
+      horizontal: 'center',
+    }}
+    transformOrigin={{
+      vertical: 'top',
+      horizontal: 'center',
+    }}
+    {...props}
+  />
+));
+
+const StyledMenuItem = withStyles((theme) => ({
+  root: {
+    '&:focus': {
+      backgroundColor: theme.palette.primary.main,
+      '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
+        color: theme.palette.common.white,
+      },
+    },
+  },
+}))(MenuItem);
 
 interface Diagnosis {
 
-  DiagnosticMessages: string;
-  SurveillancePeriod: string;
-  DiagnosisDate: Date;
+  diagnosticmessages: string;
+  surveillanceperiod: string;
+  diagnosisdate: Date;
   disease: number;
   employee: number;
   patient: number;
@@ -98,6 +136,15 @@ interface Diagnosis {
 const Diagnosis: FC<{}> = () => {
   const classes = useStyles();
   const http = new DefaultApi();
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const [diagnosis, setDiagnosiss] = React.useState<Partial<Diagnosis>>({});
   const [disease, setDiseases] = React.useState<EntDisease[]>([]);
@@ -143,9 +190,10 @@ const Diagnosis: FC<{}> = () => {
     setShowInputError(false);
   }
 
+
   const Toast = Swal.mixin({
     toast: true,
-    position: 'top-end',
+    position: undefined,
     showConfirmButton: false,
     timer: 3000,
     timerProgressBar: true,
@@ -157,14 +205,17 @@ const Diagnosis: FC<{}> = () => {
 
   function save() {
     setShowInputError(true);
-    let {DiagnosticMessages, SurveillancePeriod, DiagnosisDate } = diagnosis;
-    if (!DiagnosticMessages || !SurveillancePeriod || !DiagnosisDate) {
+    let {diagnosticmessages, surveillanceperiod, diagnosisdate } = diagnosis;
+    if (!diagnosticmessages || !surveillanceperiod || !diagnosisdate) {
       Toast.fire({
         icon: 'error',
         title: 'กรุณากรอกข้อมูลให้ครบถ้วน',
       });
       return;
     }
+
+    //เช็คแล้วเก็บค่าไว้ใน employee
+diagnosis.employee = employee.filter(emp => emp.userId === window.localStorage.getItem("username"))[0].id;
 
     const apiUrl = 'http://localhost:8080/api/v1/diagnosiss';
     const requestOptions = {
@@ -197,24 +248,52 @@ const Diagnosis: FC<{}> = () => {
     // redirect Page ... http://localhost:3000/
     window.location.href = "http://localhost:3000/";
   }
+  function redirectToDiagnosis() {
+    window.location.href = "http://localhost:3000/diagnosis"
+}
+
+function redirectToSearchDiagnosis() {
+  window.location.href = "http://localhost:3000/searchdiagnosis"
+}
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar position="fixed" >
         <Toolbar>
-          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-            <MenuIcon />
+          <IconButton 
+        onClick={handleClick}>
+              <MenuIcon />
           </IconButton>
+          <StyledMenu
+        id="customized-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        <StyledMenuItem button onClick={redirectToDiagnosis}>
+          <ListItemIcon>
+            <LocalHospitalRoundedIcon fontSize="default" />
+          </ListItemIcon>
+          <ListItemText primary="Add Diagnosis" />
+        </StyledMenuItem>
+
+        <StyledMenuItem button onClick={redirectToSearchDiagnosis}>
+          <ListItemIcon>
+            <SearchIcon fontSize="default" />
+          </ListItemIcon>
+          <ListItemText primary="Search Diagnosis" />
+        </StyledMenuItem>
+      </StyledMenu>
+
           <Typography variant="h4" className={classes.title}>
-            ระบบจัดเก็บการวินิจฉัยโรคติดต่อ
+            ระบบจัดการโรคติดต่อ
           </Typography>
-          <div>
             <IconButton
               aria-label="account of current user"
               aria-controls="menu-appbar"
               aria-haspopup="true"
               color="inherit"
-              size="medium"
             >
               <AccountCircle />
               <Typography>
@@ -223,7 +302,6 @@ const Diagnosis: FC<{}> = () => {
                 </Link>
               </Typography>
             </IconButton>
-          </div>
         </Toolbar>
       </AppBar>
 
@@ -257,7 +335,7 @@ const Diagnosis: FC<{}> = () => {
                 {patient.map(item => {
                   return (
                     <MenuItem key={item.id} value={item.id}>
-                    {item.patientName}
+                    {item.idcard}
                     </MenuItem>
                   );
                 })}
@@ -272,7 +350,7 @@ const Diagnosis: FC<{}> = () => {
                 name="disease"
                 value={diagnosis.disease || ''}
                 onChange={handleChange}
-                label="ชื่อผู้เข้ารับการรักษา"
+                label="ชื่อโรคติดต่อ"
               >
                 {disease.map(item => {
                   return (
@@ -291,13 +369,13 @@ const Diagnosis: FC<{}> = () => {
               <FormControl variant="outlined" className={classes.formControl}>
                 <TextField
                   required
-                  error={!diagnosis.SurveillancePeriod && showInputError}
+                  error={!diagnosis.surveillanceperiod && showInputError}
                   name="userId"
                   label="ระยะเวลาเฝ้าระวัง"
                   variant="outlined"
                   type="string"
                   size="medium"
-                  value={diagnosis.SurveillancePeriod || ''}
+                  value={diagnosis.surveillanceperiod || ''}
                   onChange={handleChange}
                 />
               </FormControl>
@@ -307,13 +385,13 @@ const Diagnosis: FC<{}> = () => {
               <FormControl variant="outlined" className={classes.formControl}>
                 <TextField
                   required
-                  error={!diagnosis.DiagnosticMessages && showInputError}
+                  error={!diagnosis.diagnosticmessages && showInputError}
                   name="DiagnosticMessages"
                   label="การวินิจฉัยโรค หรือ อาการที่แสดง"
                   variant="outlined"
                   type="string"
                   size="medium"
-                  value={diagnosis.DiagnosticMessages || ''}
+                  value={diagnosis.diagnosticmessages || ''}
                   onChange={handleChange}
                 />
               </FormControl>
@@ -324,11 +402,11 @@ const Diagnosis: FC<{}> = () => {
                 <TextField
                   variant="outlined"
                   required
-                  error={!diagnosis.DiagnosisDate && showInputError}
+                  error={!diagnosis.diagnosisdate && showInputError}
                   label="วันที่ทำการวินิจฉัย"
                   name="DiagnosisDate"
                   type="date"
-                  value={diagnosis.DiagnosisDate || ''}
+                  value={diagnosis.diagnosisdate || ''}
                   className={classes.textTime}
                   InputLabelProps={{
                     shrink: true,
@@ -350,7 +428,7 @@ const Diagnosis: FC<{}> = () => {
                 {employee.map(item => {
                   return (
                     <MenuItem key={item.id} value={item.id}>
-                    {item.employeeName}
+                    {item.userId}
                     </MenuItem>
                   );
                 })}
