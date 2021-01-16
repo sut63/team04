@@ -14,7 +14,7 @@ type Level struct {
 // Fields of the Level.
 func (Level) Fields() []ent.Field {
  return []ent.Field{
- field.String("LevelName"),
+ field.String("LevelName").Unique(),
  }
 }
 
