@@ -22,7 +22,6 @@ import {
   MenuItem,
   Button
 } from '@material-ui/core';
-import HomeIcon from '@material-ui/icons/Home';
 import LocalHotelRoundedIcon from '@material-ui/icons/LocalHotelRounded';
 import { withStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
@@ -497,7 +496,7 @@ patient.employee = employees.filter(emp => emp.userId === window.localStorage.ge
                 // id="name"
                 name="name"
                 type="string"
-                label="ผู้บันทึกข้อมูล"
+                label="รหัส"
                 variant="outlined"
                 fullWidth
                 multiline
@@ -506,25 +505,25 @@ patient.employee = employees.filter(emp => emp.userId === window.localStorage.ge
               />
             </Grid>
 {/* 
-          <Grid item xs={12}>
-            <FormControl variant="outlined" className={classes.formControl}>
-              <InputLabel >ผู้บันทึกข้อมูล</InputLabel>
-              <Select
-                name="employee"
-                value={patient.employee || ''}
-                onChange={handleChange}
-                label="ผู้บันทึกข้อมูล"
-                fullWidth
-              >
-                {employees.map(item => {
-                  return (
-                    <MenuItem key={item.id} value={item.id}>
-                      {item.userId}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-            </FormControl>
+
+            <Grid item xs={12}>
+              <FormControl variant="outlined" className={classes.formControl}>
+                <InputLabel >รหัสพนักงาน</InputLabel>
+                <Select
+                  name="employee"
+                  value={patient.employee  || ''}
+                  onChange={handleChange}
+                  label="รหัสพนักงาน"
+                >
+                  {employees.map(item => {
+                    return (
+                      <MenuItem key={item.id} value={item.id}>
+                        {item.userId}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl>
           </Grid> */}
 
           <Grid item xs={10}>
