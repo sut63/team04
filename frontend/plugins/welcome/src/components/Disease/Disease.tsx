@@ -400,8 +400,8 @@ disease.Employee = employees.filter(emp => emp.userId === window.localStorage.ge
             <TextField
               required={true}
               error={!disease.DiseaseName && showInputError}
-              id="name"
-              name="name"
+              id="DiseaseName"
+              name="DiseaseName"
               type="string"
               label="ชื่อโรค"
               variant="outlined"
@@ -416,7 +416,7 @@ disease.Employee = employees.filter(emp => emp.userId === window.localStorage.ge
             <FormControl variant="outlined" className={classes.formControl}>
               <InputLabel >ระดับความรุนแรง</InputLabel>
               <Select
-                name="severity"
+                name="Severity"
                 value={disease.Severity || ''}
                 onChange={handleChange}
                 label="ระดับความรุนแรง"
@@ -437,7 +437,7 @@ disease.Employee = employees.filter(emp => emp.userId === window.localStorage.ge
             <TextField
               required={true}
               error={!disease.Symptom && showInputError}
-              name="symptom"
+              name="Symptom"
               label="อาการ"
               variant="outlined"
               fullWidth
@@ -451,7 +451,7 @@ disease.Employee = employees.filter(emp => emp.userId === window.localStorage.ge
             <TextField
               required={true}
               error={!disease.Contagion && showInputError}
-              name="contagion"
+              name="Contagion"
               label="การแพร่กระจาย"
               variant="outlined"
               fullWidth
@@ -465,7 +465,7 @@ disease.Employee = employees.filter(emp => emp.userId === window.localStorage.ge
             <FormControl variant="outlined" className={classes.formControl}>
               <InputLabel >ประเภทโรคติดต่อ</InputLabel>
               <Select
-                name="diseasetype"
+                name="Diseasetype"
                 value={disease.Diseasetype || ''}
                 onChange={handleChange}
                 label="ประเภทโรคติดต่อ"
