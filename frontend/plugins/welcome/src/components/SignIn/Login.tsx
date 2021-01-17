@@ -13,8 +13,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Swal from 'sweetalert2'; // alert
-import { EntEmployee } from '../../api/models/EntEmployee';
-import { EntDepartment } from '../../api/models/EntDepartment';
+
 
 function Copyright() {
   return (
@@ -66,14 +65,10 @@ interface Login {
 
 }
 
-
-
 const Login: FC<{}> = () => {
   const classes = useStyles();
 
   const [login, setLogin] = React.useState<Partial<Login>>({});
-  const [employee, setEmployee] = React.useState<Partial<EntEmployee>>({});
-  const [department, setDepartment] = React.useState<Partial<EntDepartment>>({});
 
   // alert setting
   const Toast = Swal.mixin({
@@ -87,60 +82,24 @@ const Login: FC<{}> = () => {
       toast.addEventListener('mouseleave', Swal.resumeTimer);
     },
   });
-  
+
+
   function redirecLogin() {
 
-    if ((login.username === employee.userId && login.password === employee.password)
-    ) {
-      Toast.fire({
-           icon: 'success',
-           title: 'เข้าสู่ระบบสำเร็จ',
-           });
-
-           window.location.href = "http://localhost:3000/Employee";
-
-    //   if(employee.edges?.department?.departmentName === "เจ้าหน้าที่เวชระเบียน"){
- 
-    //   Toast.fire({
-    //     icon: 'success',
-    //     title: 'เข้าสู่ระบบสำเร็จ',
-    //   });
-
-    //   window.location.href = "http://localhost:3000/Employee";
-    //   console.log("LOGIN TO Employee");
-
-    //   window.localStorage.setItem("usernameRole",JSON.stringify(department.departmentName)) // local
-    //   window.localStorage.setItem("username",JSON.stringify(employee.userId)) // local 
-    // }
-
-    // else if (employee.edges?.department?.departmentName === "แพทย์"){
-
-    //   Toast.fire({
-    //     icon: 'success',
-    //     title: 'เข้าสู่ระบบสำเร็จ',
-    //   });
-      
-    //   //redirec Page ... http://localhost:3000/Table
-    //   window.location.href = "http://localhost:3000/Diagnosis";
-    //   console.log("LOGIN TO Diagnosis");
-      
-    //   window.localStorage.setItem("usernameRole",JSON.stringify(department.departmentName)) // local
-    //   window.localStorage.setItem("username",JSON.stringify(employee.userId)) // local
-    // }
-  }
-
-    else if ((login.username == "MR12345" && login.password == "12345mr")
+    if ((login.username == "MR12345" && login.password == "12345mr")
     ) {
 
       Toast.fire({
         icon: 'success',
         title: 'เข้าสู่ระบบสำเร็จ',
       });
-      
-      //redirec Page ... http://localhost:3000/Table
-      window.location.href = "http://localhost:3000/Employee";
+
+      window.location.href = "http://localhost:3000/employee";
       console.log("LOGIN TO Employee");
-      
+
+      window.localStorage.setItem("usernameRole","Epidemiolgist") // local
+      window.localStorage.setItem("username","MR12345") // local 
+
     }
 
     else if ((login.username == "N12345" && login.password == "12345n")
@@ -152,9 +111,11 @@ const Login: FC<{}> = () => {
       });
       
       //redirec Page ... http://localhost:3000/Table
-      window.location.href = "http://localhost:3000/Patient";
+      window.location.href = "http://localhost:3000/patient";
       console.log("LOGIN TO Patient");
       
+      window.localStorage.setItem("usernameRole","Nurse") // local
+      window.localStorage.setItem("username","N12345") // local
     }
 
     else if ((login.username == "M12345" && login.password == "12345m")
@@ -166,8 +127,8 @@ const Login: FC<{}> = () => {
       });
       
       //redirec Page ... http://localhost:3000/Table
-      window.location.href = "http://localhost:3000/Area";
-      console.log("LOGIN TO DISEASE");
+      window.location.href = "http://localhost:3000/diagnosis";
+      console.log("LOGIN TO Diagnosis");
       
       window.localStorage.setItem("usernameRole","Medical") // local
       window.localStorage.setItem("username","M12345") // local
@@ -182,7 +143,7 @@ const Login: FC<{}> = () => {
       });
       
       //redirec Page ... http://localhost:3000/Table
-      window.location.href = "http://localhost:3000/Area";
+      window.location.href = "http://localhost:3000/Disease";
       console.log("LOGIN TO DISEASE");
       
       window.localStorage.setItem("usernameRole","Epidemiolgist") // local
@@ -197,8 +158,8 @@ const Login: FC<{}> = () => {
       });
       
       //redirec Page ... http://localhost:3000/Table
-      window.location.href = "http://localhost:3000/Disease";
-      console.log("LOGIN TO DISEASE");
+      window.location.href = "http://localhost:3000/drug";
+      console.log("LOGIN TO Drug");
       
       window.localStorage.setItem("usernameRole","Pharmacist") // local
       window.localStorage.setItem("username","P12345") // local

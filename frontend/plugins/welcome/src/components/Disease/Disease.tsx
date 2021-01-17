@@ -149,21 +149,21 @@ const Disease: FC<{}> = () => {
     setAnchorEl(null);
   };
 
-function redirectToArea() {
+  function redirectToArea() {
     window.location.href = "http://localhost:3000/area"
-}
+  }
 
-function redirectToSearchArea() {
-  window.location.href = "http://localhost:3000/searcharea"
-}
+  function redirectToSearchArea() {
+    window.location.href = "http://localhost:3000/searcharea"
+  }
 
-function redirectToDisease() {
+  function redirectToDisease() {
     window.location.href = "http://localhost:3000/disease"
-}
+  }
 
-function redirectToSearchDisease() {
-  window.location.href = "http://localhost:3000/searchdisease"
-}
+  function redirectToSearchDisease() {
+    window.location.href = "http://localhost:3000/searchdisease"
+  }
 
   // alert setting
   const Toast = Swal.mixin({
@@ -228,9 +228,9 @@ function redirectToSearchDisease() {
       });
       return;
     }
-    
-//เช็คแล้วเก็บค่าไว้ใน employee
-disease.Employee = employees.filter(emp => emp.userId === window.localStorage.getItem("username"))[0].id;
+
+    //เช็คแล้วเก็บค่าไว้ใน employee
+    disease.Employee = employees.filter(emp => emp.userId === window.localStorage.getItem("username"))[0].id;
 
     const apiUrl = 'http://localhost:8080/api/v1/diseases';
     const requestOptions = {
@@ -277,64 +277,64 @@ disease.Employee = employees.filter(emp => emp.userId === window.localStorage.ge
     <div className={classes.root}>
       <AppBar position="fixed" >
         <Toolbar>
-          <IconButton 
-        onClick={handleClick}>
-              <MenuIcon />
+          <IconButton
+            onClick={handleClick}>
+            <MenuIcon />
           </IconButton>
           <StyledMenu
-        id="customized-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-      >
+            id="customized-menu"
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+          >
 
-        <StyledMenuItem button onClick={redirectToDisease}>
-          <ListItemIcon>
-            <SentimentVeryDissatisfiedRoundedIcon fontSize="default" />
-          </ListItemIcon>
-          <ListItemText primary="Add Disease" />
-        </StyledMenuItem>
+            <StyledMenuItem button onClick={redirectToDisease}>
+              <ListItemIcon>
+                <SentimentVeryDissatisfiedRoundedIcon fontSize="default" />
+              </ListItemIcon>
+              <ListItemText primary="Add Disease" />
+            </StyledMenuItem>
 
-        <StyledMenuItem button onClick={redirectToSearchDisease}>
-          <ListItemIcon>
-            <SearchIcon fontSize="default" />
-          </ListItemIcon>
-          <ListItemText primary="Search Disease" />
-        </StyledMenuItem>
+            <StyledMenuItem button onClick={redirectToSearchDisease}>
+              <ListItemIcon>
+                <SearchIcon fontSize="default" />
+              </ListItemIcon>
+              <ListItemText primary="Search Disease" />
+            </StyledMenuItem>
 
-        <StyledMenuItem button onClick={redirectToArea}>
-          <ListItemIcon>
-            <AddLocationRoundedIcon fontSize="default" />
-          </ListItemIcon>
-          <ListItemText primary="Add Area" />
-        </StyledMenuItem>
+            <StyledMenuItem button onClick={redirectToArea}>
+              <ListItemIcon>
+                <AddLocationRoundedIcon fontSize="default" />
+              </ListItemIcon>
+              <ListItemText primary="Add Area" />
+            </StyledMenuItem>
 
-        <StyledMenuItem button onClick={redirectToSearchArea}>
-          <ListItemIcon>
-            <SearchIcon fontSize="default" />
-          </ListItemIcon>
-          <ListItemText primary="Search Area" />
-        </StyledMenuItem>
+            <StyledMenuItem button onClick={redirectToSearchArea}>
+              <ListItemIcon>
+                <SearchIcon fontSize="default" />
+              </ListItemIcon>
+              <ListItemText primary="Search Area" />
+            </StyledMenuItem>
 
-      </StyledMenu>
-    
+          </StyledMenu>
+
           <Typography variant="h4" className={classes.title}>
             ระบบจัดการโรคติดต่อ
           </Typography>
-            <IconButton
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              color="inherit"
-            >
-              <AccountCircle />
-              <Typography>
-                <Link variant="h6" onClick={redirecLogOut} className={classes.logoutButton}>
-                  LOGOUT
+          <IconButton
+            aria-label="account of current user"
+            aria-controls="menu-appbar"
+            aria-haspopup="true"
+            color="inherit"
+          >
+            <AccountCircle />
+            <Typography>
+              <Link variant="h6" onClick={redirecLogOut} className={classes.logoutButton}>
+                LOGOUT
                 </Link>
-              </Typography>
-            </IconButton>
+            </Typography>
+          </IconButton>
         </Toolbar>
       </AppBar>
 
@@ -364,17 +364,17 @@ disease.Employee = employees.filter(emp => emp.userId === window.localStorage.ge
                 required={true}
                 disabled // ห้ามแก้ไข
                 // id="name"
-                name="name"
+                name="Employee"
                 type="string"
                 label="รหัส"
                 variant="outlined"
                 fullWidth
                 multiline
-                value={ window.localStorage.getItem("username") || ""}
+                value={window.localStorage.getItem("username") || ""}
                 onChange={handleChange}
               />
             </Grid>
-{/* 
+            {/*  เก็บไว้ก่อน เผื่อได้ใช้ครับ 
 
             <Grid item xs={12}>
               <FormControl variant="outlined" className={classes.formControl}>
@@ -396,105 +396,105 @@ disease.Employee = employees.filter(emp => emp.userId === window.localStorage.ge
               </FormControl>
           </Grid> */}
 
-          <Grid item xs={10}>
-            <TextField
-              required={true}
-              error={!disease.DiseaseName && showInputError}
-              id="DiseaseName"
-              name="DiseaseName"
-              type="string"
-              label="ชื่อโรค"
-              variant="outlined"
-              fullWidth
-              multiline
-              value={disease.DiseaseName || ""}
-              onChange={handleChange}
-            />
-          </Grid>
-
-          <Grid item xs={12}>
-            <FormControl variant="outlined" className={classes.formControl}>
-              <InputLabel >ระดับความรุนแรง</InputLabel>
-              <Select
-                name="Severity"
-                value={disease.Severity || ''}
-                onChange={handleChange}
-                label="ระดับความรุนแรง"
+            <Grid item xs={10}>
+              <TextField
+                required={true}
+                error={!disease.DiseaseName && showInputError}
+                id="DiseaseName"
+                name="DiseaseName"
+                type="string"
+                label="ชื่อโรค"
+                variant="outlined"
                 fullWidth
-              >
-                {severitys.map(item => {
-                  return (
-                    <MenuItem key={item.id} value={item.id}>
-                      {item.severityName}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-            </FormControl>
-          </Grid>
-
-          <Grid item xs={10}>
-            <TextField
-              required={true}
-              error={!disease.Symptom && showInputError}
-              name="Symptom"
-              label="อาการ"
-              variant="outlined"
-              fullWidth
-              multiline
-              value={disease.Symptom || ""}
-              onChange={handleChange}
-            />
-          </Grid>
-
-          <Grid item xs={10}>
-            <TextField
-              required={true}
-              error={!disease.Contagion && showInputError}
-              name="Contagion"
-              label="การแพร่กระจาย"
-              variant="outlined"
-              fullWidth
-              multiline
-              value={disease.Contagion || ""}
-              onChange={handleChange}
-            />
-          </Grid>
-
-          <Grid item xs={12}>
-            <FormControl variant="outlined" className={classes.formControl}>
-              <InputLabel >ประเภทโรคติดต่อ</InputLabel>
-              <Select
-                name="Diseasetype"
-                value={disease.Diseasetype || ''}
+                multiline
+                value={disease.DiseaseName || ""}
                 onChange={handleChange}
-                label="ประเภทโรคติดต่อ"
-                fullWidth
-              >
-                {diseasetypes.map(item => {
-                  return (
-                    <MenuItem key={item.id} value={item.id}>
-                      {item.diseaseTypeName}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-            </FormControl>
-          </Grid>
+              />
+            </Grid>
 
-          <Grid item xs={10} >
-            <Button
-              name="saveData"
-              size="large"
-              variant="contained"
-              color="primary"
-              disableElevation
-              className={classes.buttonSty}
-              onClick={save}
-            >
-              บันทึกข้อมูล
+            <Grid item xs={12}>
+              <FormControl variant="outlined" className={classes.formControl}>
+                <InputLabel >ระดับความรุนแรง</InputLabel>
+                <Select
+                  name="Severity"
+                  value={disease.Severity || ''}
+                  onChange={handleChange}
+                  label="ระดับความรุนแรง"
+                  fullWidth
+                >
+                  {severitys.map(item => {
+                    return (
+                      <MenuItem key={item.id} value={item.id}>
+                        {item.severityName}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl>
+            </Grid>
+
+            <Grid item xs={10}>
+              <TextField
+                required={true}
+                error={!disease.Symptom && showInputError}
+                name="Symptom"
+                label="อาการ"
+                variant="outlined"
+                fullWidth
+                multiline
+                value={disease.Symptom || ""}
+                onChange={handleChange}
+              />
+            </Grid>
+
+            <Grid item xs={10}>
+              <TextField
+                required={true}
+                error={!disease.Contagion && showInputError}
+                name="Contagion"
+                label="การแพร่กระจาย"
+                variant="outlined"
+                fullWidth
+                multiline
+                value={disease.Contagion || ""}
+                onChange={handleChange}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <FormControl variant="outlined" className={classes.formControl}>
+                <InputLabel >ประเภทโรคติดต่อ</InputLabel>
+                <Select
+                  name="Diseasetype"
+                  value={disease.Diseasetype || ''}
+                  onChange={handleChange}
+                  label="ประเภทโรคติดต่อ"
+                  fullWidth
+                >
+                  {diseasetypes.map(item => {
+                    return (
+                      <MenuItem key={item.id} value={item.id}>
+                        {item.diseaseTypeName}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl>
+            </Grid>
+
+            <Grid item xs={10} >
+              <Button
+                name="saveData"
+                size="large"
+                variant="contained"
+                color="primary"
+                disableElevation
+                className={classes.buttonSty}
+                onClick={save}
+              >
+                บันทึกข้อมูล
               </Button>
-          </Grid>
+            </Grid>
           </Grid>
         </Container>
       </Content>

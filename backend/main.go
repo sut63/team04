@@ -1,18 +1,24 @@
 package main
 
 import (
+
 	"context"
+	"fmt"
 	"log"
+	
 
 	"github.com/B6001186/Contagions/controllers"
+	"github.com/B6001186/Contagions/ent/employee"
 	_ "github.com/B6001186/Contagions/docs"
 	"github.com/B6001186/Contagions/ent"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	_ "github.com/mattn/go-sqlite3"
+	
 
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+
 )
 
 // DrugTypes  defines the struct for the drugTypes
@@ -114,6 +120,11 @@ type Diseases struct {
 // Disease  defines the struct for the Disease
 type Disease struct {
 	DiseaseName string
+	Symptom     string
+	Contagion   string
+	Diseasetype  int
+	EmployeeID   int
+	Severity     int
 }
 
 // Diseasetypes  defines the struct for the diseasetypes
@@ -356,22 +367,24 @@ func main() {
 			Save(context.Background())
 	}
 
+	   ///////////////////มาลองทำส่วนนี้ให้ได้///////
 	// Set Diseases Data
 	diseases := Diseases{
 		Disease: []Disease{
-			Disease{"โควิด-19"},
-			Disease{"เอดส์"},
-			Disease{"ไข้เลือดออก"},
-			Disease{"ตาแดง"},
-			Disease{"วัณโรค"},
+			Disease{"โควิด-19","ปวดหัว","น้ำลาย",1,2,1},
 		},
 	}
 
 	for _, ds := range diseases.Disease {
-		client.Disease.
-			Create().
-			SetDiseaseName(ds.DiseaseName).
-			Save(context.Background())
+		e, err := client.Employee.
+			Query().
+			Where(Employee.IDEQ(int(ds.EmployeeID))).
+			Only(context.Background())
+		
+		if err != nil {
+			fmt.Println(err.Error())
+			return 
+		}
 	}
 
 	// Set Patients Data
@@ -475,3 +488,4 @@ func main() {
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	router.Run()
 }
+
