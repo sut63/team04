@@ -4,6 +4,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Link from '@material-ui/core/Link';
 import Swal from 'sweetalert2'; // alert
+
 import {
   AppBar,
   Toolbar,
@@ -20,7 +21,6 @@ import {
   Menu,
   MenuProps,
   MenuItem,
-  Drawer,
   Button
 } from '@material-ui/core';
 import { DefaultApi } from '../../api/apis';
@@ -34,6 +34,7 @@ import AddLocationRoundedIcon from '@material-ui/icons/AddLocationRounded';
 import SentimentVeryDissatisfiedRoundedIcon from '@material-ui/icons/SentimentVeryDissatisfiedRounded';
 
 
+//css
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
@@ -79,6 +80,9 @@ const useStyles = makeStyles(theme => ({
     marginLeft: 10,
     marginRight: 10,
     color: 'white'
+  },
+  multilineColor: {
+    color: 'red'
   },
 
 }));
@@ -186,7 +190,7 @@ const Area: FC<{}> = () => {
 
   const Toast = Swal.mixin({
     toast: true,
-    position: 'top-end',
+    position: undefined,
     showConfirmButton: false,
     timer: 3000,
     timerProgressBar: true,
@@ -199,14 +203,17 @@ const Area: FC<{}> = () => {
   function save() {
 
     setShowInputError(true)
-    let { areaName, level, statistic, disease, employee } = areas;
-    if (!areaName || !level || !statistic || !disease || !employee) {
+    let { areaName, level, statistic, disease } = areas;
+    if (!areaName || !level || !statistic || !disease) {
       Toast.fire({
         icon: 'error',
         title: 'กรุณากรอกข้อมูลให้ครบถ้วน',
       });
       return;
     }
+
+    //เช็คแล้วเก็บค่าไว้ใน employee
+    areas.employee = employees.filter(emp => emp.userId === window.localStorage.getItem("username"))[0].id;
 
     const apiUrl = 'http://localhost:8080/api/v1/areas';
     const requestOptions = {
@@ -235,111 +242,112 @@ const Area: FC<{}> = () => {
       })
   }
 
-function redirecLogOut() {
+  function redirecLogOut() {
     //redirec Page ... http://localhost:3000/
-    window.location.href = "http://localhost:3000/";  }
-function redirectToArea() {
-      window.location.href = "http://localhost:3000/area"
+    window.location.href = "http://localhost:3000/";
   }
-  
+  function redirectToArea() {
+    window.location.href = "http://localhost:3000/area"
+  }
+
   function redirectToSearchArea() {
     window.location.href = "http://localhost:3000/searcharea"
   }
-  
+
   function redirectToDisease() {
-      window.location.href = "http://localhost:3000/disease"
+    window.location.href = "http://localhost:3000/disease"
   }
-  
+
   function redirectToSearchDisease() {
     window.location.href = "http://localhost:3000/searchdisease"
   }
-  
-return (
-  <div className={classes.root}>
+
+  return (
+    <div className={classes.root}>
       <AppBar position="fixed" >
         <Toolbar>
-          <IconButton 
-        onClick={handleClick}>
-              <MenuIcon />
+          <IconButton
+            onClick={handleClick}>
+            <MenuIcon />
           </IconButton>
           <StyledMenu
-        id="customized-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-      >
+            id="customized-menu"
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+          >
 
 
-        <StyledMenuItem button onClick={redirectToDisease}>
-          <ListItemIcon>
-            <SentimentVeryDissatisfiedRoundedIcon fontSize="default" />
-          </ListItemIcon>
-          <ListItemText primary="Add Disease" />
-        </StyledMenuItem>
+            <StyledMenuItem button onClick={redirectToDisease}>
+              <ListItemIcon>
+                <SentimentVeryDissatisfiedRoundedIcon fontSize="default" />
+              </ListItemIcon>
+              <ListItemText primary="Add Disease" />
+            </StyledMenuItem>
 
-        <StyledMenuItem button onClick={redirectToSearchDisease}>
-          <ListItemIcon>
-            <SearchIcon fontSize="default" />
-          </ListItemIcon>
-          <ListItemText primary="Search Disease" />
-        </StyledMenuItem>
+            <StyledMenuItem button onClick={redirectToSearchDisease}>
+              <ListItemIcon>
+                <SearchIcon fontSize="default" />
+              </ListItemIcon>
+              <ListItemText primary="Search Disease" />
+            </StyledMenuItem>
 
-        <StyledMenuItem button onClick={redirectToArea}>
-          <ListItemIcon>
-            <AddLocationRoundedIcon fontSize="default" />
-          </ListItemIcon>
-          <ListItemText primary="Add Area" />
-        </StyledMenuItem>
+            <StyledMenuItem button onClick={redirectToArea}>
+              <ListItemIcon>
+                <AddLocationRoundedIcon fontSize="default" />
+              </ListItemIcon>
+              <ListItemText primary="Add Area" />
+            </StyledMenuItem>
 
-        <StyledMenuItem button onClick={redirectToSearchArea}>
-          <ListItemIcon>
-            <SearchIcon fontSize="default" />
-          </ListItemIcon>
-          <ListItemText primary="Search Area" />
-        </StyledMenuItem>
+            <StyledMenuItem button onClick={redirectToSearchArea}>
+              <ListItemIcon>
+                <SearchIcon fontSize="default" />
+              </ListItemIcon>
+              <ListItemText primary="Search Area" />
+            </StyledMenuItem>
 
-      </StyledMenu>
-    
+          </StyledMenu>
+
           <Typography variant="h4" className={classes.title}>
             ระบบจัดการโรคติดต่อ
           </Typography>
-            <IconButton
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              color="inherit"
-            >
-              <AccountCircle />
-              <Typography>
-                <Link variant="h6" onClick={redirecLogOut} className={classes.logoutButton}>
-                  LOGOUT
+          <IconButton
+            aria-label="account of current user"
+            aria-controls="menu-appbar"
+            aria-haspopup="true"
+            color="inherit"
+          >
+            <AccountCircle />
+            <Typography>
+              <Link variant="h6" onClick={redirecLogOut} className={classes.logoutButton}>
+                LOGOUT
                 </Link>
-              </Typography>
-            </IconButton>
+            </Typography>
+          </IconButton>
         </Toolbar>
       </AppBar>
       <Container maxWidth="sm">
         <Grid container spacing={3}>
 
-        <Grid item xs={10}>
+          <Grid item xs={10}>
             <h2 style={{ textAlign: 'center' }}> เพิ่มข้อมูลพื้นที่เสี่ยง </h2>
           </Grid>
           <Grid item xs={12}></Grid>
           <Grid item xs={9}>
-              <FormControl variant="outlined" className={classes.formControl}>
-                <TextField
-                  name="areaName"
-                  error={!areas.areaName && showInputError}
-                  label="ชื่อสถานที่"
-                  variant="outlined"
-                  type="string"
-                  size="medium"
-                  value={areas.areaName || ''}
-                  onChange={handleInputChange}
-                />
-              </FormControl>
-            </Grid>
+            <FormControl variant="outlined" className={classes.formControl}>
+              <TextField
+                name="areaName"
+                error={!areas.areaName && showInputError}
+                label="ชื่อสถานที่"
+                variant="outlined"
+                type="string"
+                size="medium"
+                value={areas.areaName || ''}
+                onChange={handleInputChange}
+              />
+            </FormControl>
+          </Grid>
           <Grid item xs={9}>
             <FormControl variant="outlined" className={classes.formControl}>
               <InputLabel>ระดับความเสี่ยง</InputLabel>
@@ -388,6 +396,7 @@ return (
             <FormControl variant="outlined" className={classes.formControl}>
               <InputLabel>โรคติดต่อ</InputLabel>
               <Select
+                error={!areas.disease && showInputError}
                 name="disease"
                 value={areas.disease || ''}
                 onChange={handleInputChange}
@@ -405,38 +414,39 @@ return (
           </Grid>
 
           <Grid item xs={10}>
-              <TextField
-                required={true}
-                disabled // ห้ามแก้ไข
-                // id="name"
-                name="name"
-                type="string"
-                label="รหัส"
-                variant="outlined"
-                fullWidth
-                multiline
-                value={ window.localStorage.getItem("username") || ""}
-                onChange={handleInputChange}
-              />
+            <TextField
+              required={true}
+              disabled // ห้ามแก้ไข
+              // id="name"
+              name="employee"
+              type="string"
+              label="รหัสผู้บันทึกข้อมูล"
+              variant="outlined"
+              color="primary"
+              fullWidth
+              multiline
+              value={window.localStorage.getItem("username") || ""}
+              onChange={handleInputChange}
+            />
           </Grid>
           <Grid item xs={10} >
-              <Button
-                name="saveData"
-                size="large"
-                variant="contained"
-                color="primary"
-                disableElevation
-                className={classes.buttonSty}
-                onClick={save}
-              >
-                บันทึก
+            <Button
+              name="saveData"
+              size="large"
+              variant="contained"
+              color="primary"
+              disableElevation
+              className={classes.buttonSty}
+              onClick={save}
+            >
+              บันทึก
             </Button>
-            
+
           </Grid>
         </Grid>
       </Container>
-  </div>
-);
+    </div>
+  );
 };
 
 export default Area;

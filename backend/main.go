@@ -1,24 +1,18 @@
 package main
 
 import (
-
 	"context"
-	"fmt"
 	"log"
-	
 
 	"github.com/B6001186/Contagions/controllers"
-	"github.com/B6001186/Contagions/ent/employee"
 	_ "github.com/B6001186/Contagions/docs"
 	"github.com/B6001186/Contagions/ent"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	_ "github.com/mattn/go-sqlite3"
-	
 
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-
 )
 
 // DrugTypes  defines the struct for the drugTypes
@@ -68,7 +62,7 @@ type Employees struct {
 
 // Employee  defines the struct for the employee
 type Employee struct {
-	UserID       string
+	UserID string
 }
 
 // Categorys  defines the struct for the categorys
@@ -109,7 +103,6 @@ type Patients struct {
 // Patient  defines the struct for the Patient
 type Patient struct {
 	Idcard string
-	
 }
 
 // Diseases  defines the struct for the diseases
@@ -119,12 +112,7 @@ type Diseases struct {
 
 // Disease  defines the struct for the Disease
 type Disease struct {
-	DiseaseName string
-	Symptom     string
-	Contagion   string
-	Diseasetype  int
-	EmployeeID   int
-	Severity     int
+	DiseaseName   string
 }
 
 // Diseasetypes  defines the struct for the diseasetypes
@@ -241,23 +229,6 @@ func main() {
 	controllers.NewLevelController(v1, client)
 	controllers.NewStatisticController(v1, client)
 
-	// Set Employees Data
-	employees := Employees{
-		Employee: []Employee{
-			Employee{"N12345"},
-			Employee{"M12345"},
-			Employee{"E12345"},
-			Employee{"MR12345"},
-			Employee{"P12345"},
-		},
-	}
-
-	for _, e := range employees.Employee {
-		client.Employee.
-			Create().
-			SetUserId(e.UserID).
-			Save(context.Background())
-	}
 
 	// Set Categorys Data
 	categorys := Categorys{
@@ -266,14 +237,14 @@ func main() {
 			Category{"นักศึกษา"},
 			Category{"บุคลากร"},
 			Category{"บุคคลทั่วไป"},
-	 	},
+		},
 	}
 
 	for _, ct := range categorys.Category {
-	 	client.Category.
-	 		Create().
+		client.Category.
+			Create().
 			SetCategoryName(ct.CategoryName).
-	 		Save(context.Background())
+			Save(context.Background())
 	}
 
 	// Set Nametitles Data
@@ -367,43 +338,6 @@ func main() {
 			Save(context.Background())
 	}
 
-	   ///////////////////มาลองทำส่วนนี้ให้ได้///////
-	// Set Diseases Data
-	diseases := Diseases{
-		Disease: []Disease{
-			Disease{"โควิด-19","ปวดหัว","น้ำลาย",1,2,1},
-		},
-	}
-
-	for _, ds := range diseases.Disease {
-		e, err := client.Employee.
-			Query().
-			Where(Employee.IDEQ(int(ds.EmployeeID))).
-			Only(context.Background())
-		
-		if err != nil {
-			fmt.Println(err.Error())
-			return 
-		}
-	}
-
-	// Set Patients Data
-	patients := Patients{
-		Patient: []Patient{
-			Patient{"1200000000001"},
-			Patient{"1200000000002"},
-			Patient{"1200000000003"},
-			Patient{"1200000000004"},
-			Patient{"1200000000005"},
-		},
-	}
-
-	for _, pa := range patients.Patient {
-		client.Patient.
-			Create().
-			SetIdcard(pa.Idcard).
-			Save(context.Background())
-	}
 
 	// Set Diseasetypes Data
 	diseasetypes := Diseasetypes{
@@ -488,4 +422,3 @@ func main() {
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	router.Run()
 }
-
