@@ -103,6 +103,7 @@ type Patients struct {
 // Patient  defines the struct for the Patient
 type Patient struct {
 	Idcard string
+	
 }
 
 // Diseases  defines the struct for the diseases
@@ -366,10 +367,10 @@ func main() {
 		},
 	}
 
-	for _, d := range diseases.Disease {
+	for _, ds := range diseases.Disease {
 		client.Disease.
 			Create().
-			SetDiseaseName(d.DiseaseName).
+			SetDiseaseName(ds.DiseaseName).
 			Save(context.Background())
 	}
 
