@@ -179,7 +179,7 @@ const Disease: FC<{}> = () => {
   });
 
   const getEmployee = async () => {
-    const res = await api.listEmployee({ limit: 5, offset: 0 });
+    const res = await api.listEmployee({ limit: undefined, offset: 0 });
     setEmployees(res);
   };
 

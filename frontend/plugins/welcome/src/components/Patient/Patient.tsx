@@ -176,7 +176,7 @@ function redirectToSearchPatient() {
   });
 
   const getEmployee = async () => {
-    const res = await api.listEmployee({ limit: 2, offset: 0 });
+    const res = await api.listEmployee({ limit: undefined, offset: 0 });
     setEmployees(res);
   };
 
