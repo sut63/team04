@@ -129,7 +129,6 @@ interface Diagnosis {
   disease: number;
   employee: number;
   patient: number;
-  
 
 }
 
@@ -153,7 +152,7 @@ const Diagnosis: FC<{}> = () => {
   const [showInputError, setShowInputError] = React.useState(false); // for error input show
 
   const getDisease = async () => {
-    const res = await http.listDisease({ limit: 10, offset: 0 });
+    const res = await http.listDisease({ limit: undefined, offset: 0 });
     setDiseases(res);
   }
 
@@ -163,7 +162,7 @@ const Diagnosis: FC<{}> = () => {
   }
 
   const getPatient = async () => {
-    const res = await http.listPatient({ limit: 5, offset: 0 });
+    const res = await http.listPatient({ limit: undefined, offset: 0 });
     setPatients(res);
   }
 
@@ -205,8 +204,8 @@ const Diagnosis: FC<{}> = () => {
 
   function save() {
     setShowInputError(true);
-    let {diagnosticmessages, surveillanceperiod, diagnosisdate } = diagnosis;
-    if (!diagnosticmessages || !surveillanceperiod || !diagnosisdate) {
+    let {diagnosticmessages, surveillanceperiod, diagnosisdate, patient, disease} = diagnosis;
+    if (!diagnosticmessages || !surveillanceperiod || !diagnosisdate || !patient || !disease) {
       Toast.fire({
         icon: 'error',
         title: 'กรุณากรอกข้อมูลให้ครบถ้วน',
@@ -324,10 +323,11 @@ function redirectToSearchDiagnosis() {
             </Grid>
 
           <Grid item xs={12}>
-            <FormControl variant="outlined" className={classes.formControl}>
+            <FormControl required variant="outlined" className={classes.formControl}>
               <InputLabel>ชื่อผู้เข้ารับการรักษา</InputLabel>
               <Select
                 name="patient"
+                error={!diagnosis.patient && showInputError}
                 value={diagnosis.patient || ''}
                 onChange={handleChange}
                 label="ชื่อผู้เข้ารับการรักษา"
@@ -335,7 +335,7 @@ function redirectToSearchDiagnosis() {
                 {patient.map(item => {
                   return (
                     <MenuItem key={item.id} value={item.id}>
-                    {item.idcard}
+                    {item.patientName}
                     </MenuItem>
                   );
                 })}
@@ -344,10 +344,11 @@ function redirectToSearchDiagnosis() {
           </Grid>
           
           <Grid item xs={12}>
-            <FormControl variant="outlined" className={classes.formControl}>
+            <FormControl required variant="outlined" className={classes.formControl}>
               <InputLabel>ชื่อโรคติดต่อ</InputLabel>
               <Select
                 name="disease"
+                error={!diagnosis.disease && showInputError}
                 value={diagnosis.disease || ''}
                 onChange={handleChange}
                 label="ชื่อโรคติดต่อ"
@@ -366,11 +367,11 @@ function redirectToSearchDiagnosis() {
 
 
             <Grid item xs={10}>
-              <FormControl variant="outlined" className={classes.formControl}>
+              <FormControl required variant="outlined" className={classes.formControl}>
                 <TextField
                   required
                   error={!diagnosis.surveillanceperiod && showInputError}
-                  name="userId"
+                  name="surveillanceperiod"
                   label="ระยะเวลาเฝ้าระวัง"
                   variant="outlined"
                   type="string"
@@ -386,7 +387,7 @@ function redirectToSearchDiagnosis() {
                 <TextField
                   required
                   error={!diagnosis.diagnosticmessages && showInputError}
-                  name="DiagnosticMessages"
+                  name="diagnosticmessages"
                   label="การวินิจฉัยโรค หรือ อาการที่แสดง"
                   variant="outlined"
                   type="string"
@@ -404,7 +405,7 @@ function redirectToSearchDiagnosis() {
                   required
                   error={!diagnosis.diagnosisdate && showInputError}
                   label="วันที่ทำการวินิจฉัย"
-                  name="DiagnosisDate"
+                  name="diagnosisdate"
                   type="date"
                   value={diagnosis.diagnosisdate || ''}
                   className={classes.textTime}
@@ -418,22 +419,20 @@ function redirectToSearchDiagnosis() {
 
             <Grid item xs={12}>
             <FormControl variant="outlined" className={classes.formControl}>
-              <InputLabel>ผู้บันทึกข้อมูล</InputLabel>
-              <Select
+            <TextField
+                required={true}
+                disabled // ห้ามแก้ไข
+                // id="name"
                 name="employee"
-                value={diagnosis.employee || ''}
+                type="string"
+                label="รหัสผู้บันทึกข้อมูล"
+                variant="outlined"
+                fullWidth
+                multiline
+                value={window.localStorage.getItem("username") || ""}
                 onChange={handleChange}
-                label="ผู้บันทึกข้อมูล"
-              >
-                {employee.map(item => {
-                  return (
-                    <MenuItem key={item.id} value={item.id}>
-                    {item.userId}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-            </FormControl>
+              />
+              </FormControl>
           </Grid>
 
 

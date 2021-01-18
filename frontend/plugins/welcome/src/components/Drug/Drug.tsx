@@ -90,7 +90,7 @@ const useStyles = makeStyles(theme => ({
 // alert setting
 const Toast = Swal.mixin({
   toast: true,
-  position: 'top-end',
+  position: undefined,
   showConfirmButton: false,
   timer: 3000,
   timerProgressBar: true,
@@ -133,11 +133,11 @@ const StyledMenuItem = withStyles((theme) => ({
 
 interface Drug {
   employee: number;
-  name: string;
+  drugName: string;
   drugtype: number;
   howto: string;
   property: string;
-  disease: string;
+  disease: number;
 
   // create_by: number;
 }
@@ -158,12 +158,12 @@ const Drug: FC<{}> = () => {
   };
 
   const getEmployee = async () => {
-    const res = await http.listEmployee({ limit: 3, offset: 0 });
+    const res = await http.listEmployee({ limit: undefined, offset: 0 });
     setEmployees(res);
   };
 
   const getDisease = async () => {
-    const res = await http.listDisease({ limit: 5, offset: 0 });
+    const res = await http.listDisease({ limit: undefined, offset: 0 });
     setDiseases(res);
   };
 
@@ -204,14 +204,18 @@ function redirectToSearchDrug() {
   // function save data
   function save() {
     setShowInputError(true);
-    let { employee, name, drugtype, property, howto, disease } = drug;
-    if (!employee || !name || !drugtype || !property || !howto || !disease) {
+    let { drugName, drugtype, property, howto, disease } = drug;
+    if (!drugName || !drugtype || !property || !howto || !disease) {
       Toast.fire({
         icon: 'error',
         title: 'กรุณากรอกข้อมูลให้ครบถ้วน',
       });
       return;
     }
+
+    //เช็คแล้วเก็บค่าไว้ใน employee
+    drug.employee = employees.filter(emp => emp.userId === window.localStorage.getItem("username"))[0].id;
+
     const apiUrl = 'http://localhost:8080/api/v1/drugs';
     const requestOptions = {
       method: 'POST',
@@ -310,46 +314,52 @@ function redirectToSearchDrug() {
             <h1> ข้อมูลยา </h1>
           </Grid>
 
-          <Grid item xs={12}>
-            <FormControl variant="outlined" className={classes.formControl}>
-              <InputLabel>รหัสบุคลากร</InputLabel>
+          <Grid item xs={10}>
+            <TextField
+              required={true}
+              error={!drug.drugName && showInputError}
+              id="drugName"
+              name="drugName"
+              type="string"
+              label="ชื่อยา , วัคซีน "
+              variant="outlined"
+              fullWidth
+              multiline
+              value={drug.drugName || ''}
+              onChange={handleChange}
+            />
+          </Grid>
+
+          <Grid item xs={10}>
+          <FormControl required variant="outlined" className={classes.formControl}>
+              <InputLabel>ชื่อโรคติดต่อ</InputLabel>
               <Select
-                name="employee"
-                value={drug.employee || ''}
+                name="disease"
+                required={true}
+                error={!drug.disease && showInputError}
+                value={drug.disease || ''}
                 onChange={handleChange}
-                label="รหัสบุคลากร"
+                label="ชื่อโรคติดต่อ"
+                fullWidth
               >
-                {employees.map(item => {
+                {diseases.map(item => {
                   return (
                     <MenuItem key={item.id} value={item.id}>
-                    {item.userId}
+                      {item.diseaseName}
                     </MenuItem>
                   );
                 })}
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={10}>
-            <TextField
-              required={true}
-              error={!drug.name && showInputError}
-              id="name"
-              name="name"
-              type="string"
-              label="ชื่อยา , วัคซีน "
-              variant="outlined"
-              fullWidth
-              multiline
-              value={drug.name || ''}
-              onChange={handleChange}
-            />
-          </Grid>
 
           <Grid item xs={12}>
-            <FormControl variant="outlined" className={classes.formControl}>
+            <FormControl required variant="outlined" className={classes.formControl}>
               <InputLabel>ประเภทยา</InputLabel>
               <Select
                 name="drugtype"
+                required={true}
+                error={!drug.drugtype && showInputError}
                 value={drug.drugtype || ''}
                 onChange={handleChange}
                 label="ประเภทยา"
@@ -395,23 +405,21 @@ function redirectToSearchDrug() {
           </Grid>
 
           <Grid item xs={12}>
-            <FormControl variant="outlined" className={classes.formControl}>
-              <InputLabel>โรคติดต่อ</InputLabel>
-              <Select
-                name="disease"
-                value={drug.disease || ''}
+          <FormControl variant="outlined" className={classes.formControl}>
+          <TextField
+                required={true}
+                disabled // ห้ามแก้ไข
+                // id="name"
+                name="employee"
+                type="string"
+                label="รหัสผู้บันทึกข้อมูล"
+                variant="outlined"
+                fullWidth
+                multiline
+                value={window.localStorage.getItem("username") || ""}
                 onChange={handleChange}
-                label="โรคติดต่อ"
-              >
-                {diseases.map(item => {
-                  return (
-                    <MenuItem key={item.id} value={item.id}>
-                      {item.diseaseName}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-            </FormControl>
+              />
+              </FormControl>
           </Grid>
 
           <Grid item xs={10}>

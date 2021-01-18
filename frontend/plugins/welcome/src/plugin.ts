@@ -8,11 +8,13 @@ import Diagnosis from './components/Diagnosis'
 import Disease from './components/Disease'
 import Login from './components/SignIn/Login'
 import Area from './components/Area';
+import SearchEmployee from './components/Search Employee';
 
 export const plugin = createPlugin({
   id: 'welcome',
   register({ router }) {
     router.registerRoute('/employee', Employee);
+    router.registerRoute('/searchemployee', SearchEmployee);
 //    router.registerRoute('/', WelcomePage);
 //    router.registerRoute('/watch_video', WatchVideo);
     router.registerRoute('/', Login);

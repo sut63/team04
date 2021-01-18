@@ -102,7 +102,7 @@ type Patients struct {
 
 // Patient  defines the struct for the Patient
 type Patient struct {
-	Idcard string
+	PatientName string
 }
 
 // Diseases  defines the struct for the diseases
@@ -228,6 +228,7 @@ func main() {
 	controllers.NewDrugController(v1, client)
 	controllers.NewLevelController(v1, client)
 	controllers.NewStatisticController(v1, client)
+	controllers.NewDiagnosisController(v1, client)
 
 
 	// Set Categorys Data

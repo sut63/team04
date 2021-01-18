@@ -5,6 +5,7 @@ package ent
 import (
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/B6001186/Contagions/ent/diagnosis"
 	"github.com/B6001186/Contagions/ent/disease"
@@ -23,7 +24,7 @@ type Diagnosis struct {
 	// SurveillancePeriod holds the value of the "SurveillancePeriod" field.
 	SurveillancePeriod string `json:"SurveillancePeriod,omitempty"`
 	// DiagnosisDate holds the value of the "DiagnosisDate" field.
-	DiagnosisDate string `json:"DiagnosisDate,omitempty"`
+	DiagnosisDate time.Time `json:"DiagnosisDate,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the DiagnosisQuery when eager-loading is set.
 	Edges              DiagnosisEdges `json:"edges"`
@@ -93,7 +94,7 @@ func (*Diagnosis) scanValues() []interface{} {
 		&sql.NullInt64{},  // id
 		&sql.NullString{}, // DiagnosticMessages
 		&sql.NullString{}, // SurveillancePeriod
-		&sql.NullString{}, // DiagnosisDate
+		&sql.NullTime{},   // DiagnosisDate
 	}
 }
 
@@ -128,10 +129,10 @@ func (d *Diagnosis) assignValues(values ...interface{}) error {
 	} else if value.Valid {
 		d.SurveillancePeriod = value.String
 	}
-	if value, ok := values[2].(*sql.NullString); !ok {
+	if value, ok := values[2].(*sql.NullTime); !ok {
 		return fmt.Errorf("unexpected type %T for field DiagnosisDate", values[2])
 	} else if value.Valid {
-		d.DiagnosisDate = value.String
+		d.DiagnosisDate = value.Time
 	}
 	values = values[3:]
 	if len(values) == len(diagnosis.ForeignKeys) {
@@ -200,7 +201,7 @@ func (d *Diagnosis) String() string {
 	builder.WriteString(", SurveillancePeriod=")
 	builder.WriteString(d.SurveillancePeriod)
 	builder.WriteString(", DiagnosisDate=")
-	builder.WriteString(d.DiagnosisDate)
+	builder.WriteString(d.DiagnosisDate.Format(time.ANSIC))
 	builder.WriteByte(')')
 	return builder.String()
 }

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta content="text/html; charset=UTF-8" http-equiv="content-type" />
+	<title>Area System Test Suite</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Success Test Case</td></tr>
+</thead>
+<tbody>
+<tr><td>open</td><td>http://localhost:3000/<datalist><option>http://localhost:3000/</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>id=username<datalist><option>id=username</option><option>name=username</option><option>//input[@id='username']</option><option>//div[@id='root']/main/div[2]/div/form/div/div/input</option><option>//input</option><option>css=#username</option></datalist></td><td></td>
+</tr>
+<tr><td>type</td><td>id=username<datalist><option>id=username</option><option>name=username</option><option>//input[@id='username']</option><option>//div[@id='root']/main/div[2]/div/form/div/div/input</option><option>//input</option><option>css=#username</option></datalist></td><td>E12345</td>
+</tr>
+<tr><td>click</td><td>id=password<datalist><option>id=password</option><option>name=password</option><option>//input[@id='password']</option><option>//div[@id='root']/main/div[2]/div/form/div[2]/div/input</option><option>//div[2]/div/input</option><option>css=#password</option></datalist></td><td></td>
+</tr>
+<tr><td>type</td><td>id=password<datalist><option>id=password</option><option>name=password</option><option>//input[@id='password']</option><option>//div[@id='root']/main/div[2]/div/form/div[2]/div/input</option><option>//div[2]/div/input</option><option>css=#password</option></datalist></td><td>12345e</td>
+</tr>
+<tr><td>click</td><td>//div[@id='root']/main/div[2]/div/form/button/span<datalist><option>//div[@id='root']/main/div[2]/div/form/button/span</option><option>//button/span</option><option>css=span.MuiButton-label</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>css=svg.MuiSvgIcon-root<datalist><option>css=svg.MuiSvgIcon-root</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>//div[@id='customized-menu']/div[3]/ul/li[3]/div[2]/span<datalist><option>//div[@id='customized-menu']/div[3]/ul/li[3]/div[2]/span</option><option>//li[3]/div[2]/span</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>name=areaName<datalist><option>name=areaName</option><option>//input[@name='areaName']</option><option>//div[@id='root']/div/div/div/div[3]/div/div/div/input</option><option>//input</option><option>css=input[name="areaName"]</option></datalist></td><td></td>
+</tr>
+<tr><td>type</td><td>name=areaName<datalist><option>name=areaName</option><option>//input[@name='areaName']</option><option>//div[@id='root']/div/div/div/div[3]/div/div/div/input</option><option>//input</option><option>css=input[name="areaName"]</option></datalist></td><td>มทส</td>
+</tr>
+<tr><td>click</td><td>id=mui-component-select-level<datalist><option>//body</option><option>css=body.vsc-initialized</option><option>id=mui-component-select-level</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>//div[@id='menu-level']/div[3]/ul/li<datalist><option>//div[@id='menu-level']/div[3]/ul/li</option><option>//div[3]/ul/li</option><option>css=li.MuiButtonBase-root.MuiListItem-root.MuiMenuItem-root.MuiMenuItem-gutters.MuiListItem-gutters.MuiListItem-button.Mui-focusVisible.Mui-focusVisible</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>id=mui-component-select-statistic<datalist><option>//body</option><option>css=body.vsc-initialized</option><option>id=mui-component-select-statistic</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>//div[@id='menu-statistic']/div[3]/ul/li<datalist><option>//div[@id='menu-statistic']/div[3]/ul/li</option><option>//div[3]/ul/li</option><option>css=li.MuiButtonBase-root.MuiListItem-root.MuiMenuItem-root.MuiMenuItem-gutters.MuiListItem-gutters.MuiListItem-button.Mui-focusVisible.Mui-focusVisible</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>id=mui-component-select-disease<datalist><option>//body</option><option>css=body.vsc-initialized</option><option>id=mui-component-select-disease</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>//div[@id='menu-disease']/div[3]/ul/li[3]<datalist><option>//div[@id='menu-disease']/div[3]/ul/li[3]</option><option>//div[3]/ul/li[3]</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>//div[@id='root']/div/div/div/div[8]/button/span<datalist><option>//div[@id='root']/div/div/div/div[8]/button/span</option><option>//div[8]/button/span</option><option>css=span.MuiButton-label</option></datalist></td><td></td>
+</tr>
+<tr><td>assertText</td><td>id=swal2-title<datalist><option>id=swal2-title</option><option>//h2[@id='swal2-title']</option><option>//div[3]/div/div/h2</option><option>css=#swal2-title</option></datalist></td><td>บันทึกข้อมูลสำเร็จ</td>
+</tr>
+</tbody></table>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Failed Test Case</td></tr>
+</thead>
+<tbody>
+<tr><td>open</td><td>http://localhost:3000/<datalist><option>http://localhost:3000/</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>id=username<datalist><option>id=username</option><option>name=username</option><option>//input[@id='username']</option><option>//div[@id='root']/main/div[2]/div/form/div/div/input</option><option>//input</option><option>css=#username</option></datalist></td><td></td>
+</tr>
+<tr><td>type</td><td>id=username<datalist><option>id=username</option><option>name=username</option><option>//input[@id='username']</option><option>//div[@id='root']/main/div[2]/div/form/div/div/input</option><option>//input</option><option>css=#username</option></datalist></td><td>E12345</td>
+</tr>
+<tr><td>click</td><td>id=password<datalist><option>id=password</option><option>name=password</option><option>//input[@id='password']</option><option>//div[@id='root']/main/div[2]/div/form/div[2]/div/input</option><option>//div[2]/div/input</option><option>css=#password</option></datalist></td><td></td>
+</tr>
+<tr><td>type</td><td>id=password<datalist><option>id=password</option><option>name=password</option><option>//input[@id='password']</option><option>//div[@id='root']/main/div[2]/div/form/div[2]/div/input</option><option>//div[2]/div/input</option><option>css=#password</option></datalist></td><td>12345e</td>
+</tr>
+<tr><td>click</td><td>//div[@id='root']/main/div[2]/div/form/button/span<datalist><option>//div[@id='root']/main/div[2]/div/form/button/span</option><option>//button/span</option><option>css=span.MuiButton-label</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>css=svg.MuiSvgIcon-root<datalist><option>css=svg.MuiSvgIcon-root</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>//div[@id='customized-menu']/div[3]/ul/li[3]/div[2]/span<datalist><option>//div[@id='customized-menu']/div[3]/ul/li[3]/div[2]/span</option><option>//li[3]/div[2]/span</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>name=areaName<datalist><option>name=areaName</option><option>//input[@name='areaName']</option><option>//div[@id='root']/div/div/div/div[3]/div/div/div/input</option><option>//input</option><option>css=input[name="areaName"]</option></datalist></td><td></td>
+</tr>
+<tr><td>type</td><td>name=areaName<datalist><option>name=areaName</option><option>//input[@name='areaName']</option><option>//div[@id='root']/div/div/div/div[3]/div/div/div/input</option><option>//input</option><option>css=input[name="areaName"]</option></datalist></td><td>โคราช</td>
+</tr>
+<tr><td>click</td><td>//div[@id='root']/div/div/div/div[8]/button/span<datalist><option>//div[@id='root']/div/div/div/div[8]/button/span</option><option>//div[8]/button/span</option><option>css=span.MuiButton-label</option></datalist></td><td></td>
+</tr>
+<tr><td>assertText</td><td>//div[3]/div/div<datalist><option>//div[3]/div/div</option><option>css=div.swal2-header</option></datalist></td><td>กรุณากรอกข้อมูลให้ครบถ้วน</td>
+</tr>
+</tbody></table>
+</body>
+</html>

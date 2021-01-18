@@ -3,6 +3,8 @@
 package diagnosis
 
 import (
+	"time"
+
 	"github.com/B6001186/Contagions/ent/predicate"
 	"github.com/facebookincubator/ent/dialect/sql"
 	"github.com/facebookincubator/ent/dialect/sql/sqlgraph"
@@ -106,7 +108,7 @@ func SurveillancePeriod(v string) predicate.Diagnosis {
 }
 
 // DiagnosisDate applies equality check predicate on the "DiagnosisDate" field. It's identical to DiagnosisDateEQ.
-func DiagnosisDate(v string) predicate.Diagnosis {
+func DiagnosisDate(v time.Time) predicate.Diagnosis {
 	return predicate.Diagnosis(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldDiagnosisDate), v))
 	})
@@ -335,21 +337,21 @@ func SurveillancePeriodContainsFold(v string) predicate.Diagnosis {
 }
 
 // DiagnosisDateEQ applies the EQ predicate on the "DiagnosisDate" field.
-func DiagnosisDateEQ(v string) predicate.Diagnosis {
+func DiagnosisDateEQ(v time.Time) predicate.Diagnosis {
 	return predicate.Diagnosis(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldDiagnosisDate), v))
 	})
 }
 
 // DiagnosisDateNEQ applies the NEQ predicate on the "DiagnosisDate" field.
-func DiagnosisDateNEQ(v string) predicate.Diagnosis {
+func DiagnosisDateNEQ(v time.Time) predicate.Diagnosis {
 	return predicate.Diagnosis(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldDiagnosisDate), v))
 	})
 }
 
 // DiagnosisDateIn applies the In predicate on the "DiagnosisDate" field.
-func DiagnosisDateIn(vs ...string) predicate.Diagnosis {
+func DiagnosisDateIn(vs ...time.Time) predicate.Diagnosis {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -366,7 +368,7 @@ func DiagnosisDateIn(vs ...string) predicate.Diagnosis {
 }
 
 // DiagnosisDateNotIn applies the NotIn predicate on the "DiagnosisDate" field.
-func DiagnosisDateNotIn(vs ...string) predicate.Diagnosis {
+func DiagnosisDateNotIn(vs ...time.Time) predicate.Diagnosis {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -383,65 +385,30 @@ func DiagnosisDateNotIn(vs ...string) predicate.Diagnosis {
 }
 
 // DiagnosisDateGT applies the GT predicate on the "DiagnosisDate" field.
-func DiagnosisDateGT(v string) predicate.Diagnosis {
+func DiagnosisDateGT(v time.Time) predicate.Diagnosis {
 	return predicate.Diagnosis(func(s *sql.Selector) {
 		s.Where(sql.GT(s.C(FieldDiagnosisDate), v))
 	})
 }
 
 // DiagnosisDateGTE applies the GTE predicate on the "DiagnosisDate" field.
-func DiagnosisDateGTE(v string) predicate.Diagnosis {
+func DiagnosisDateGTE(v time.Time) predicate.Diagnosis {
 	return predicate.Diagnosis(func(s *sql.Selector) {
 		s.Where(sql.GTE(s.C(FieldDiagnosisDate), v))
 	})
 }
 
 // DiagnosisDateLT applies the LT predicate on the "DiagnosisDate" field.
-func DiagnosisDateLT(v string) predicate.Diagnosis {
+func DiagnosisDateLT(v time.Time) predicate.Diagnosis {
 	return predicate.Diagnosis(func(s *sql.Selector) {
 		s.Where(sql.LT(s.C(FieldDiagnosisDate), v))
 	})
 }
 
 // DiagnosisDateLTE applies the LTE predicate on the "DiagnosisDate" field.
-func DiagnosisDateLTE(v string) predicate.Diagnosis {
+func DiagnosisDateLTE(v time.Time) predicate.Diagnosis {
 	return predicate.Diagnosis(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldDiagnosisDate), v))
-	})
-}
-
-// DiagnosisDateContains applies the Contains predicate on the "DiagnosisDate" field.
-func DiagnosisDateContains(v string) predicate.Diagnosis {
-	return predicate.Diagnosis(func(s *sql.Selector) {
-		s.Where(sql.Contains(s.C(FieldDiagnosisDate), v))
-	})
-}
-
-// DiagnosisDateHasPrefix applies the HasPrefix predicate on the "DiagnosisDate" field.
-func DiagnosisDateHasPrefix(v string) predicate.Diagnosis {
-	return predicate.Diagnosis(func(s *sql.Selector) {
-		s.Where(sql.HasPrefix(s.C(FieldDiagnosisDate), v))
-	})
-}
-
-// DiagnosisDateHasSuffix applies the HasSuffix predicate on the "DiagnosisDate" field.
-func DiagnosisDateHasSuffix(v string) predicate.Diagnosis {
-	return predicate.Diagnosis(func(s *sql.Selector) {
-		s.Where(sql.HasSuffix(s.C(FieldDiagnosisDate), v))
-	})
-}
-
-// DiagnosisDateEqualFold applies the EqualFold predicate on the "DiagnosisDate" field.
-func DiagnosisDateEqualFold(v string) predicate.Diagnosis {
-	return predicate.Diagnosis(func(s *sql.Selector) {
-		s.Where(sql.EqualFold(s.C(FieldDiagnosisDate), v))
-	})
-}
-
-// DiagnosisDateContainsFold applies the ContainsFold predicate on the "DiagnosisDate" field.
-func DiagnosisDateContainsFold(v string) predicate.Diagnosis {
-	return predicate.Diagnosis(func(s *sql.Selector) {
-		s.Where(sql.ContainsFold(s.C(FieldDiagnosisDate), v))
 	})
 }
 
