@@ -157,7 +157,7 @@ const Diagnosis: FC<{}> = () => {
   }
 
   const getEmployee = async () => {
-    const res = await http.listEmployee({ limit: 5, offset: 0 });
+    const res = await http.listEmployee({ limit: undefined, offset: 0 });
     setEmployees(res);
   }
 
