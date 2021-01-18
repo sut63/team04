@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"context"
 	"strconv"
+	"time"
+	"log"
 
 	"github.com/B6001186/Contagions/ent"
 	"github.com/B6001186/Contagions/ent/employee"
@@ -60,7 +62,7 @@ func (ctl *DiagnosisController) CreateDiagnosis(c *gin.Context) {
         })
         return
 	}
-	d, err := ctl.client.Disease.
+	ds, err := ctl.client.Disease.
             Query().
             Where(disease.IDEQ(int(obj.Disease))).
             Only(context.Background())
@@ -83,13 +85,19 @@ func (ctl *DiagnosisController) CreateDiagnosis(c *gin.Context) {
             return
 	}
 
+	diagdate, err := time.Parse(time.RFC3339, obj.DiagnosisDate + "T00:00:00Z")
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	dia, err := ctl.client.Diagnosis.
 		Create().
 		SetDiagnosticMessages(obj.DiagnosticMessages).
 		SetSurveillancePeriod(obj.SurveillancePeriod).
-		SetDiagnosisDate(obj.DiagnosisDate).
+		SetDiagnosisDate(diagdate).
 		SetEmployee(e).
-		SetDisease(d).
+		SetDisease(ds).
 		SetPatient(pa).
 		Save(context.Background())
 
@@ -213,7 +221,7 @@ func (ctl *DiagnosisController) UpdateDiagnosis(c *gin.Context) {
 	}
 	obj.ID = int(id)
 	fmt.Println(obj.ID)
-	u, err := ctl.client.Diagnosis.
+	dia, err := ctl.client.Diagnosis.
 		UpdateOneID(int(id)).
 		SetDiagnosticMessages(obj.DiagnosticMessages).
 		SetSurveillancePeriod(obj.SurveillancePeriod).
@@ -227,18 +235,18 @@ func (ctl *DiagnosisController) UpdateDiagnosis(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, u)
+	c.JSON(200, dia)
 }
 
 
 // NewDiagnosisController creates and registers handles for the diagnosis controller
 func NewDiagnosisController(router gin.IRouter, client *ent.Client) *DiagnosisController {
-	dc := &DiagnosisController{
+	diac := &DiagnosisController{
 		client: client,
 		router: router,
 	}
-	dc.register()
-	return dc
+	diac.register()
+	return diac
 }
 
 func (ctl *DiagnosisController) register() {

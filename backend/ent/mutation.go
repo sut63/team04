@@ -1709,7 +1709,7 @@ type DiagnosisMutation struct {
 	id                  *int
 	_DiagnosticMessages *string
 	_SurveillancePeriod *string
-	_DiagnosisDate      *string
+	_DiagnosisDate      *time.Time
 	clearedFields       map[string]struct{}
 	disease             *int
 	cleareddisease      bool
@@ -1875,12 +1875,12 @@ func (m *DiagnosisMutation) ResetSurveillancePeriod() {
 }
 
 // SetDiagnosisDate sets the DiagnosisDate field.
-func (m *DiagnosisMutation) SetDiagnosisDate(s string) {
-	m._DiagnosisDate = &s
+func (m *DiagnosisMutation) SetDiagnosisDate(t time.Time) {
+	m._DiagnosisDate = &t
 }
 
 // DiagnosisDate returns the DiagnosisDate value in the mutation.
-func (m *DiagnosisMutation) DiagnosisDate() (r string, exists bool) {
+func (m *DiagnosisMutation) DiagnosisDate() (r time.Time, exists bool) {
 	v := m._DiagnosisDate
 	if v == nil {
 		return
@@ -1892,7 +1892,7 @@ func (m *DiagnosisMutation) DiagnosisDate() (r string, exists bool) {
 // If the Diagnosis object wasn't provided to the builder, the object is fetched
 // from the database.
 // An error is returned if the mutation operation is not UpdateOne, or database query fails.
-func (m *DiagnosisMutation) OldDiagnosisDate(ctx context.Context) (v string, err error) {
+func (m *DiagnosisMutation) OldDiagnosisDate(ctx context.Context) (v time.Time, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldDiagnosisDate is allowed only on UpdateOne operations")
 	}
@@ -2105,7 +2105,7 @@ func (m *DiagnosisMutation) SetField(name string, value ent.Value) error {
 		m.SetSurveillancePeriod(v)
 		return nil
 	case diagnosis.FieldDiagnosisDate:
-		v, ok := value.(string)
+		v, ok := value.(time.Time)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}

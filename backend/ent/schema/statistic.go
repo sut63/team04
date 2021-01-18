@@ -14,7 +14,7 @@ type Statistic struct {
 // Fields of the Statistic.
 func (Statistic) Fields() []ent.Field {
  return []ent.Field{
- field.String("StatisticName"),
+ field.String("StatisticName").Unique(),
  }
 }
 

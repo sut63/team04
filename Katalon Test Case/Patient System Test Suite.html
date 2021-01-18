@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta content="text/html; charset=UTF-8" http-equiv="content-type" />
+	<title>Patient System Test Suite</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Success Test Case</td></tr>
+</thead>
+<tbody>
+<tr><td>open</td><td>http://localhost:3000/<datalist><option>http://localhost:3000/</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>id=username<datalist><option>id=username</option><option>name=username</option><option>//input[@id='username']</option><option>//div[@id='root']/main/div[2]/div/form/div/div/input</option><option>//input</option><option>css=#username</option></datalist></td><td></td>
+</tr>
+<tr><td>type</td><td>id=username<datalist><option>id=username</option><option>name=username</option><option>//input[@id='username']</option><option>//div[@id='root']/main/div[2]/div/form/div/div/input</option><option>//input</option><option>css=#username</option></datalist></td><td>N12345</td>
+</tr>
+<tr><td>click</td><td>id=password<datalist><option>id=password</option><option>name=password</option><option>//input[@id='password']</option><option>//div[@id='root']/main/div[2]/div/form/div[2]/div/input</option><option>//div[2]/div/input</option><option>css=#password</option></datalist></td><td></td>
+</tr>
+<tr><td>type</td><td>id=password<datalist><option>id=password</option><option>name=password</option><option>//input[@id='password']</option><option>//div[@id='root']/main/div[2]/div/form/div[2]/div/input</option><option>//div[2]/div/input</option><option>css=#password</option></datalist></td><td>12345n</td>
+</tr>
+<tr><td>click</td><td>//div[@id='root']/main/div[2]/div/form/button/span<datalist><option>//div[@id='root']/main/div[2]/div/form/button/span</option><option>//button/span</option><option>css=span.MuiButton-label</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>id=idcard<datalist><option>id=idcard</option><option>name=idcard</option><option>//textarea[@id='idcard']</option><option>//div[@id='root']/div/div/div/div[2]/div/div/textarea</option><option>//textarea</option><option>css=#idcard</option></datalist></td><td></td>
+</tr>
+<tr><td>type</td><td>id=idcard<datalist><option>id=idcard</option><option>name=idcard</option><option>//textarea[@id='idcard']</option><option>//div[@id='root']/div/div/div/div[2]/div/div/textarea</option><option>//textarea</option><option>css=#idcard</option></datalist></td><td>1300200000011</td>
+</tr>
+<tr><td>click</td><td>id=mui-component-select-category<datalist><option>//body</option><option>css=body.vsc-initialized</option><option>id=mui-component-select-category</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>//div[@id='menu-category']/div[3]/ul/li[4]<datalist><option>//div[@id='menu-category']/div[3]/ul/li[4]</option><option>//li[4]</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>id=mui-component-select-nametitle<datalist><option>//body</option><option>css=body.vsc-initialized</option><option>id=mui-component-select-nametitle</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>//div[@id='menu-nametitle']/div[3]/ul/li[3]<datalist><option>//div[@id='menu-nametitle']/div[3]/ul/li[3]</option><option>//li[3]</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>name=patientname<datalist><option>name=patientname</option><option>//textarea[@name='patientname']</option><option>//div[@id='root']/div/div/div/div[5]/div/div/textarea</option><option>//div[5]/div/div/textarea</option><option>css=textarea[name="patientname"]</option></datalist></td><td></td>
+</tr>
+<tr><td>type</td><td>name=patientname<datalist><option>name=patientname</option><option>//textarea[@name='patientname']</option><option>//div[@id='root']/div/div/div/div[5]/div/div/textarea</option><option>//div[5]/div/div/textarea</option><option>css=textarea[name="patientname"]</option></datalist></td><td>Ren Shihao</td>
+</tr>
+<tr><td>click</td><td>id=mui-component-select-gender<datalist><option>//body</option><option>css=body.vsc-initialized</option><option>id=mui-component-select-gender</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>//div[@id='menu-gender']/div[3]/ul/li<datalist><option>//div[@id='menu-gender']/div[3]/ul/li</option><option>//div[3]/ul/li</option><option>css=li.MuiButtonBase-root.MuiListItem-root.MuiMenuItem-root.MuiMenuItem-gutters.MuiListItem-gutters.MuiListItem-button.Mui-focusVisible.Mui-focusVisible</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>id=mui-component-select-bloodtype<datalist><option>//body</option><option>css=body.vsc-initialized</option><option>id=mui-component-select-bloodtype</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>//div[@id='menu-bloodtype']/div[3]/ul/li<datalist><option>//div[@id='menu-bloodtype']/div[3]/ul/li</option><option>//div[3]/ul/li</option><option>css=li.MuiButtonBase-root.MuiListItem-root.MuiMenuItem-root.MuiMenuItem-gutters.MuiListItem-gutters.MuiListItem-button.Mui-focusVisible.Mui-focusVisible</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>name=address<datalist><option>name=address</option><option>//textarea[@name='address']</option><option>//div[@id='root']/div/div/div/div[8]/div/div/textarea</option><option>//div[8]/div/div/textarea</option><option>css=textarea[name="address"]</option></datalist></td><td></td>
+</tr>
+<tr><td>type</td><td>name=address<datalist><option>name=address</option><option>//textarea[@name='address']</option><option>//div[@id='root']/div/div/div/div[8]/div/div/textarea</option><option>//div[8]/div/div/textarea</option><option>css=textarea[name="address"]</option></datalist></td><td>Hebei</td>
+</tr>
+<tr><td>click</td><td>name=congenital<datalist><option>name=congenital</option><option>//textarea[@name='congenital']</option><option>//div[@id='root']/div/div/div/div[10]/div/div/textarea</option><option>//div[10]/div/div/textarea</option><option>css=textarea[name="congenital"]</option></datalist></td><td></td>
+</tr>
+<tr><td>type</td><td>name=congenital<datalist><option>name=congenital</option><option>//textarea[@name='congenital']</option><option>//div[@id='root']/div/div/div/div[10]/div/div/textarea</option><option>//div[10]/div/div/textarea</option><option>css=textarea[name="congenital"]</option></datalist></td><td>ไม่มี</td>
+</tr>
+<tr><td>click</td><td>name=allergic<datalist><option>name=allergic</option><option>//textarea[@name='allergic']</option><option>//div[@id='root']/div/div/div/div[11]/div/div/textarea</option><option>//div[11]/div/div/textarea</option><option>css=textarea[name="allergic"]</option></datalist></td><td></td>
+</tr>
+<tr><td>type</td><td>name=allergic<datalist><option>name=allergic</option><option>//textarea[@name='allergic']</option><option>//div[@id='root']/div/div/div/div[11]/div/div/textarea</option><option>//div[11]/div/div/textarea</option><option>css=textarea[name="allergic"]</option></datalist></td><td>ไม่มี</td>
+</tr>
+<tr><td>click</td><td>//div[@id='root']/div/div/div/div[13]/button/span<datalist><option>//div[@id='root']/div/div/div/div[13]/button/span</option><option>//div[13]/button/span</option><option>css=span.MuiButton-label</option></datalist></td><td></td>
+</tr>
+<tr><td>assertText</td><td>id=swal2-title<datalist><option>id=swal2-title</option><option>//h2[@id='swal2-title']</option><option>//div[3]/div/div/h2</option><option>css=#swal2-title</option></datalist></td><td>บันทึกข้อมูลสำเร็จ</td>
+</tr>
+</tbody></table>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Failed Test Case</td></tr>
+</thead>
+<tbody>
+<tr><td>open</td><td>http://localhost:3000/<datalist><option>http://localhost:3000/</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>id=username<datalist><option>id=username</option><option>name=username</option><option>//input[@id='username']</option><option>//div[@id='root']/main/div[2]/div/form/div/div/input</option><option>//input</option><option>css=#username</option></datalist></td><td></td>
+</tr>
+<tr><td>type</td><td>id=username<datalist><option>id=username</option><option>name=username</option><option>//input[@id='username']</option><option>//div[@id='root']/main/div[2]/div/form/div/div/input</option><option>//input</option><option>css=#username</option></datalist></td><td>N12345</td>
+</tr>
+<tr><td>click</td><td>id=password<datalist><option>id=password</option><option>name=password</option><option>//input[@id='password']</option><option>//div[@id='root']/main/div[2]/div/form/div[2]/div/input</option><option>//div[2]/div/input</option><option>css=#password</option></datalist></td><td></td>
+</tr>
+<tr><td>type</td><td>id=password<datalist><option>id=password</option><option>name=password</option><option>//input[@id='password']</option><option>//div[@id='root']/main/div[2]/div/form/div[2]/div/input</option><option>//div[2]/div/input</option><option>css=#password</option></datalist></td><td>12345n</td>
+</tr>
+<tr><td>click</td><td>//div[@id='root']/main/div[2]/div/form/button/span<datalist><option>//div[@id='root']/main/div[2]/div/form/button/span</option><option>//button/span</option><option>css=span.MuiButton-label</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>id=idcard<datalist><option>id=idcard</option><option>name=idcard</option><option>//textarea[@id='idcard']</option><option>//div[@id='root']/div/div/div/div[2]/div/div/textarea</option><option>//textarea</option><option>css=#idcard</option></datalist></td><td></td>
+</tr>
+<tr><td>type</td><td>id=idcard<datalist><option>id=idcard</option><option>name=idcard</option><option>//textarea[@id='idcard']</option><option>//div[@id='root']/div/div/div/div[2]/div/div/textarea</option><option>//textarea</option><option>css=#idcard</option></datalist></td><td>1300201236776</td>
+</tr>
+<tr><td>click</td><td>name=patientname<datalist><option>name=patientname</option><option>//textarea[@name='patientname']</option><option>//div[@id='root']/div/div/div/div[5]/div/div/textarea</option><option>//div[5]/div/div/textarea</option><option>css=textarea[name="patientname"]</option></datalist></td><td></td>
+</tr>
+<tr><td>type</td><td>name=patientname<datalist><option>name=patientname</option><option>//textarea[@name='patientname']</option><option>//div[@id='root']/div/div/div/div[5]/div/div/textarea</option><option>//div[5]/div/div/textarea</option><option>css=textarea[name="patientname"]</option></datalist></td><td>Nikki</td>
+</tr>
+<tr><td>click</td><td>name=address<datalist><option>name=address</option><option>//textarea[@name='address']</option><option>//div[@id='root']/div/div/div/div[8]/div/div/textarea</option><option>//div[8]/div/div/textarea</option><option>css=textarea[name="address"]</option></datalist></td><td></td>
+</tr>
+<tr><td>type</td><td>name=address<datalist><option>name=address</option><option>//textarea[@name='address']</option><option>//div[@id='root']/div/div/div/div[8]/div/div/textarea</option><option>//div[8]/div/div/textarea</option><option>css=textarea[name="address"]</option></datalist></td><td>Japan</td>
+</tr>
+<tr><td>click</td><td>//div[@id='root']/div/div/div/div[13]/button/span<datalist><option>//div[@id='root']/div/div/div/div[13]/button/span</option><option>//div[13]/button/span</option><option>css=span.MuiButton-label</option></datalist></td><td></td>
+</tr>
+<tr><td>assertText</td><td>id=swal2-title<datalist><option>id=swal2-title</option><option>//h2[@id='swal2-title']</option><option>//div[3]/div/div/h2</option><option>css=#swal2-title</option></datalist></td><td>กรุณากรอกข้อมูลให้ครบถ้วน</td>
+</tr>
+</tbody></table>
+</body>
+</html>

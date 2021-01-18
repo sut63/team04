@@ -6,7 +6,7 @@ import (
 	"github.com/facebookincubator/ent/schema/field"
 )
 
-// Diagnosis schema.
+// Diagnosis holds the schema definition for the Diagnosis entity.
 type Diagnosis struct {
 	ent.Schema
 }
@@ -16,7 +16,7 @@ func (Diagnosis) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("DiagnosticMessages"),
 		field.String("SurveillancePeriod"),
-		field.String("DiagnosisDate"),
+		field.Time("DiagnosisDate"),
 	}
 }
 

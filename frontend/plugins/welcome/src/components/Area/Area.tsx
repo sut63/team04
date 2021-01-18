@@ -158,12 +158,12 @@ const Area: FC<{}> = () => {
   }
 
   const getDisease = async () => {
-    const res = await http.listDisease({ limit: 3, offset: 0 });
+    const res = await http.listDisease({ limit: undefined, offset: 0 });
     setDiseases(res);
   }
 
   const getEmployee = async () => {
-    const res = await http.listEmployee({ limit: 2, offset: 0 });
+    const res = await http.listEmployee({ limit: undefined, offset: 0 });
     setEmployees(res);
   }
 

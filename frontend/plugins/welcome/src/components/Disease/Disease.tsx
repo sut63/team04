@@ -359,21 +359,7 @@ const Disease: FC<{}> = () => {
               <h2 style={{ textAlign: 'center' }}> เพิ่มข้อมูลโรคติดต่อ </h2>
             </Grid>
 
-            <Grid item xs={10}>
-              <TextField
-                required={true}
-                disabled // ห้ามแก้ไข
-                // id="name"
-                name="Employee"
-                type="string"
-                label="รหัส"
-                variant="outlined"
-                fullWidth
-                multiline
-                value={window.localStorage.getItem("username") || ""}
-                onChange={handleChange}
-              />
-            </Grid>
+            
             {/*  เก็บไว้ก่อน เผื่อได้ใช้ครับ 
 
             <Grid item xs={12}>
@@ -480,6 +466,22 @@ const Disease: FC<{}> = () => {
                   })}
                 </Select>
               </FormControl>
+            </Grid>
+
+            <Grid item xs={10}>
+              <TextField
+                required={true}
+                disabled // ห้ามแก้ไข
+                // id="name"
+                name="Employee"
+                type="string"
+                label="รหัสผู้บันทึกข้อมูล"
+                variant="outlined"
+                fullWidth
+                multiline
+                value={window.localStorage.getItem("username") || ""}
+                onChange={handleChange}
+              />
             </Grid>
 
             <Grid item xs={10} >

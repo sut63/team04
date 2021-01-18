@@ -165,7 +165,7 @@ function redirectToSearchPatient() {
   // alert setting
   const Toast = Swal.mixin({
     toast: true,
-    position: 'top-end',
+    position: undefined,
     showConfirmButton: false,
     timer: 3000,
     timerProgressBar: true,
@@ -353,6 +353,7 @@ patient.employee = employees.filter(emp => emp.userId === window.localStorage.ge
               <InputLabel >ประเภทผู้ป่วย</InputLabel>
               <Select
                 name="category"
+                error={!patient.category && showInputError}
                 value={patient.category || ''}
                 onChange={handleChange}
                 label="ประเภทผู้ป่วย"
@@ -373,6 +374,7 @@ patient.employee = employees.filter(emp => emp.userId === window.localStorage.ge
               <InputLabel >คำนำหน้าชื่อ</InputLabel>
               <Select
                 name="nametitle"
+                error={!patient.nametitle && showInputError}
                 value={patient.nametitle || ''}
                 onChange={handleChange}
                 label="คำนำหน้าชื่อ"
@@ -408,6 +410,7 @@ patient.employee = employees.filter(emp => emp.userId === window.localStorage.ge
               <InputLabel>เพศ</InputLabel>
               <Select
                 name="gender"
+                error={!patient.gender && showInputError}
                 value={patient.gender || ''}
                 onChange={handleChange}
                 label="เพศ"
@@ -428,6 +431,7 @@ patient.employee = employees.filter(emp => emp.userId === window.localStorage.ge
               <InputLabel >กรุ๊ปเลือด</InputLabel>
               <Select
                 name="bloodtype"
+                error={!patient.bloodtype && showInputError}
                 value={patient.bloodtype || ''}
                 onChange={handleChange}
                 label="กรุ๊ปเลือด"
@@ -447,6 +451,7 @@ patient.employee = employees.filter(emp => emp.userId === window.localStorage.ge
           <Grid item xs={10}>
             <TextField
               name="address"
+              error={!patient.address && showInputError}
               label="ที่อยู่"
               variant="outlined"
               fullWidth

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta content="text/html; charset=UTF-8" http-equiv="content-type" />
+	<title>Disease System Test Suite</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Success Test Case</td></tr>
+</thead>
+<tbody>
+<tr><td>open</td><td>http://localhost:3000/<datalist><option>http://localhost:3000/</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>id=username<datalist><option>id=username</option><option>name=username</option><option>//input[@id='username']</option><option>//div[@id='root']/main/div[2]/div/form/div/div/input</option><option>//input</option><option>css=#username</option></datalist></td><td></td>
+</tr>
+<tr><td>type</td><td>id=username<datalist><option>id=username</option><option>name=username</option><option>//input[@id='username']</option><option>//div[@id='root']/main/div[2]/div/form/div/div/input</option><option>//input</option><option>css=#username</option></datalist></td><td>E12345</td>
+</tr>
+<tr><td>click</td><td>id=password<datalist><option>id=password</option><option>name=password</option><option>//input[@id='password']</option><option>//div[@id='root']/main/div[2]/div/form/div[2]/div/input</option><option>//div[2]/div/input</option><option>css=#password</option></datalist></td><td></td>
+</tr>
+<tr><td>type</td><td>id=password<datalist><option>id=password</option><option>name=password</option><option>//input[@id='password']</option><option>//div[@id='root']/main/div[2]/div/form/div[2]/div/input</option><option>//div[2]/div/input</option><option>css=#password</option></datalist></td><td>12345e</td>
+</tr>
+<tr><td>click</td><td>//div[@id='root']/main/div[2]/div/form/button/span<datalist><option>//div[@id='root']/main/div[2]/div/form/button/span</option><option>//button/span</option><option>css=span.MuiButton-label</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>id=DiseaseName<datalist><option>id=DiseaseName</option><option>name=DiseaseName</option><option>//textarea[@id='DiseaseName']</option><option>//div[@id='root']/div/article/div/div/div[2]/div/div/textarea</option><option>//textarea</option><option>css=#DiseaseName</option></datalist></td><td></td>
+</tr>
+<tr><td>type</td><td>id=DiseaseName<datalist><option>id=DiseaseName</option><option>name=DiseaseName</option><option>//textarea[@id='DiseaseName']</option><option>//div[@id='root']/div/article/div/div/div[2]/div/div/textarea</option><option>//textarea</option><option>css=#DiseaseName</option></datalist></td><td>เอดส์</td>
+</tr>
+<tr><td>click</td><td>id=mui-component-select-Severity<datalist><option>//body</option><option>css=body.vsc-initialized</option><option>id=mui-component-select-Severity</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>//div[@id='menu-Severity']/div[3]/ul/li[3]<datalist><option>//div[@id='menu-Severity']/div[3]/ul/li[3]</option><option>//div[3]/ul/li[3]</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>name=Symptom<datalist><option>name=Symptom</option><option>//textarea[@name='Symptom']</option><option>//div[@id='root']/div/article/div/div/div[4]/div/div/textarea</option><option>//div[4]/div/div/textarea</option><option>css=textarea[name="Symptom"]</option></datalist></td><td></td>
+</tr>
+<tr><td>type</td><td>name=Symptom<datalist><option>name=Symptom</option><option>//textarea[@name='Symptom']</option><option>//div[@id='root']/div/article/div/div/div[4]/div/div/textarea</option><option>//div[4]/div/div/textarea</option><option>css=textarea[name="Symptom"]</option></datalist></td><td>มีตุ่มหนอง</td>
+</tr>
+<tr><td>click</td><td>name=Contagion<datalist><option>name=Contagion</option><option>//textarea[@name='Contagion']</option><option>//div[@id='root']/div/article/div/div/div[5]/div/div/textarea</option><option>//div[5]/div/div/textarea</option><option>css=textarea[name="Contagion"]</option></datalist></td><td></td>
+</tr>
+<tr><td>type</td><td>name=Contagion<datalist><option>name=Contagion</option><option>//textarea[@name='Contagion']</option><option>//div[@id='root']/div/article/div/div/div[5]/div/div/textarea</option><option>//div[5]/div/div/textarea</option><option>css=textarea[name="Contagion"]</option></datalist></td><td>ผ่านทางการมีเพศสัมพันธ์หรือกรรมพันธุ์</td>
+</tr>
+<tr><td>click</td><td>id=mui-component-select-Diseasetype<datalist><option>//body</option><option>css=body.vsc-initialized</option><option>id=mui-component-select-Diseasetype</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>//div[@id='menu-Diseasetype']/div[3]/ul/li[2]<datalist><option>//div[@id='menu-Diseasetype']/div[3]/ul/li[2]</option><option>//div[3]/ul/li[2]</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>//div[@id='root']/div/article/div/div/div[8]/button/span<datalist><option>//div[@id='root']/div/article/div/div/div[8]/button/span</option><option>//div[8]/button/span</option><option>css=button[name="saveData"] &gt; span.MuiButton-label</option></datalist></td><td></td>
+</tr>
+<tr><td>assertText</td><td>id=swal2-title<datalist><option>id=swal2-title</option><option>//h2[@id='swal2-title']</option><option>//div[3]/div/div/h2</option><option>css=#swal2-title</option></datalist></td><td>บันทึกข้อมูลสำเร็จ</td>
+</tr>
+</tbody></table>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Failed Test Case</td></tr>
+</thead>
+<tbody>
+<tr><td>open</td><td>http://localhost:3000/<datalist><option>http://localhost:3000/</option></datalist></td><td></td>
+</tr>
+<tr><td>type</td><td>id=username<datalist><option>id=username</option><option>name=username</option><option>//input[@id='username']</option><option>//div[@id='root']/main/div[2]/div/form/div/div/input</option><option>//input</option><option>css=#username</option></datalist></td><td>E12345</td>
+</tr>
+<tr><td>click</td><td>id=password<datalist><option>id=password</option><option>name=password</option><option>//input[@id='password']</option><option>//div[@id='root']/main/div[2]/div/form/div[2]/div/input</option><option>//div[2]/div/input</option><option>css=#password</option></datalist></td><td></td>
+</tr>
+<tr><td>type</td><td>id=password<datalist><option>id=password</option><option>name=password</option><option>//input[@id='password']</option><option>//div[@id='root']/main/div[2]/div/form/div[2]/div/input</option><option>//div[2]/div/input</option><option>css=#password</option></datalist></td><td>12345e</td>
+</tr>
+<tr><td>click</td><td>//div[@id='root']/main/div[2]/div/form/button/span<datalist><option>//div[@id='root']/main/div[2]/div/form/button/span</option><option>//button/span</option><option>css=span.MuiButton-label</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>id=DiseaseName<datalist><option>id=DiseaseName</option><option>name=DiseaseName</option><option>//textarea[@id='DiseaseName']</option><option>//div[@id='root']/div/article/div/div/div[2]/div/div/textarea</option><option>//textarea</option><option>css=#DiseaseName</option></datalist></td><td></td>
+</tr>
+<tr><td>type</td><td>id=DiseaseName<datalist><option>id=DiseaseName</option><option>name=DiseaseName</option><option>//textarea[@id='DiseaseName']</option><option>//div[@id='root']/div/article/div/div/div[2]/div/div/textarea</option><option>//textarea</option><option>css=#DiseaseName</option></datalist></td><td>โควิด-19</td>
+</tr>
+<tr><td>click</td><td>name=Symptom<datalist><option>name=Symptom</option><option>//textarea[@name='Symptom']</option><option>//div[@id='root']/div/article/div/div/div[4]/div/div/textarea</option><option>//div[4]/div/div/textarea</option><option>css=textarea[name="Symptom"]</option></datalist></td><td></td>
+</tr>
+<tr><td>type</td><td>name=Symptom<datalist><option>name=Symptom</option><option>//textarea[@name='Symptom']</option><option>//div[@id='root']/div/article/div/div/div[4]/div/div/textarea</option><option>//div[4]/div/div/textarea</option><option>css=textarea[name="Symptom"]</option></datalist></td><td>มีไข้</td>
+</tr>
+<tr><td>click</td><td>name=Contagion<datalist><option>name=Contagion</option><option>//textarea[@name='Contagion']</option><option>//div[@id='root']/div/article/div/div/div[5]/div/div/textarea</option><option>//div[5]/div/div/textarea</option><option>css=textarea[name="Contagion"]</option></datalist></td><td></td>
+</tr>
+<tr><td>type</td><td>name=Contagion<datalist><option>name=Contagion</option><option>//textarea[@name='Contagion']</option><option>//div[@id='root']/div/article/div/div/div[5]/div/div/textarea</option><option>//div[5]/div/div/textarea</option><option>css=textarea[name="Contagion"]</option></datalist></td><td>ทางการจาม</td>
+</tr>
+<tr><td>click</td><td>//div[@id='root']/div/article/div/div/div[8]/button/span<datalist><option>//div[@id='root']/div/article/div/div/div[8]/button/span</option><option>//div[8]/button/span</option><option>css=button[name="saveData"] &gt; span.MuiButton-label</option></datalist></td><td></td>
+</tr>
+<tr><td>assertText</td><td>id=swal2-title<datalist><option>id=swal2-title</option><option>//h2[@id='swal2-title']</option><option>//div[3]/div/div/h2</option><option>css=#swal2-title</option></datalist></td><td>บันทึกข้อมูลไม่สำเร็จ</td>
+</tr>
+</tbody></table>
+</body>
+</html>

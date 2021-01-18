@@ -6,6 +6,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"time"
 
 	"github.com/B6001186/Contagions/ent/diagnosis"
 	"github.com/B6001186/Contagions/ent/disease"
@@ -35,8 +36,8 @@ func (dc *DiagnosisCreate) SetSurveillancePeriod(s string) *DiagnosisCreate {
 }
 
 // SetDiagnosisDate sets the DiagnosisDate field.
-func (dc *DiagnosisCreate) SetDiagnosisDate(s string) *DiagnosisCreate {
-	dc.mutation.SetDiagnosisDate(s)
+func (dc *DiagnosisCreate) SetDiagnosisDate(t time.Time) *DiagnosisCreate {
+	dc.mutation.SetDiagnosisDate(t)
 	return dc
 }
 
@@ -191,7 +192,7 @@ func (dc *DiagnosisCreate) createSpec() (*Diagnosis, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := dc.mutation.DiagnosisDate(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
+			Type:   field.TypeTime,
 			Value:  value,
 			Column: diagnosis.FieldDiagnosisDate,
 		})

@@ -5,6 +5,7 @@ package ent
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/B6001186/Contagions/ent/diagnosis"
 	"github.com/B6001186/Contagions/ent/disease"
@@ -43,8 +44,8 @@ func (du *DiagnosisUpdate) SetSurveillancePeriod(s string) *DiagnosisUpdate {
 }
 
 // SetDiagnosisDate sets the DiagnosisDate field.
-func (du *DiagnosisUpdate) SetDiagnosisDate(s string) *DiagnosisUpdate {
-	du.mutation.SetDiagnosisDate(s)
+func (du *DiagnosisUpdate) SetDiagnosisDate(t time.Time) *DiagnosisUpdate {
+	du.mutation.SetDiagnosisDate(t)
 	return du
 }
 
@@ -214,7 +215,7 @@ func (du *DiagnosisUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := du.mutation.DiagnosisDate(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
+			Type:   field.TypeTime,
 			Value:  value,
 			Column: diagnosis.FieldDiagnosisDate,
 		})
@@ -355,8 +356,8 @@ func (duo *DiagnosisUpdateOne) SetSurveillancePeriod(s string) *DiagnosisUpdateO
 }
 
 // SetDiagnosisDate sets the DiagnosisDate field.
-func (duo *DiagnosisUpdateOne) SetDiagnosisDate(s string) *DiagnosisUpdateOne {
-	duo.mutation.SetDiagnosisDate(s)
+func (duo *DiagnosisUpdateOne) SetDiagnosisDate(t time.Time) *DiagnosisUpdateOne {
+	duo.mutation.SetDiagnosisDate(t)
 	return duo
 }
 
@@ -524,7 +525,7 @@ func (duo *DiagnosisUpdateOne) sqlSave(ctx context.Context) (d *Diagnosis, err e
 	}
 	if value, ok := duo.mutation.DiagnosisDate(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
+			Type:   field.TypeTime,
 			Value:  value,
 			Column: diagnosis.FieldDiagnosisDate,
 		})

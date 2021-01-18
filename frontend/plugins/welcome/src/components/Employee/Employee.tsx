@@ -309,7 +309,7 @@ function redirectToSearchEmployee() {
           color="secondary"
           style={{ float: 'right' }}
           component={RouterLink}
-          to="/Table"
+          to="/SearchEmployee"
           variant="contained"
         >
           แสดงข้อมูล
@@ -474,11 +474,10 @@ function redirectToSearchEmployee() {
                   required
                   error={!employee.password && showInputError}
                   name="password"
-                  label="รหัสผ่าน"
+                  label="รหัสผ่านชั่วคราว"
                   variant="outlined"
                   size="medium"
-                  type="password"
-                  autoComplete="current-password"
+                  type="string"
                   value={employee.password || ''}
                   onChange={handleInputChange}
                 />

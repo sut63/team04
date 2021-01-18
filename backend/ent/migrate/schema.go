@@ -94,7 +94,7 @@ var (
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "diagnostic_messages", Type: field.TypeString},
 		{Name: "surveillance_period", Type: field.TypeString},
-		{Name: "diagnosis_date", Type: field.TypeString},
+		{Name: "diagnosis_date", Type: field.TypeTime},
 		{Name: "disease_diagnosis", Type: field.TypeInt, Nullable: true},
 		{Name: "employee_diagnosis", Type: field.TypeInt, Nullable: true},
 		{Name: "patient_diagnosis", Type: field.TypeInt, Nullable: true},
@@ -182,9 +182,9 @@ var (
 	// DrugsColumns holds the columns for the "drugs" table.
 	DrugsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "drug_name", Type: field.TypeString, Unique: true},
-		{Name: "howto", Type: field.TypeString, Unique: true},
-		{Name: "property", Type: field.TypeString, Unique: true},
+		{Name: "drug_name", Type: field.TypeString},
+		{Name: "howto", Type: field.TypeString},
+		{Name: "property", Type: field.TypeString},
 		{Name: "disease_drug", Type: field.TypeInt, Nullable: true},
 		{Name: "drug_type_drug", Type: field.TypeInt, Nullable: true},
 		{Name: "employee_drug", Type: field.TypeInt, Nullable: true},
@@ -287,7 +287,7 @@ var (
 	// LevelsColumns holds the columns for the "levels" table.
 	LevelsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "level_name", Type: field.TypeString},
+		{Name: "level_name", Type: field.TypeString, Unique: true},
 	}
 	// LevelsTable holds the schema information for the "levels" table.
 	LevelsTable = &schema.Table{
@@ -392,7 +392,7 @@ var (
 	// StatisticsColumns holds the columns for the "statistics" table.
 	StatisticsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "statistic_name", Type: field.TypeString},
+		{Name: "statistic_name", Type: field.TypeString, Unique: true},
 	}
 	// StatisticsTable holds the schema information for the "statistics" table.
 	StatisticsTable = &schema.Table{
