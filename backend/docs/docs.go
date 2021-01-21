@@ -3344,6 +3344,10 @@ var doc = `{
                     "description": "SurveillancePeriod holds the value of the \"SurveillancePeriod\" field.",
                     "type": "string"
                 },
+                "Treatment": {
+                    "description": "Treatment holds the value of the \"Treatment\" field.",
+                    "type": "string"
+                },
                 "edges": {
                     "description": "Edges holds the relations/edges for other nodes in the graph.\nThe values are being populated by the DiagnosisQuery when eager-loading is set.",
                     "type": "object",

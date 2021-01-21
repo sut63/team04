@@ -43,6 +43,12 @@ func (du *DiagnosisUpdate) SetSurveillancePeriod(s string) *DiagnosisUpdate {
 	return du
 }
 
+// SetTreatment sets the Treatment field.
+func (du *DiagnosisUpdate) SetTreatment(s string) *DiagnosisUpdate {
+	du.mutation.SetTreatment(s)
+	return du
+}
+
 // SetDiagnosisDate sets the DiagnosisDate field.
 func (du *DiagnosisUpdate) SetDiagnosisDate(t time.Time) *DiagnosisUpdate {
 	du.mutation.SetDiagnosisDate(t)
@@ -131,6 +137,21 @@ func (du *DiagnosisUpdate) ClearEmployee() *DiagnosisUpdate {
 
 // Save executes the query and returns the number of rows/vertices matched by this operation.
 func (du *DiagnosisUpdate) Save(ctx context.Context) (int, error) {
+	if v, ok := du.mutation.DiagnosticMessages(); ok {
+		if err := diagnosis.DiagnosticMessagesValidator(v); err != nil {
+			return 0, &ValidationError{Name: "DiagnosticMessages", err: fmt.Errorf("ent: validator failed for field \"DiagnosticMessages\": %w", err)}
+		}
+	}
+	if v, ok := du.mutation.SurveillancePeriod(); ok {
+		if err := diagnosis.SurveillancePeriodValidator(v); err != nil {
+			return 0, &ValidationError{Name: "SurveillancePeriod", err: fmt.Errorf("ent: validator failed for field \"SurveillancePeriod\": %w", err)}
+		}
+	}
+	if v, ok := du.mutation.Treatment(); ok {
+		if err := diagnosis.TreatmentValidator(v); err != nil {
+			return 0, &ValidationError{Name: "Treatment", err: fmt.Errorf("ent: validator failed for field \"Treatment\": %w", err)}
+		}
+	}
 
 	var (
 		err      error
@@ -211,6 +232,13 @@ func (du *DiagnosisUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Type:   field.TypeString,
 			Value:  value,
 			Column: diagnosis.FieldSurveillancePeriod,
+		})
+	}
+	if value, ok := du.mutation.Treatment(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: diagnosis.FieldTreatment,
 		})
 	}
 	if value, ok := du.mutation.DiagnosisDate(); ok {
@@ -355,6 +383,12 @@ func (duo *DiagnosisUpdateOne) SetSurveillancePeriod(s string) *DiagnosisUpdateO
 	return duo
 }
 
+// SetTreatment sets the Treatment field.
+func (duo *DiagnosisUpdateOne) SetTreatment(s string) *DiagnosisUpdateOne {
+	duo.mutation.SetTreatment(s)
+	return duo
+}
+
 // SetDiagnosisDate sets the DiagnosisDate field.
 func (duo *DiagnosisUpdateOne) SetDiagnosisDate(t time.Time) *DiagnosisUpdateOne {
 	duo.mutation.SetDiagnosisDate(t)
@@ -443,6 +477,21 @@ func (duo *DiagnosisUpdateOne) ClearEmployee() *DiagnosisUpdateOne {
 
 // Save executes the query and returns the updated entity.
 func (duo *DiagnosisUpdateOne) Save(ctx context.Context) (*Diagnosis, error) {
+	if v, ok := duo.mutation.DiagnosticMessages(); ok {
+		if err := diagnosis.DiagnosticMessagesValidator(v); err != nil {
+			return nil, &ValidationError{Name: "DiagnosticMessages", err: fmt.Errorf("ent: validator failed for field \"DiagnosticMessages\": %w", err)}
+		}
+	}
+	if v, ok := duo.mutation.SurveillancePeriod(); ok {
+		if err := diagnosis.SurveillancePeriodValidator(v); err != nil {
+			return nil, &ValidationError{Name: "SurveillancePeriod", err: fmt.Errorf("ent: validator failed for field \"SurveillancePeriod\": %w", err)}
+		}
+	}
+	if v, ok := duo.mutation.Treatment(); ok {
+		if err := diagnosis.TreatmentValidator(v); err != nil {
+			return nil, &ValidationError{Name: "Treatment", err: fmt.Errorf("ent: validator failed for field \"Treatment\": %w", err)}
+		}
+	}
 
 	var (
 		err  error
@@ -521,6 +570,13 @@ func (duo *DiagnosisUpdateOne) sqlSave(ctx context.Context) (d *Diagnosis, err e
 			Type:   field.TypeString,
 			Value:  value,
 			Column: diagnosis.FieldSurveillancePeriod,
+		})
+	}
+	if value, ok := duo.mutation.Treatment(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: diagnosis.FieldTreatment,
 		})
 	}
 	if value, ok := duo.mutation.DiagnosisDate(); ok {

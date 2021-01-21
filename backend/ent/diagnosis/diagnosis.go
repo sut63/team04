@@ -11,6 +11,8 @@ const (
 	FieldDiagnosticMessages = "diagnostic_messages"
 	// FieldSurveillancePeriod holds the string denoting the surveillanceperiod field in the database.
 	FieldSurveillancePeriod = "surveillance_period"
+	// FieldTreatment holds the string denoting the treatment field in the database.
+	FieldTreatment = "treatment"
 	// FieldDiagnosisDate holds the string denoting the diagnosisdate field in the database.
 	FieldDiagnosisDate = "diagnosis_date"
 
@@ -51,6 +53,7 @@ var Columns = []string{
 	FieldID,
 	FieldDiagnosticMessages,
 	FieldSurveillancePeriod,
+	FieldTreatment,
 	FieldDiagnosisDate,
 }
 
@@ -60,3 +63,12 @@ var ForeignKeys = []string{
 	"employee_diagnosis",
 	"patient_diagnosis",
 }
+
+var (
+	// DiagnosticMessagesValidator is a validator for the "DiagnosticMessages" field. It is called by the builders before save.
+	DiagnosticMessagesValidator func(string) error
+	// SurveillancePeriodValidator is a validator for the "SurveillancePeriod" field. It is called by the builders before save.
+	SurveillancePeriodValidator func(string) error
+	// TreatmentValidator is a validator for the "Treatment" field. It is called by the builders before save.
+	TreatmentValidator func(string) error
+)

@@ -1709,6 +1709,7 @@ type DiagnosisMutation struct {
 	id                  *int
 	_DiagnosticMessages *string
 	_SurveillancePeriod *string
+	_Treatment          *string
 	_DiagnosisDate      *time.Time
 	clearedFields       map[string]struct{}
 	disease             *int
@@ -1872,6 +1873,43 @@ func (m *DiagnosisMutation) OldSurveillancePeriod(ctx context.Context) (v string
 // ResetSurveillancePeriod reset all changes of the "SurveillancePeriod" field.
 func (m *DiagnosisMutation) ResetSurveillancePeriod() {
 	m._SurveillancePeriod = nil
+}
+
+// SetTreatment sets the Treatment field.
+func (m *DiagnosisMutation) SetTreatment(s string) {
+	m._Treatment = &s
+}
+
+// Treatment returns the Treatment value in the mutation.
+func (m *DiagnosisMutation) Treatment() (r string, exists bool) {
+	v := m._Treatment
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldTreatment returns the old Treatment value of the Diagnosis.
+// If the Diagnosis object wasn't provided to the builder, the object is fetched
+// from the database.
+// An error is returned if the mutation operation is not UpdateOne, or database query fails.
+func (m *DiagnosisMutation) OldTreatment(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldTreatment is allowed only on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldTreatment requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldTreatment: %w", err)
+	}
+	return oldValue.Treatment, nil
+}
+
+// ResetTreatment reset all changes of the "Treatment" field.
+func (m *DiagnosisMutation) ResetTreatment() {
+	m._Treatment = nil
 }
 
 // SetDiagnosisDate sets the DiagnosisDate field.
@@ -2042,12 +2080,15 @@ func (m *DiagnosisMutation) Type() string {
 // this mutation. Note that, in order to get all numeric
 // fields that were in/decremented, call AddedFields().
 func (m *DiagnosisMutation) Fields() []string {
-	fields := make([]string, 0, 3)
+	fields := make([]string, 0, 4)
 	if m._DiagnosticMessages != nil {
 		fields = append(fields, diagnosis.FieldDiagnosticMessages)
 	}
 	if m._SurveillancePeriod != nil {
 		fields = append(fields, diagnosis.FieldSurveillancePeriod)
+	}
+	if m._Treatment != nil {
+		fields = append(fields, diagnosis.FieldTreatment)
 	}
 	if m._DiagnosisDate != nil {
 		fields = append(fields, diagnosis.FieldDiagnosisDate)
@@ -2064,6 +2105,8 @@ func (m *DiagnosisMutation) Field(name string) (ent.Value, bool) {
 		return m.DiagnosticMessages()
 	case diagnosis.FieldSurveillancePeriod:
 		return m.SurveillancePeriod()
+	case diagnosis.FieldTreatment:
+		return m.Treatment()
 	case diagnosis.FieldDiagnosisDate:
 		return m.DiagnosisDate()
 	}
@@ -2079,6 +2122,8 @@ func (m *DiagnosisMutation) OldField(ctx context.Context, name string) (ent.Valu
 		return m.OldDiagnosticMessages(ctx)
 	case diagnosis.FieldSurveillancePeriod:
 		return m.OldSurveillancePeriod(ctx)
+	case diagnosis.FieldTreatment:
+		return m.OldTreatment(ctx)
 	case diagnosis.FieldDiagnosisDate:
 		return m.OldDiagnosisDate(ctx)
 	}
@@ -2103,6 +2148,13 @@ func (m *DiagnosisMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetSurveillancePeriod(v)
+		return nil
+	case diagnosis.FieldTreatment:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetTreatment(v)
 		return nil
 	case diagnosis.FieldDiagnosisDate:
 		v, ok := value.(time.Time)
@@ -2166,6 +2218,9 @@ func (m *DiagnosisMutation) ResetField(name string) error {
 		return nil
 	case diagnosis.FieldSurveillancePeriod:
 		m.ResetSurveillancePeriod()
+		return nil
+	case diagnosis.FieldTreatment:
+		m.ResetTreatment()
 		return nil
 	case diagnosis.FieldDiagnosisDate:
 		m.ResetDiagnosisDate()

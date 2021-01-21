@@ -45,6 +45,12 @@ export interface EntDiagnosis {
      */
     surveillancePeriod?: string;
     /**
+     * Treatment holds the value of the "Treatment" field.
+     * @type {string}
+     * @memberof EntDiagnosis
+     */
+    treatment?: string;
+    /**
      * 
      * @type {EntDiagnosisEdges}
      * @memberof EntDiagnosis
@@ -71,6 +77,7 @@ export function EntDiagnosisFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'diagnosisDate': !exists(json, 'DiagnosisDate') ? undefined : json['DiagnosisDate'],
         'diagnosticMessages': !exists(json, 'DiagnosticMessages') ? undefined : json['DiagnosticMessages'],
         'surveillancePeriod': !exists(json, 'SurveillancePeriod') ? undefined : json['SurveillancePeriod'],
+        'treatment': !exists(json, 'Treatment') ? undefined : json['Treatment'],
         'edges': !exists(json, 'edges') ? undefined : EntDiagnosisEdgesFromJSON(json['edges']),
         'id': !exists(json, 'id') ? undefined : json['id'],
     };
@@ -88,6 +95,7 @@ export function EntDiagnosisToJSON(value?: EntDiagnosis | null): any {
         'DiagnosisDate': value.diagnosisDate,
         'DiagnosticMessages': value.diagnosticMessages,
         'SurveillancePeriod': value.surveillancePeriod,
+        'Treatment': value.treatment,
         'edges': EntDiagnosisEdgesToJSON(value.edges),
         'id': value.id,
     };

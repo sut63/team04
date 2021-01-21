@@ -27,6 +27,7 @@ type Diagnosis struct {
 	DiagnosticMessages	string
 	SurveillancePeriod	string
 	DiagnosisDate		string
+	Treatment			string
 	Disease 		int
 	Patient 		int
 	Employee		int
@@ -95,20 +96,26 @@ func (ctl *DiagnosisController) CreateDiagnosis(c *gin.Context) {
 		Create().
 		SetDiagnosticMessages(obj.DiagnosticMessages).
 		SetSurveillancePeriod(obj.SurveillancePeriod).
+		SetTreatment(obj.Treatment).
 		SetDiagnosisDate(diagdate).
 		SetEmployee(e).
 		SetDisease(ds).
 		SetPatient(pa).
 		Save(context.Background())
 
-	if err != nil {
-		c.JSON(400, gin.H{
-			"error": "saving failed",
+		if err != nil {
+			fmt.Println(err)
+			c.JSON(400, gin.H{
+				"status": false,
+				"error": err,
+			})
+			return
+		}
+	
+		c.JSON(200, gin.H{
+			"status": true,
+			"error": dia,
 		})
-		return
-	}
-
-	c.JSON(200, dia)
 }
 
 // ListDiagnosis handles request to get a list of diagnosis entities
@@ -221,21 +228,28 @@ func (ctl *DiagnosisController) UpdateDiagnosis(c *gin.Context) {
 	}
 	obj.ID = int(id)
 	fmt.Println(obj.ID)
+
 	dia, err := ctl.client.Diagnosis.
 		UpdateOneID(int(id)).
 		SetDiagnosticMessages(obj.DiagnosticMessages).
 		SetSurveillancePeriod(obj.SurveillancePeriod).
+		SetTreatment(obj.Treatment).
 		SetDiagnosisDate(obj.DiagnosisDate).
 		Save(context.Background())
 		
-	if err != nil {
-		c.JSON(400, gin.H{
-			"error": "update failed",
+		if err != nil {
+			fmt.Println(err)
+			c.JSON(400, gin.H{
+				"status": false,
+				"error": err,
+			})
+			return
+		}
+	
+		c.JSON(200, gin.H{
+			"status": true,
+			"error": dia,
 		})
-		return
-	}
-
-	c.JSON(200, dia)
 }
 
 
