@@ -21,6 +21,10 @@ type Area struct {
 	ID int `json:"id,omitempty"`
 	// AreaName holds the value of the "AreaName" field.
 	AreaName string `json:"AreaName,omitempty"`
+	// AreaDistrict holds the value of the "AreaDistrict" field.
+	AreaDistrict string `json:"AreaDistrict,omitempty"`
+	// AreaSubDistrict holds the value of the "AreaSubDistrict" field.
+	AreaSubDistrict string `json:"AreaSubDistrict,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the AreaQuery when eager-loading is set.
 	Edges          AreaEdges `json:"edges"`
@@ -106,6 +110,8 @@ func (*Area) scanValues() []interface{} {
 	return []interface{}{
 		&sql.NullInt64{},  // id
 		&sql.NullString{}, // AreaName
+		&sql.NullString{}, // AreaDistrict
+		&sql.NullString{}, // AreaSubDistrict
 	}
 }
 
@@ -136,7 +142,17 @@ func (a *Area) assignValues(values ...interface{}) error {
 	} else if value.Valid {
 		a.AreaName = value.String
 	}
-	values = values[1:]
+	if value, ok := values[1].(*sql.NullString); !ok {
+		return fmt.Errorf("unexpected type %T for field AreaDistrict", values[1])
+	} else if value.Valid {
+		a.AreaDistrict = value.String
+	}
+	if value, ok := values[2].(*sql.NullString); !ok {
+		return fmt.Errorf("unexpected type %T for field AreaSubDistrict", values[2])
+	} else if value.Valid {
+		a.AreaSubDistrict = value.String
+	}
+	values = values[3:]
 	if len(values) == len(area.ForeignKeys) {
 		if value, ok := values[0].(*sql.NullInt64); !ok {
 			return fmt.Errorf("unexpected type %T for edge-field disease_area", value)
@@ -211,6 +227,10 @@ func (a *Area) String() string {
 	builder.WriteString(fmt.Sprintf("id=%v", a.ID))
 	builder.WriteString(", AreaName=")
 	builder.WriteString(a.AreaName)
+	builder.WriteString(", AreaDistrict=")
+	builder.WriteString(a.AreaDistrict)
+	builder.WriteString(", AreaSubDistrict=")
+	builder.WriteString(a.AreaSubDistrict)
 	builder.WriteByte(')')
 	return builder.String()
 }

@@ -119,11 +119,13 @@ const StyledMenuItem = withStyles((theme) => ({
 }))(MenuItem);
 
 interface area {
-  employee: number;
-  areaName: string;
-  level: number;
-  statistic: number;
-  disease: number;
+  Employee: number;
+  AreaName: string;
+  AreaDistrict: string;
+  AreaSubDistrict: string;
+  Level: number;
+  Statistic: number;
+  Disease: number;
 
 }
 
@@ -137,6 +139,9 @@ const Area: FC<{}> = () => {
   const [diseases, setDiseases] = React.useState<EntDisease[]>([]);
   const [employees, setEmployees] = React.useState<EntEmployee[]>([]);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [areaNameError, setAreaNameError] = React.useState('');
+  const [areaDistrictError, setAreaDistrictError] = React.useState('');
+  const [areaSubDistrictError, setAreaSubDistrictError] = React.useState('');
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -177,11 +182,68 @@ const Area: FC<{}> = () => {
 
 
   const handleInputChange = (
-    event: React.ChangeEvent<{ name?: string; value: unknown }>,
+    event: React.ChangeEvent<{ name?: string; value: any }>,
   ) => {
     const name = event.target.name as keyof typeof Area;
     const { value } = event.target;
+    const validateValue = value.toString()
+    checkPattern(name, validateValue)
     setAreas({ ...areas, [name]: value });
+  }
+  // ฟังก์ชั่นสำหรับ validate จังหวัด
+  const validateAreaName = (val: string) => {
+    return val.match("^[ก-ฮ]");
+  }
+
+  // ฟังก์ชั่นสำหรับ validate อำเภอ
+  const validateAreaDistrict = (val: string) => {
+    return val.match("^[ก-ฮ]");
+  }
+
+  // ฟังก์ชั่นสำหรับ validate ตำบล
+  const validateAreaSubDistrict = (val: string) => {
+    return val.match("^[ก-ฮ]");
+  }
+
+  // สำหรับตรวจสอบรูปแบบข้อมูลที่กรอก ว่าเป็นไปตามที่กำหนดหรือไม่
+  const checkPattern = (id: string, value: string) => {
+    switch (id) {
+      case 'AreaName':
+        validateAreaName(value) ? setAreaNameError('') : setAreaNameError('ชื่อจังหวัดต้องเป็นตัวอักษร');
+        return;
+      case 'AreaDistrict':
+        validateAreaDistrict(value) ? setAreaDistrictError('') : setAreaDistrictError('ชื่ออำเภอต้องเป็นตัวอักษร');
+        return;
+      case 'AreaSubDistrict':
+        validateAreaSubDistrict(value) ? setAreaSubDistrictError('') : setAreaSubDistrictError('ชื่อตำบลต้องเป็นตัวอักษร')
+        return;
+      default:
+        return;
+    }
+  }
+
+  const alertMessage = (icon: any, title: any) => {
+    Toast.fire({
+      icon: icon,
+      title: title,
+    });
+  }
+
+  const checkCaseSaveError = (field: string) => {
+    switch (field) {
+      case 'AreaName':
+        alertMessage("error", "ชื่อจังหวัดต้องเป็นตัวอักษร");
+        return;
+      case 'AreaDistrict':
+        alertMessage("error", "ชื่ออำเภอต้องเป็นตัวอักษร");
+        return;
+      case 'AreaSubDistrict':
+        alertMessage("error", "ชื่อตำบลต้องเป็นตัวอักษร");
+        return;
+      default:
+        alertMessage("error", "บันทึกข้อมูลไม่สำเร็จ");
+        return;
+    }
   }
   function clear() {
     setAreas({});
@@ -202,18 +264,18 @@ const Area: FC<{}> = () => {
 
   function save() {
 
-    setShowInputError(true)
-    let { areaName, level, statistic, disease } = areas;
-    if (!areaName || !level || !statistic || !disease) {
-      Toast.fire({
-        icon: 'error',
-        title: 'กรุณากรอกข้อมูลให้ครบถ้วน',
-      });
-      return;
-    }
+    /* setShowInputError(true)
+     let { areaName, areaDistrict, areaSubDistrict, level, statistic, disease } = areas;
+     if (!areaName || !areaDistrict || !areaSubDistrict || !level || !statistic || !disease) {
+       Toast.fire({
+         icon: 'error',
+         title: 'กรุณากรอกข้อมูลให้ครบถ้วน',
+       });
+       return;
+     }*/
 
     //เช็คแล้วเก็บค่าไว้ใน employee
-    areas.employee = employees.filter(emp => emp.userId === window.localStorage.getItem("username"))[0].id;
+    areas.Employee = employees.filter(emp => emp.userId === window.localStorage.getItem("username"))[0].id;
 
     const apiUrl = 'http://localhost:8080/api/v1/areas';
     const requestOptions = {
@@ -221,26 +283,23 @@ const Area: FC<{}> = () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(areas),
     };
-    console.log(areas); // log ดูข้อมูล สามารถ Inspect ดูข้อมูลได้ F12 เลือก Tab Console
 
     fetch(apiUrl, requestOptions)
-      .then(response => {
-        console.log(response)
-        response.json()
-        if (response.ok === true) {
+      .then(response => response.json())
+      .then(data => {
+        console.log(data.save)
+        console.log(requestOptions)
+        if (data.status == true) {
           clear();
           Toast.fire({
             icon: 'success',
             title: 'บันทึกข้อมูลสำเร็จ',
           });
         } else {
-          Toast.fire({
-            icon: 'error',
-            title: 'บันทึกข้อมูลไม่สำเร็จ',
-          });
+          checkCaseSaveError(data.error.Name)
         }
-      })
-  }
+      });
+  };
 
   function redirecLogOut() {
     //redirec Page ... http://localhost:3000/
@@ -337,13 +396,41 @@ const Area: FC<{}> = () => {
           <Grid item xs={9}>
             <FormControl variant="outlined" className={classes.formControl}>
               <TextField
-                name="areaName"
-                error={!areas.areaName && showInputError}
-                label="ชื่อสถานที่"
+                error={areaNameError ? true : false}
+                className={classes.formControl}
+                name="AreaName"
+                label="ชื่อจังหวัด"
                 variant="outlined"
-                type="string"
-                size="medium"
-                value={areas.areaName || ''}
+                helperText={areaNameError}
+                value={areas.AreaName || ''}
+                onChange={handleInputChange}
+              />
+            </FormControl>
+          </Grid>
+          <Grid item xs={9}>
+            <FormControl variant="outlined" className={classes.formControl}>
+              <TextField
+                error={areaDistrictError ? true : false}
+                className={classes.formControl}
+                name="AreaDistrict"
+                label="ชื่ออำเภอ"
+                variant="outlined"
+                helperText={areaDistrictError}
+                value={areas.AreaDistrict || ''}
+                onChange={handleInputChange}
+              />
+            </FormControl>
+          </Grid>
+          <Grid item xs={9}>
+            <FormControl variant="outlined" className={classes.formControl}>
+              <TextField
+                error={areaSubDistrictError ? true : false}
+                className={classes.formControl}
+                name="AreaSubDistrict"
+                label="ชื่อตำบล"
+                variant="outlined"
+                helperText={areaSubDistrictError}
+                value={areas.AreaSubDistrict || ''}
                 onChange={handleInputChange}
               />
             </FormControl>
@@ -352,9 +439,9 @@ const Area: FC<{}> = () => {
             <FormControl variant="outlined" className={classes.formControl}>
               <InputLabel>ระดับความเสี่ยง</InputLabel>
               <Select
-                error={!areas.level && showInputError}
-                name="level"
-                value={areas.level || ''}
+                error={!areas.Level && showInputError}
+                name="Level"
+                value={areas.Level || ''}
                 onChange={handleInputChange}
                 label="ระดับความเสี่ยง"
                 fullWidth
@@ -374,9 +461,9 @@ const Area: FC<{}> = () => {
             <FormControl variant="outlined" className={classes.formControl}>
               <InputLabel>สถิติผู้ป่วยที่ติดโรค</InputLabel>
               <Select
-                error={!areas.statistic && showInputError}
-                name="statistic"
-                value={areas.statistic || ''}
+                error={!areas.Statistic && showInputError}
+                name="Statistic"
+                value={areas.Statistic || ''}
                 onChange={handleInputChange}
                 label="สถิติผู้ป่วยที่ติดโรค"
                 fullWidth
@@ -392,13 +479,14 @@ const Area: FC<{}> = () => {
             </FormControl>
           </Grid>
 
+
           <Grid item xs={12}>
             <FormControl variant="outlined" className={classes.formControl}>
               <InputLabel>โรคติดต่อ</InputLabel>
               <Select
-                error={!areas.disease && showInputError}
-                name="disease"
-                value={areas.disease || ''}
+                error={!areas.Disease && showInputError}
+                name="Disease"
+                value={areas.Disease || ''}
                 onChange={handleInputChange}
                 label="โรคติดต่อ"
               >
@@ -418,7 +506,7 @@ const Area: FC<{}> = () => {
               required={true}
               disabled // ห้ามแก้ไข
               // id="name"
-              name="employee"
+              name="Employee"
               type="string"
               label="รหัสผู้บันทึกข้อมูล"
               variant="outlined"

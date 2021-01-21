@@ -9,6 +9,10 @@ const (
 	FieldID = "id"
 	// FieldAreaName holds the string denoting the areaname field in the database.
 	FieldAreaName = "area_name"
+	// FieldAreaDistrict holds the string denoting the areadistrict field in the database.
+	FieldAreaDistrict = "area_district"
+	// FieldAreaSubDistrict holds the string denoting the areasubdistrict field in the database.
+	FieldAreaSubDistrict = "area_sub_district"
 
 	// EdgeDisease holds the string denoting the disease edge name in mutations.
 	EdgeDisease = "disease"
@@ -55,6 +59,8 @@ const (
 var Columns = []string{
 	FieldID,
 	FieldAreaName,
+	FieldAreaDistrict,
+	FieldAreaSubDistrict,
 }
 
 // ForeignKeys holds the SQL foreign-keys that are owned by the Area type.
@@ -64,3 +70,12 @@ var ForeignKeys = []string{
 	"level_area",
 	"statistic_area",
 }
+
+var (
+	// AreaNameValidator is a validator for the "AreaName" field. It is called by the builders before save.
+	AreaNameValidator func(string) error
+	// AreaDistrictValidator is a validator for the "AreaDistrict" field. It is called by the builders before save.
+	AreaDistrictValidator func(string) error
+	// AreaSubDistrictValidator is a validator for the "AreaSubDistrict" field. It is called by the builders before save.
+	AreaSubDistrictValidator func(string) error
+)

@@ -20,6 +20,8 @@ type AreaController struct {
 // Area  defines the struct for the area controller
 type Area struct {
 	AreaName 	string
+	AreaDistrict 		string
+	AreaSubDistrict 	string
 	Level 		int
 	Statistic 	int
 	Disease   	int
@@ -94,20 +96,28 @@ func (ctl *AreaController) CreateArea(c *gin.Context) {
 	a, err := ctl.client.Area.
 			Create().
 			SetAreaName(obj.AreaName).
+			SetAreaDistrict(obj.AreaDistrict).
+			SetAreaSubDistrict(obj.AreaSubDistrict).
 			SetLevel(l).
 			SetStatistic(st).
 			SetDisease(d).
 			SetEmployee(e).
 			Save(context.Background())
 
-	if err != nil {
-		c.JSON(400, gin.H{
-			"error": "saving failed",
-		})
-		return
-	}
+			if err != nil {
+				fmt.Println(err)
+				c.JSON(400, gin.H{
+					"status": false,
+					"error": err,
+				})
+				return
+			}
+		
+			c.JSON(200, gin.H{
+				"status": true,
+				"data": a,
+			})
 
-	c.JSON(200, a)
 }
  
 // ListArea handles request to get a list of area entities
