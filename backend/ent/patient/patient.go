@@ -95,3 +95,16 @@ var ForeignKeys = []string{
 	"gender_patient",
 	"nametitle_patient",
 }
+
+var (
+	// IdcardValidator is a validator for the "Idcard" field. It is called by the builders before save.
+	IdcardValidator func(string) error
+	// PatientNameValidator is a validator for the "PatientName" field. It is called by the builders before save.
+	PatientNameValidator func(string) error
+	// AddressValidator is a validator for the "Address" field. It is called by the builders before save.
+	AddressValidator func(string) error
+	// CongenitalValidator is a validator for the "Congenital" field. It is called by the builders before save.
+	CongenitalValidator func(string) error
+	// AllergicValidator is a validator for the "Allergic" field. It is called by the builders before save.
+	AllergicValidator func(string) error
+)

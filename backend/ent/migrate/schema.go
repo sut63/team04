@@ -312,7 +312,7 @@ var (
 	// PatientsColumns holds the columns for the "patients" table.
 	PatientsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "idcard", Type: field.TypeString},
+		{Name: "idcard", Type: field.TypeString, Size: 13},
 		{Name: "patient_name", Type: field.TypeString},
 		{Name: "address", Type: field.TypeString},
 		{Name: "congenital", Type: field.TypeString},

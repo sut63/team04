@@ -119,16 +119,16 @@ import { EntBloodtype } from '../../api/models/EntBloodtype'; //import interface
 import { EntGender } from '../../api/models/EntGender'; //import interface Gender  
 
 interface Patient {
-  idcard: string;
-  category: number;
-  nametitle: number;
-  patientname: string;
-  bloodtype: number;
-  gender: number;
-  address: string;
-  congenital: string;
-  allergic: string;
-  employee: number;
+  Idcard: string;
+  Category: number;
+  Nametitle: number;
+  PatientName: string;
+  Bloodtype: number;
+  Gender: number;
+  Address: string;
+  Congenital: string;
+  Allergic: string;
+  Employee: number;
 }
 
 
@@ -143,6 +143,9 @@ const Patient: FC<{}> = () => {
   const [nametitles, setNametitles] = React.useState<EntNametitle[]>([]);
   const [bloodtypes, setBloodtypes] = React.useState<EntBloodtype[]>([]);
   const [genders, setGenders] = React.useState<EntGender[]>([]);
+  const [idcardError, setidcardError] = React.useState('');
+  const [congenitalError, setcongenitalError] = React.useState('');
+  const [allergicError, setallergicError] = React.useState('');
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
@@ -211,35 +214,94 @@ function redirectToSearchPatient() {
 
   // set data to object patient
   const handleChange = (
-    event: React.ChangeEvent<{ name?: string; value: unknown }>,
+    event: React.ChangeEvent<{ name?: string; value: any }>,
   ) => {
     const name = event.target.name as keyof typeof patient;
     const { value } = event.target;
+    const validateValue = value.toString()
     setPatient({ ...patient, [name]: value });
     console.log(patient);
-  };
+    checkPattern(name, validateValue);
 
-  // clear input form
+  };
+  // ฟังก์ชั่นสำหรับ validate เลขประจำตัวประชาชน
+   const Idcard = (val: string) => {
+    return val.length == 13 ? true : false;
+  }
+
+  // ฟังก์ชั่นสำหรับ validate โรคประจำตัว
+  const Congenital = (val: string) => {
+    return val.match("[โรค, ไม่มี]");
+  }
+
+  // ฟังก์ชั่นสำหรับ validate ประวัติการแพ้ยา
+  const Allergic = (val: string) => {
+    return val.match("[ตัวยาชื่อ, ไม่มี, ยา]");
+  }
+
+
+
+  // สำหรับตรวจสอบรูปแบบข้อมูลที่กรอก ว่าเป็นไปตามที่กำหนดหรือไม่
+  const checkPattern  = (id: string, value: string) => {
+    switch(id) {
+      case 'Idcard':
+        Idcard(value) ? setidcardError('') : setidcardError('เลขประจำตัวประชาชน 13 หลัก');
+        return;
+        case 'Congenital':
+          Congenital(value) ? setcongenitalError('') : setcongenitalError('ขึ้นต้นด้วย โรค, ไม่มี,-');
+          return;
+          case 'Allergic':
+            Allergic(value) ? setallergicError('') : setallergicError('ขึ้นต้นด้วย ตัวยาชื่อ, ไม่มี, -, ยา');
+            return;
+      default:
+        return;
+    }
+  }
+  const alertMessage = (icon: any, title: any) => {
+    Toast.fire({
+      icon: icon,
+      title: title,
+    });
+  }
+
+  const checkCaseSaveError = (field: string) => {
+    switch(field) {
+      case 'Idcard':
+        alertMessage("error","เลขประจำตัวประชาชน 13 หลัก");
+        return;
+      case 'Congenital':
+        alertMessage("error","โรคประจำตัวต้องขึ้นต้นด้วย โรค, ไม่มี,-");
+        return;
+      case 'Allergic':
+        alertMessage("error","ประวัติแพ้ยาต้องขึ้นต้นด้วย ตัวยาชื่อ, ไม่มี, -, ยา");
+        return;
+      default:
+        alertMessage("error","บันทึกข้อมูลไม่สำเร็จ");
+        return;
+    }
+  }
+
+   // clear input form
   function clear() {
-    setPatient({});
-    setShowInputError(false);
+   setPatient({});
+   setShowInputError(false);
   }
 
   // function save data
   function save() {
-    setShowInputError(true)
-    let { idcard, patientname, address, congenital, allergic } = patient;
-    if (!idcard || !patientname || !address || !congenital || !allergic) {
-      Toast.fire({
-        icon: 'error',
-        title: 'กรุณากรอกข้อมูลให้ครบถ้วน',
-      });
-      return;
-    }
+    // setShowInputError(true)
+    // let { Idcard, PatientName, Address, Congenital, Allergic } = Patient;
+    // if (!Idcard || !PatientName || !Address || !Congenital || !Allergic) {
+    //   Toast.fire({
+    //     icon: 'error',
+    //     title: 'กรุณากรอกข้อมูลให้ครบถ้วน',
+    //   });
+    //   return;
+    // }
 
        
 //เช็คแล้วเก็บค่าไว้ใน employee
-patient.employee = employees.filter(emp => emp.userId === window.localStorage.getItem("username"))[0].id;
+patient.Employee = employees.filter(emp => emp.userId === window.localStorage.getItem("username"))[0].id;
 
 
     const apiUrl = 'http://localhost:8080/api/v1/patients';
@@ -252,23 +314,20 @@ patient.employee = employees.filter(emp => emp.userId === window.localStorage.ge
     console.log(patient); // log ดูข้อมูล สามารถ Inspect ดูข้อมูลได้ F12 เลือก Tab Console
 
     fetch(apiUrl, requestOptions)
-      .then(response => {
-        console.log(response)
-        response.json()
-        if (response.ok === true) {
+      .then(response => response.json())
+      .then(data => {console.log(data.save)
+        console.log(requestOptions)
+        if (data.status == true) {
           clear();
           Toast.fire({
             icon: 'success',
             title: 'บันทึกข้อมูลสำเร็จ',
           });
         } else {
-          Toast.fire({
-            icon: 'error',
-            title: 'บันทึกข้อมูลไม่สำเร็จ',
-          });
+          checkCaseSaveError(data.error.Name)
         }
-      })
-  }
+      });
+};
   //Java 
   function redirecLogOut() {
     //redirec Page ... http://localhost:3000/
@@ -333,28 +392,27 @@ patient.employee = employees.filter(emp => emp.userId === window.localStorage.ge
           </Grid>
 
           <Grid item xs={10}>
-            <TextField
-              required={true}
-              error={!patient.idcard && showInputError}
-              id="idcard"
-              name="idcard"
-              type="intrger"
-              label="เลขบัตรประจำตัวประชาชน"
-              variant="outlined"
-              fullWidth
-              multiline
-              value={patient.idcard || ""}
-              onChange={handleChange}
-            />
-          </Grid>
+          <TextField
+                error = {idcardError ? true : false}
+                className={classes.formControl}
+                name="Idcard"
+                label="เลขประจำตัวประชาชน"
+                variant="outlined"
+                type="string"
+                inputProps={{ maxLength: 13 }}
+                helperText= {idcardError}
+                value={patient.Idcard || ''}
+                onChange={handleChange}
+              />
+            </Grid>
 
           <Grid item xs={12}>
             <FormControl variant="outlined" className={classes.formControl}>
               <InputLabel >ประเภทผู้ป่วย</InputLabel>
               <Select
-                name="category"
-                error={!patient.category && showInputError}
-                value={patient.category || ''}
+                name="Category"
+                error={!patient.Category && showInputError}
+                value={patient.Category || ''}
                 onChange={handleChange}
                 label="ประเภทผู้ป่วย"
               >
@@ -373,9 +431,9 @@ patient.employee = employees.filter(emp => emp.userId === window.localStorage.ge
             <FormControl variant="outlined" className={classes.formControl}>
               <InputLabel >คำนำหน้าชื่อ</InputLabel>
               <Select
-                name="nametitle"
-                error={!patient.nametitle && showInputError}
-                value={patient.nametitle || ''}
+                name="Nametitle"
+                error={!patient.Nametitle && showInputError}
+                value={patient.Nametitle || ''}
                 onChange={handleChange}
                 label="คำนำหน้าชื่อ"
                 fullWidth
@@ -394,13 +452,13 @@ patient.employee = employees.filter(emp => emp.userId === window.localStorage.ge
           <Grid item xs={10}>
             <TextField
               required={true}
-              error={!patient.patientname && showInputError}
-              name="patientname"
+              error={!patient.PatientName && showInputError}
+              name="PatientName"
               label="ชื่อ-นามสกุล"
               variant="outlined"
               fullWidth
               multiline
-              value={patient.patientname || ""}
+              value={patient.PatientName || ""}
               onChange={handleChange}
             />
           </Grid>
@@ -409,9 +467,9 @@ patient.employee = employees.filter(emp => emp.userId === window.localStorage.ge
             <FormControl variant="outlined" className={classes.formControl}>
               <InputLabel>เพศ</InputLabel>
               <Select
-                name="gender"
-                error={!patient.gender && showInputError}
-                value={patient.gender || ''}
+                name="Gender"
+                error={!patient.Gender && showInputError}
+                value={patient.Gender || ''}
                 onChange={handleChange}
                 label="เพศ"
               >
@@ -430,9 +488,9 @@ patient.employee = employees.filter(emp => emp.userId === window.localStorage.ge
             <FormControl variant="outlined" className={classes.formControl}>
               <InputLabel >กรุ๊ปเลือด</InputLabel>
               <Select
-                name="bloodtype"
-                error={!patient.bloodtype && showInputError}
-                value={patient.bloodtype || ''}
+                name="Bloodtype"
+                error={!patient.Bloodtype && showInputError}
+                value={patient.Bloodtype || ''}
                 onChange={handleChange}
                 label="กรุ๊ปเลือด"
                 fullWidth
@@ -450,13 +508,13 @@ patient.employee = employees.filter(emp => emp.userId === window.localStorage.ge
 
           <Grid item xs={10}>
             <TextField
-              name="address"
-              error={!patient.address && showInputError}
+              name="Address"
+              error={!patient.Address && showInputError}
               label="ที่อยู่"
               variant="outlined"
               fullWidth
               multiline
-              value={patient.address || ''}
+              value={patient.Address || ''}
               onChange={handleChange}
             />
           </Grid>
@@ -466,32 +524,30 @@ patient.employee = employees.filter(emp => emp.userId === window.localStorage.ge
           </Grid>
 
           <Grid item xs={10}>
-            <TextField
-              required={true}
-              error={!patient.congenital && showInputError}
-              name="congenital"
-              label="โรคประจำตัว"
-              variant="outlined"
-              fullWidth
-              multiline
-              value={patient.congenital || ""}
-              onChange={handleChange}
-            />
-          </Grid>
+          <TextField
+                error = {congenitalError ? true : false}
+                className={classes.formControl}
+                name="Congenital"
+                label="โรคประจำตัว"
+                helperText= {congenitalError}
+                value={patient.Congenital || ''}
+                variant="outlined"
+                onChange={handleChange}
+              />
+            </Grid>
 
           <Grid item xs={10}>
-            <TextField
-              required={true}
-              error={!patient.allergic && showInputError}
-              name="allergic"
-              label="ประวัติการแพ้ยา"
-              variant="outlined"
-              fullWidth
-              multiline
-              value={patient.allergic || ""}
-              onChange={handleChange}
-            />
-          </Grid>
+          <TextField
+                error = {allergicError ? true : false}
+                className={classes.formControl}
+                name="Allergic"
+                label="ประวัติแพ้ยา"
+                helperText= {allergicError}
+                value={patient.Allergic || ''}
+                variant="outlined"
+                onChange={handleChange}
+              />
+            </Grid>
 
 
           <Grid item xs={10}>
