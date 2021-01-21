@@ -2,8 +2,69 @@
 
 package ent
 
+import (
+	"github.com/B6001186/Contagions/ent/diagnosis"
+	"github.com/B6001186/Contagions/ent/schema"
+)
+
 // The init function reads all schema descriptors with runtime
 // code (default values, validators or hooks) and stitches it
 // to their package variables.
 func init() {
+	diagnosisFields := schema.Diagnosis{}.Fields()
+	_ = diagnosisFields
+	// diagnosisDescDiagnosticMessages is the schema descriptor for DiagnosticMessages field.
+	diagnosisDescDiagnosticMessages := diagnosisFields[0].Descriptor()
+	// diagnosis.DiagnosticMessagesValidator is a validator for the "DiagnosticMessages" field. It is called by the builders before save.
+	diagnosis.DiagnosticMessagesValidator = func() func(string) error {
+		validators := diagnosisDescDiagnosticMessages.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(_DiagnosticMessages string) error {
+			for _, fn := range fns {
+				if err := fn(_DiagnosticMessages); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	// diagnosisDescSurveillancePeriod is the schema descriptor for SurveillancePeriod field.
+	diagnosisDescSurveillancePeriod := diagnosisFields[1].Descriptor()
+	// diagnosis.SurveillancePeriodValidator is a validator for the "SurveillancePeriod" field. It is called by the builders before save.
+	diagnosis.SurveillancePeriodValidator = func() func(string) error {
+		validators := diagnosisDescSurveillancePeriod.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(_SurveillancePeriod string) error {
+			for _, fn := range fns {
+				if err := fn(_SurveillancePeriod); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	// diagnosisDescTreatment is the schema descriptor for Treatment field.
+	diagnosisDescTreatment := diagnosisFields[2].Descriptor()
+	// diagnosis.TreatmentValidator is a validator for the "Treatment" field. It is called by the builders before save.
+	diagnosis.TreatmentValidator = func() func(string) error {
+		validators := diagnosisDescTreatment.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(_Treatment string) error {
+			for _, fn := range fns {
+				if err := fn(_Treatment); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
 }

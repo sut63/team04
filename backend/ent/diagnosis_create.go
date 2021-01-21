@@ -35,6 +35,12 @@ func (dc *DiagnosisCreate) SetSurveillancePeriod(s string) *DiagnosisCreate {
 	return dc
 }
 
+// SetTreatment sets the Treatment field.
+func (dc *DiagnosisCreate) SetTreatment(s string) *DiagnosisCreate {
+	dc.mutation.SetTreatment(s)
+	return dc
+}
+
 // SetDiagnosisDate sets the DiagnosisDate field.
 func (dc *DiagnosisCreate) SetDiagnosisDate(t time.Time) *DiagnosisCreate {
 	dc.mutation.SetDiagnosisDate(t)
@@ -108,8 +114,26 @@ func (dc *DiagnosisCreate) Save(ctx context.Context) (*Diagnosis, error) {
 	if _, ok := dc.mutation.DiagnosticMessages(); !ok {
 		return nil, &ValidationError{Name: "DiagnosticMessages", err: errors.New("ent: missing required field \"DiagnosticMessages\"")}
 	}
+	if v, ok := dc.mutation.DiagnosticMessages(); ok {
+		if err := diagnosis.DiagnosticMessagesValidator(v); err != nil {
+			return nil, &ValidationError{Name: "DiagnosticMessages", err: fmt.Errorf("ent: validator failed for field \"DiagnosticMessages\": %w", err)}
+		}
+	}
 	if _, ok := dc.mutation.SurveillancePeriod(); !ok {
 		return nil, &ValidationError{Name: "SurveillancePeriod", err: errors.New("ent: missing required field \"SurveillancePeriod\"")}
+	}
+	if v, ok := dc.mutation.SurveillancePeriod(); ok {
+		if err := diagnosis.SurveillancePeriodValidator(v); err != nil {
+			return nil, &ValidationError{Name: "SurveillancePeriod", err: fmt.Errorf("ent: validator failed for field \"SurveillancePeriod\": %w", err)}
+		}
+	}
+	if _, ok := dc.mutation.Treatment(); !ok {
+		return nil, &ValidationError{Name: "Treatment", err: errors.New("ent: missing required field \"Treatment\"")}
+	}
+	if v, ok := dc.mutation.Treatment(); ok {
+		if err := diagnosis.TreatmentValidator(v); err != nil {
+			return nil, &ValidationError{Name: "Treatment", err: fmt.Errorf("ent: validator failed for field \"Treatment\": %w", err)}
+		}
 	}
 	if _, ok := dc.mutation.DiagnosisDate(); !ok {
 		return nil, &ValidationError{Name: "DiagnosisDate", err: errors.New("ent: missing required field \"DiagnosisDate\"")}
@@ -189,6 +213,14 @@ func (dc *DiagnosisCreate) createSpec() (*Diagnosis, *sqlgraph.CreateSpec) {
 			Column: diagnosis.FieldSurveillancePeriod,
 		})
 		d.SurveillancePeriod = value
+	}
+	if value, ok := dc.mutation.Treatment(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: diagnosis.FieldTreatment,
+		})
+		d.Treatment = value
 	}
 	if value, ok := dc.mutation.DiagnosisDate(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{

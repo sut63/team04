@@ -94,6 +94,7 @@ var (
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "diagnostic_messages", Type: field.TypeString},
 		{Name: "surveillance_period", Type: field.TypeString},
+		{Name: "treatment", Type: field.TypeString},
 		{Name: "diagnosis_date", Type: field.TypeTime},
 		{Name: "disease_diagnosis", Type: field.TypeInt, Nullable: true},
 		{Name: "employee_diagnosis", Type: field.TypeInt, Nullable: true},
@@ -107,21 +108,21 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:  "diagnoses_diseases_diagnosis",
-				Columns: []*schema.Column{DiagnosesColumns[4]},
+				Columns: []*schema.Column{DiagnosesColumns[5]},
 
 				RefColumns: []*schema.Column{DiseasesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "diagnoses_employees_diagnosis",
-				Columns: []*schema.Column{DiagnosesColumns[5]},
+				Columns: []*schema.Column{DiagnosesColumns[6]},
 
 				RefColumns: []*schema.Column{EmployeesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "diagnoses_patients_diagnosis",
-				Columns: []*schema.Column{DiagnosesColumns[6]},
+				Columns: []*schema.Column{DiagnosesColumns[7]},
 
 				RefColumns: []*schema.Column{PatientsColumns[0]},
 				OnDelete:   schema.SetNull,

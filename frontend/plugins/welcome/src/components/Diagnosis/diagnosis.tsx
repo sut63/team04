@@ -125,6 +125,7 @@ interface Diagnosis {
 
   diagnosticmessages: string;
   surveillanceperiod: string;
+  treatment: string;
   diagnosisdate: Date;
   disease: number;
   employee: number;
@@ -202,10 +203,34 @@ const Diagnosis: FC<{}> = () => {
     },
   });
 
+  const alertMessage = (icon: any, title: any) => {
+    Toast.fire({
+      icon: icon,
+      title: title,
+    });
+  }
+
+  const checkCaseSaveError = (field: string) => {
+    switch(field) {
+      case 'DiagnosticMessages':
+        alertMessage("error","กรอกรูปแบบการวินิจฉัยไม่ถูกต้อง");
+        return;
+      case 'SurveillancePeriod':
+        alertMessage("error","กรอกรูปแบบการเฝ้าระวังไม่ถูกต้อง");
+        return;
+      case 'Treatment':
+        alertMessage("error","กรอกรูปแบบการรักษาไม่ถูกต้อง");
+        return;
+      default:
+        alertMessage("error","กรอกบันทึกข้อมูลไม่สำเร็จ");
+        return;
+    }
+  }
+
   function save() {
     setShowInputError(true);
-    let {diagnosticmessages, surveillanceperiod, diagnosisdate, patient, disease} = diagnosis;
-    if (!diagnosticmessages || !surveillanceperiod || !diagnosisdate || !patient || !disease) {
+    let {diagnosticmessages, surveillanceperiod, treatment, diagnosisdate, patient, disease} = diagnosis;
+    if (!diagnosticmessages || !surveillanceperiod || !treatment || !diagnosisdate || !patient || !disease) {
       Toast.fire({
         icon: 'error',
         title: 'กรุณากรอกข้อมูลให้ครบถ้วน',
@@ -224,23 +249,20 @@ diagnosis.employee = employee.filter(emp => emp.userId === window.localStorage.g
     };
     console.log(diagnosis);
 
-    fetch(apiUrl, requestOptions)
-      .then(response => {
-        console.log(response)
-        response.json()
-        if (response.ok === true) {
+fetch(apiUrl, requestOptions)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        if (data.status === true) {
           clear();
           Toast.fire({
             icon: 'success',
             title: 'บันทึกข้อมูลสำเร็จ',
           });
         } else {
-          Toast.fire({
-            icon: 'error',
-            title: 'บันทึกข้อมูลไม่สำเร็จ',
-          });
+          checkCaseSaveError(data.error.Name)
         }
-      })
+      });
   }
 
   function redirecLogOut() {
@@ -397,6 +419,22 @@ function redirectToSearchDiagnosis() {
                 />
               </FormControl>
             </Grid>
+
+            <Grid item xs={9}>
+              <FormControl variant="outlined" className={classes.formControl}>
+                <TextField
+                  required
+                  error={!diagnosis.treatment && showInputError}
+                  name="treatment"
+                  label="การรักษา (เช่น แผนไทย)"
+                  variant="outlined"
+                  type="string"
+                  size="medium"
+                  value={diagnosis.treatment || ''}
+                  onChange={handleChange}
+                />
+              </FormControl>
+            </Grid>
             
             <Grid item xs={9}>
               <FormControl variant="outlined" className={classes.formControl}>
@@ -434,7 +472,6 @@ function redirectToSearchDiagnosis() {
               />
               </FormControl>
           </Grid>
-
 
             <Grid item xs={10} >
               <Button

@@ -116,6 +116,9 @@ definitions:
         description: SurveillancePeriod holds the value of the "SurveillancePeriod"
           field.
         type: string
+      Treatment:
+        description: Treatment holds the value of the "Treatment" field.
+        type: string
       edges:
         $ref: '#/definitions/ent.DiagnosisEdges'
         description: |-

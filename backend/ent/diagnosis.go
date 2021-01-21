@@ -23,6 +23,8 @@ type Diagnosis struct {
 	DiagnosticMessages string `json:"DiagnosticMessages,omitempty"`
 	// SurveillancePeriod holds the value of the "SurveillancePeriod" field.
 	SurveillancePeriod string `json:"SurveillancePeriod,omitempty"`
+	// Treatment holds the value of the "Treatment" field.
+	Treatment string `json:"Treatment,omitempty"`
 	// DiagnosisDate holds the value of the "DiagnosisDate" field.
 	DiagnosisDate time.Time `json:"DiagnosisDate,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
@@ -94,6 +96,7 @@ func (*Diagnosis) scanValues() []interface{} {
 		&sql.NullInt64{},  // id
 		&sql.NullString{}, // DiagnosticMessages
 		&sql.NullString{}, // SurveillancePeriod
+		&sql.NullString{}, // Treatment
 		&sql.NullTime{},   // DiagnosisDate
 	}
 }
@@ -129,12 +132,17 @@ func (d *Diagnosis) assignValues(values ...interface{}) error {
 	} else if value.Valid {
 		d.SurveillancePeriod = value.String
 	}
-	if value, ok := values[2].(*sql.NullTime); !ok {
-		return fmt.Errorf("unexpected type %T for field DiagnosisDate", values[2])
+	if value, ok := values[2].(*sql.NullString); !ok {
+		return fmt.Errorf("unexpected type %T for field Treatment", values[2])
+	} else if value.Valid {
+		d.Treatment = value.String
+	}
+	if value, ok := values[3].(*sql.NullTime); !ok {
+		return fmt.Errorf("unexpected type %T for field DiagnosisDate", values[3])
 	} else if value.Valid {
 		d.DiagnosisDate = value.Time
 	}
-	values = values[3:]
+	values = values[4:]
 	if len(values) == len(diagnosis.ForeignKeys) {
 		if value, ok := values[0].(*sql.NullInt64); !ok {
 			return fmt.Errorf("unexpected type %T for edge-field disease_diagnosis", value)
@@ -200,6 +208,8 @@ func (d *Diagnosis) String() string {
 	builder.WriteString(d.DiagnosticMessages)
 	builder.WriteString(", SurveillancePeriod=")
 	builder.WriteString(d.SurveillancePeriod)
+	builder.WriteString(", Treatment=")
+	builder.WriteString(d.Treatment)
 	builder.WriteString(", DiagnosisDate=")
 	builder.WriteString(d.DiagnosisDate.Format(time.ANSIC))
 	builder.WriteByte(')')
