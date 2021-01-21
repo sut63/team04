@@ -2,49 +2,8 @@
 
 package ent
 
-import (
-	"github.com/B6001186/Contagions/ent/patient"
-	"github.com/B6001186/Contagions/ent/schema"
-)
-
 // The init function reads all schema descriptors with runtime
 // code (default values, validators or hooks) and stitches it
 // to their package variables.
 func init() {
-	patientFields := schema.Patient{}.Fields()
-	_ = patientFields
-	// patientDescIdcard is the schema descriptor for Idcard field.
-	patientDescIdcard := patientFields[0].Descriptor()
-	// patient.IdcardValidator is a validator for the "Idcard" field. It is called by the builders before save.
-	patient.IdcardValidator = func() func(string) error {
-		validators := patientDescIdcard.Validators
-		fns := [...]func(string) error{
-			validators[0].(func(string) error),
-			validators[1].(func(string) error),
-		}
-		return func(_Idcard string) error {
-			for _, fn := range fns {
-				if err := fn(_Idcard); err != nil {
-					return err
-				}
-			}
-			return nil
-		}
-	}()
-	// patientDescPatientName is the schema descriptor for PatientName field.
-	patientDescPatientName := patientFields[1].Descriptor()
-	// patient.PatientNameValidator is a validator for the "PatientName" field. It is called by the builders before save.
-	patient.PatientNameValidator = patientDescPatientName.Validators[0].(func(string) error)
-	// patientDescAddress is the schema descriptor for Address field.
-	patientDescAddress := patientFields[2].Descriptor()
-	// patient.AddressValidator is a validator for the "Address" field. It is called by the builders before save.
-	patient.AddressValidator = patientDescAddress.Validators[0].(func(string) error)
-	// patientDescCongenital is the schema descriptor for Congenital field.
-	patientDescCongenital := patientFields[3].Descriptor()
-	// patient.CongenitalValidator is a validator for the "Congenital" field. It is called by the builders before save.
-	patient.CongenitalValidator = patientDescCongenital.Validators[0].(func(string) error)
-	// patientDescAllergic is the schema descriptor for Allergic field.
-	patientDescAllergic := patientFields[4].Descriptor()
-	// patient.AllergicValidator is a validator for the "Allergic" field. It is called by the builders before save.
-	patient.AllergicValidator = patientDescAllergic.Validators[0].(func(string) error)
 }

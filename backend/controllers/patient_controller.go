@@ -128,20 +128,15 @@ func (ctl *PatientController) CreatePatient(c *gin.Context) {
 		SetEmployee(e).
 		Save(context.Background())
 
-		if err != nil {
-			fmt.Println(err)
-			c.JSON(400, gin.H{
-				"status": false,
-				"error":  err,
-			})
-			return
-		}
-	
-		c.JSON(200, gin.H{
-			"status": true,
-			"data":   pa,
+	if err != nil {
+		c.JSON(400, gin.H{
+			"error": "saving failed",
 		})
+		return
 	}
+
+	c.JSON(200, pa)
+}
 
 // ListPatient handles request to get a list of patient entities
 // @Summary List patient entities

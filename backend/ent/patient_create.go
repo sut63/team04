@@ -175,42 +175,17 @@ func (pc *PatientCreate) Save(ctx context.Context) (*Patient, error) {
 	if _, ok := pc.mutation.Idcard(); !ok {
 		return nil, &ValidationError{Name: "Idcard", err: errors.New("ent: missing required field \"Idcard\"")}
 	}
-	if v, ok := pc.mutation.Idcard(); ok {
-		if err := patient.IdcardValidator(v); err != nil {
-			return nil, &ValidationError{Name: "Idcard", err: fmt.Errorf("ent: validator failed for field \"Idcard\": %w", err)}
-		}
-	}
 	if _, ok := pc.mutation.PatientName(); !ok {
 		return nil, &ValidationError{Name: "PatientName", err: errors.New("ent: missing required field \"PatientName\"")}
-	}
-	if v, ok := pc.mutation.PatientName(); ok {
-		if err := patient.PatientNameValidator(v); err != nil {
-			return nil, &ValidationError{Name: "PatientName", err: fmt.Errorf("ent: validator failed for field \"PatientName\": %w", err)}
-		}
 	}
 	if _, ok := pc.mutation.Address(); !ok {
 		return nil, &ValidationError{Name: "Address", err: errors.New("ent: missing required field \"Address\"")}
 	}
-	if v, ok := pc.mutation.Address(); ok {
-		if err := patient.AddressValidator(v); err != nil {
-			return nil, &ValidationError{Name: "Address", err: fmt.Errorf("ent: validator failed for field \"Address\": %w", err)}
-		}
-	}
 	if _, ok := pc.mutation.Congenital(); !ok {
 		return nil, &ValidationError{Name: "Congenital", err: errors.New("ent: missing required field \"Congenital\"")}
 	}
-	if v, ok := pc.mutation.Congenital(); ok {
-		if err := patient.CongenitalValidator(v); err != nil {
-			return nil, &ValidationError{Name: "Congenital", err: fmt.Errorf("ent: validator failed for field \"Congenital\": %w", err)}
-		}
-	}
 	if _, ok := pc.mutation.Allergic(); !ok {
 		return nil, &ValidationError{Name: "Allergic", err: errors.New("ent: missing required field \"Allergic\"")}
-	}
-	if v, ok := pc.mutation.Allergic(); ok {
-		if err := patient.AllergicValidator(v); err != nil {
-			return nil, &ValidationError{Name: "Allergic", err: fmt.Errorf("ent: validator failed for field \"Allergic\": %w", err)}
-		}
 	}
 	var (
 		err  error

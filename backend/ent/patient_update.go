@@ -225,31 +225,6 @@ func (pu *PatientUpdate) RemoveDiagnosis(d ...*Diagnosis) *PatientUpdate {
 
 // Save executes the query and returns the number of rows/vertices matched by this operation.
 func (pu *PatientUpdate) Save(ctx context.Context) (int, error) {
-	if v, ok := pu.mutation.Idcard(); ok {
-		if err := patient.IdcardValidator(v); err != nil {
-			return 0, &ValidationError{Name: "Idcard", err: fmt.Errorf("ent: validator failed for field \"Idcard\": %w", err)}
-		}
-	}
-	if v, ok := pu.mutation.PatientName(); ok {
-		if err := patient.PatientNameValidator(v); err != nil {
-			return 0, &ValidationError{Name: "PatientName", err: fmt.Errorf("ent: validator failed for field \"PatientName\": %w", err)}
-		}
-	}
-	if v, ok := pu.mutation.Address(); ok {
-		if err := patient.AddressValidator(v); err != nil {
-			return 0, &ValidationError{Name: "Address", err: fmt.Errorf("ent: validator failed for field \"Address\": %w", err)}
-		}
-	}
-	if v, ok := pu.mutation.Congenital(); ok {
-		if err := patient.CongenitalValidator(v); err != nil {
-			return 0, &ValidationError{Name: "Congenital", err: fmt.Errorf("ent: validator failed for field \"Congenital\": %w", err)}
-		}
-	}
-	if v, ok := pu.mutation.Allergic(); ok {
-		if err := patient.AllergicValidator(v); err != nil {
-			return 0, &ValidationError{Name: "Allergic", err: fmt.Errorf("ent: validator failed for field \"Allergic\": %w", err)}
-		}
-	}
 
 	var (
 		err      error
@@ -776,31 +751,6 @@ func (puo *PatientUpdateOne) RemoveDiagnosis(d ...*Diagnosis) *PatientUpdateOne 
 
 // Save executes the query and returns the updated entity.
 func (puo *PatientUpdateOne) Save(ctx context.Context) (*Patient, error) {
-	if v, ok := puo.mutation.Idcard(); ok {
-		if err := patient.IdcardValidator(v); err != nil {
-			return nil, &ValidationError{Name: "Idcard", err: fmt.Errorf("ent: validator failed for field \"Idcard\": %w", err)}
-		}
-	}
-	if v, ok := puo.mutation.PatientName(); ok {
-		if err := patient.PatientNameValidator(v); err != nil {
-			return nil, &ValidationError{Name: "PatientName", err: fmt.Errorf("ent: validator failed for field \"PatientName\": %w", err)}
-		}
-	}
-	if v, ok := puo.mutation.Address(); ok {
-		if err := patient.AddressValidator(v); err != nil {
-			return nil, &ValidationError{Name: "Address", err: fmt.Errorf("ent: validator failed for field \"Address\": %w", err)}
-		}
-	}
-	if v, ok := puo.mutation.Congenital(); ok {
-		if err := patient.CongenitalValidator(v); err != nil {
-			return nil, &ValidationError{Name: "Congenital", err: fmt.Errorf("ent: validator failed for field \"Congenital\": %w", err)}
-		}
-	}
-	if v, ok := puo.mutation.Allergic(); ok {
-		if err := patient.AllergicValidator(v); err != nil {
-			return nil, &ValidationError{Name: "Allergic", err: fmt.Errorf("ent: validator failed for field \"Allergic\": %w", err)}
-		}
-	}
 
 	var (
 		err  error
