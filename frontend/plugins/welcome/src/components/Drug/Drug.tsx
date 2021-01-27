@@ -133,7 +133,7 @@ const StyledMenuItem = withStyles((theme) => ({
 
 interface Drug {
   employee: number;
-  drugName: string;
+  drugname: string;
   drugtype: number;
   howto: string;
   property: string;
@@ -150,6 +150,9 @@ const Drug: FC<{}> = () => {
   const [diseases, setDiseases] = React.useState<EntDisease[]>([]);
   const [drugtypes, setDrugTypes] = React.useState<EntDrugType[]>([]);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [DrugNameError, setDrugNameError] = React.useState('');
+  const [HowtoError, setHowtoError] = React.useState('');
+  const [PropertyError, setPropertyError] = React.useState('');
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -188,6 +191,33 @@ const Drug: FC<{}> = () => {
     console.log(drug);
   };
 
+
+
+
+  const alertMessage = (icon: any, title: any) => {
+    Toast.fire({
+      icon: icon,
+      title: title,
+    });
+  }
+
+  const checkCaseSaveError = (field: string) => {
+    switch(field) {
+      case 'DrugName':
+        alertMessage("error","รูปแบบชื่อยาไม่ถูกต้อง");
+        return;
+      case 'Howto':
+        alertMessage("error","รูปแบบวิธีการใช้ไม่ถูกต้อง");
+        return;
+      case 'Property':
+        alertMessage("error","รูปแบบสรรพคุณไม่ถูกต้อง");
+        return;
+      default:
+        alertMessage("error","บันทึกข้อมูลไม่สำเร็จ");
+        return;
+    }
+  }
+
   // clear input form
   function clear() {
     setDrug({});
@@ -204,14 +234,14 @@ function redirectToSearchDrug() {
   // function save data
   function save() {
     setShowInputError(true);
-    let { drugName, drugtype, property, howto, disease } = drug;
-    if (!drugName || !drugtype || !property || !howto || !disease) {
-      Toast.fire({
-        icon: 'error',
-        title: 'กรุณากรอกข้อมูลให้ครบถ้วน',
-      });
-      return;
-    }
+    // let { DrugName, drugtype, Property, Howto, disease } = drug;
+    // if (!DrugName || !drugtype || !Property || !Howto || !disease) {
+    //   Toast.fire({
+    //     icon: 'error',
+    //     title: 'กรุณากรอกข้อมูลให้ครบถ้วน',
+    //   });
+    //   return;
+    // }
 
     //เช็คแล้วเก็บค่าไว้ใน employee
     drug.employee = employees.filter(emp => emp.userId === window.localStorage.getItem("username"))[0].id;
@@ -225,20 +255,18 @@ function redirectToSearchDrug() {
 
     console.log(drug); // log ดูข้อมูล สามารถ Inspect ดูข้อมูลได้ F12 เลือก Tab Console
 
-    fetch(apiUrl, requestOptions).then(response => {
-      console.log(response);
-      response.json();
-      if (response.ok === true) {
+    fetch(apiUrl, requestOptions)
+    .then(response => response.json())
+    .then(data => {console.log(data.save)
+      console.log(requestOptions)
+      if (data.status == true) {
         clear();
         Toast.fire({
           icon: 'success',
           title: 'บันทึกข้อมูลสำเร็จ',
         });
       } else {
-        Toast.fire({
-          icon: 'error',
-          title: 'บันทึกข้อมูลไม่สำเร็จ',
-        });
+        checkCaseSaveError(data.error.Name)
       }
     });
   }
@@ -317,15 +345,16 @@ function redirectToSearchDrug() {
           <Grid item xs={10}>
             <TextField
               required={true}
-              error={!drug.drugName && showInputError}
-              id="drugName"
-              name="drugName"
+            //  error={!drug.DrugName && showInputError}
+              id="drugname"
+              name="drugname"
+              error={DrugNameError ? true : false}
               type="string"
               label="ชื่อยา , วัคซีน "
               variant="outlined"
               fullWidth
               multiline
-              value={drug.drugName || ''}
+              value={drug.drugname || ''}
               onChange={handleChange}
             />
           </Grid>
@@ -336,7 +365,7 @@ function redirectToSearchDrug() {
               <Select
                 name="disease"
                 required={true}
-                error={!drug.disease && showInputError}
+              //  error={!drug.disease && showInputError}
                 value={drug.disease || ''}
                 onChange={handleChange}
                 label="ชื่อโรคติดต่อ"
@@ -359,7 +388,7 @@ function redirectToSearchDrug() {
               <Select
                 name="drugtype"
                 required={true}
-                error={!drug.drugtype && showInputError}
+              //  error={!drug.drugtype && showInputError}
                 value={drug.drugtype || ''}
                 onChange={handleChange}
                 label="ประเภทยา"
@@ -379,8 +408,11 @@ function redirectToSearchDrug() {
           <Grid item xs={10}>
             <TextField
               required={true}
-              error={!drug.property && showInputError}
+            //  error={!drug.DrugName && showInputError}
+              id="Property"
               name="property"
+              error={PropertyError ? true : false}
+              type="string"
               label="สรรพคุณยา"
               variant="outlined"
               fullWidth
@@ -393,8 +425,11 @@ function redirectToSearchDrug() {
           <Grid item xs={10}>
             <TextField
               required={true}
-              error={!drug.howto && showInputError}
+            //  error={!drug.DrugName && showInputError}
+              id="howto"
               name="howto"
+              error={HowtoError ? true : false}
+              type="string"
               label="วิธีการใช้"
               variant="outlined"
               fullWidth

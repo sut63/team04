@@ -96,15 +96,17 @@ func (ctl *DrugController) CreateDrug(c *gin.Context) {
 		Save(context.Background())
 
 	if err != nil {
+		fmt.Println(err)
 		c.JSON(400, gin.H{
-			"error": "saving failed",
+			"status": false,
+			"error":  err,
 		})
 		return
 	}
 
 	c.JSON(200, gin.H{
 		"status": true,
-		"data":   dr,
+		"error":  dr,
 	})
 }
 

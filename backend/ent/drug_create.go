@@ -107,11 +107,26 @@ func (dc *DrugCreate) Save(ctx context.Context) (*Drug, error) {
 	if _, ok := dc.mutation.DrugName(); !ok {
 		return nil, &ValidationError{Name: "DrugName", err: errors.New("ent: missing required field \"DrugName\"")}
 	}
+	if v, ok := dc.mutation.DrugName(); ok {
+		if err := drug.DrugNameValidator(v); err != nil {
+			return nil, &ValidationError{Name: "DrugName", err: fmt.Errorf("ent: validator failed for field \"DrugName\": %w", err)}
+		}
+	}
 	if _, ok := dc.mutation.Howto(); !ok {
 		return nil, &ValidationError{Name: "Howto", err: errors.New("ent: missing required field \"Howto\"")}
 	}
+	if v, ok := dc.mutation.Howto(); ok {
+		if err := drug.HowtoValidator(v); err != nil {
+			return nil, &ValidationError{Name: "Howto", err: fmt.Errorf("ent: validator failed for field \"Howto\": %w", err)}
+		}
+	}
 	if _, ok := dc.mutation.Property(); !ok {
 		return nil, &ValidationError{Name: "Property", err: errors.New("ent: missing required field \"Property\"")}
+	}
+	if v, ok := dc.mutation.Property(); ok {
+		if err := drug.PropertyValidator(v); err != nil {
+			return nil, &ValidationError{Name: "Property", err: fmt.Errorf("ent: validator failed for field \"Property\": %w", err)}
+		}
 	}
 	var (
 		err  error
