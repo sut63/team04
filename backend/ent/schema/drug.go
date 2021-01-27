@@ -1,6 +1,9 @@
 package schema
 
 import (
+	"errors"
+	"regexp"
+
 	"github.com/facebookincubator/ent"
 	"github.com/facebookincubator/ent/schema/edge"
 	"github.com/facebookincubator/ent/schema/field"
@@ -14,9 +17,34 @@ type Drug struct {
 // Fields of the Drug.
 func (Drug) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("DrugName"),
-		field.String("Howto"),
-		field.String("Property"),
+		field.String("DrugName").
+			Validate(func(s string) error {
+				match, _ := regexp.MatchString("ยา.*", s)
+				if !match {
+					return errors.New("รูปแบบชื่อยาไม่ถูกต้อง")
+				}
+				return nil
+			}).
+			NotEmpty(),
+			
+		field.String("Howto").
+			Validate(func(s string) error {
+				match, _ := regexp.MatchString("ปริมาณ.*", s)
+				if !match {
+					return errors.New("รูปแบบวิธีการใช้ไม่ถูกต้อง")
+				}
+				return nil
+			}).NotEmpty(),
+
+		field.String("Property").
+			Validate(func(s string) error {
+				match, _ := regexp.MatchString("รักษา.*", s)
+				if !match {
+					return errors.New("รูปแบบสรรพคุณไม่ถูกต้อง")
+				}
+				return nil
+			}).
+			NotEmpty(),
 	}
 }
 

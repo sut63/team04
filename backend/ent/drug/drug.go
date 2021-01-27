@@ -60,3 +60,12 @@ var ForeignKeys = []string{
 	"drug_type_drug",
 	"employee_drug",
 }
+
+var (
+	// DrugNameValidator is a validator for the "DrugName" field. It is called by the builders before save.
+	DrugNameValidator func(string) error
+	// HowtoValidator is a validator for the "Howto" field. It is called by the builders before save.
+	HowtoValidator func(string) error
+	// PropertyValidator is a validator for the "Property" field. It is called by the builders before save.
+	PropertyValidator func(string) error
+)

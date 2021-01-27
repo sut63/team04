@@ -130,6 +130,21 @@ func (du *DrugUpdate) ClearDisease() *DrugUpdate {
 
 // Save executes the query and returns the number of rows/vertices matched by this operation.
 func (du *DrugUpdate) Save(ctx context.Context) (int, error) {
+	if v, ok := du.mutation.DrugName(); ok {
+		if err := drug.DrugNameValidator(v); err != nil {
+			return 0, &ValidationError{Name: "DrugName", err: fmt.Errorf("ent: validator failed for field \"DrugName\": %w", err)}
+		}
+	}
+	if v, ok := du.mutation.Howto(); ok {
+		if err := drug.HowtoValidator(v); err != nil {
+			return 0, &ValidationError{Name: "Howto", err: fmt.Errorf("ent: validator failed for field \"Howto\": %w", err)}
+		}
+	}
+	if v, ok := du.mutation.Property(); ok {
+		if err := drug.PropertyValidator(v); err != nil {
+			return 0, &ValidationError{Name: "Property", err: fmt.Errorf("ent: validator failed for field \"Property\": %w", err)}
+		}
+	}
 
 	var (
 		err      error
@@ -442,6 +457,21 @@ func (duo *DrugUpdateOne) ClearDisease() *DrugUpdateOne {
 
 // Save executes the query and returns the updated entity.
 func (duo *DrugUpdateOne) Save(ctx context.Context) (*Drug, error) {
+	if v, ok := duo.mutation.DrugName(); ok {
+		if err := drug.DrugNameValidator(v); err != nil {
+			return nil, &ValidationError{Name: "DrugName", err: fmt.Errorf("ent: validator failed for field \"DrugName\": %w", err)}
+		}
+	}
+	if v, ok := duo.mutation.Howto(); ok {
+		if err := drug.HowtoValidator(v); err != nil {
+			return nil, &ValidationError{Name: "Howto", err: fmt.Errorf("ent: validator failed for field \"Howto\": %w", err)}
+		}
+	}
+	if v, ok := duo.mutation.Property(); ok {
+		if err := drug.PropertyValidator(v); err != nil {
+			return nil, &ValidationError{Name: "Property", err: fmt.Errorf("ent: validator failed for field \"Property\": %w", err)}
+		}
+	}
 
 	var (
 		err  error
