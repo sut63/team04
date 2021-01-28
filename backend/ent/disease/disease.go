@@ -87,3 +87,12 @@ var ForeignKeys = []string{
 	"employee_disease",
 	"severity_disease",
 }
+
+var (
+	// DiseaseNameValidator is a validator for the "DiseaseName" field. It is called by the builders before save.
+	DiseaseNameValidator func(string) error
+	// SymptomValidator is a validator for the "Symptom" field. It is called by the builders before save.
+	SymptomValidator func(string) error
+	// ContagionValidator is a validator for the "Contagion" field. It is called by the builders before save.
+	ContagionValidator func(string) error
+)

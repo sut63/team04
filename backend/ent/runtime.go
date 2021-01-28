@@ -4,6 +4,8 @@ package ent
 
 import (
 	"github.com/B6001186/Contagions/ent/diagnosis"
+	"github.com/B6001186/Contagions/ent/disease"
+	"github.com/B6001186/Contagions/ent/drug"
 	"github.com/B6001186/Contagions/ent/patient"
 	"github.com/B6001186/Contagions/ent/schema"
 )
@@ -62,6 +64,76 @@ func init() {
 		return func(_Treatment string) error {
 			for _, fn := range fns {
 				if err := fn(_Treatment); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	diseaseFields := schema.Disease{}.Fields()
+	_ = diseaseFields
+	// diseaseDescDiseaseName is the schema descriptor for DiseaseName field.
+	diseaseDescDiseaseName := diseaseFields[0].Descriptor()
+	// disease.DiseaseNameValidator is a validator for the "DiseaseName" field. It is called by the builders before save.
+	disease.DiseaseNameValidator = diseaseDescDiseaseName.Validators[0].(func(string) error)
+	// diseaseDescSymptom is the schema descriptor for Symptom field.
+	diseaseDescSymptom := diseaseFields[1].Descriptor()
+	// disease.SymptomValidator is a validator for the "Symptom" field. It is called by the builders before save.
+	disease.SymptomValidator = diseaseDescSymptom.Validators[0].(func(string) error)
+	// diseaseDescContagion is the schema descriptor for Contagion field.
+	diseaseDescContagion := diseaseFields[2].Descriptor()
+	// disease.ContagionValidator is a validator for the "Contagion" field. It is called by the builders before save.
+	disease.ContagionValidator = diseaseDescContagion.Validators[0].(func(string) error)
+	drugFields := schema.Drug{}.Fields()
+	_ = drugFields
+	// drugDescDrugName is the schema descriptor for DrugName field.
+	drugDescDrugName := drugFields[0].Descriptor()
+	// drug.DrugNameValidator is a validator for the "DrugName" field. It is called by the builders before save.
+	drug.DrugNameValidator = func() func(string) error {
+		validators := drugDescDrugName.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(_DrugName string) error {
+			for _, fn := range fns {
+				if err := fn(_DrugName); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	// drugDescHowto is the schema descriptor for Howto field.
+	drugDescHowto := drugFields[1].Descriptor()
+	// drug.HowtoValidator is a validator for the "Howto" field. It is called by the builders before save.
+	drug.HowtoValidator = func() func(string) error {
+		validators := drugDescHowto.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(_Howto string) error {
+			for _, fn := range fns {
+				if err := fn(_Howto); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	// drugDescProperty is the schema descriptor for Property field.
+	drugDescProperty := drugFields[2].Descriptor()
+	// drug.PropertyValidator is a validator for the "Property" field. It is called by the builders before save.
+	drug.PropertyValidator = func() func(string) error {
+		validators := drugDescProperty.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(_Property string) error {
+			for _, fn := range fns {
+				if err := fn(_Property); err != nil {
 					return err
 				}
 			}
