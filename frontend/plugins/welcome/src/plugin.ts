@@ -10,7 +10,11 @@ import Login from './components/SignIn/Login'
 import Area from './components/Area';
 import SearchEmployee from './components/Search Employee';
 import SearchPatient from './components/Search Patient';
+<<<<<<< HEAD
 import SearchDisease from './components/Search Disease';
+=======
+import SearchDiagnosis from './components/Search Diagnosis';
+>>>>>>> c57fb83 (เพิ่มโค้ด Component ชื่อ Search Diagnosis ของระบบค้นหาการวินิจฉัยโรคติดต่อ - close #247)
 
 export const plugin = createPlugin({
   id: 'welcome',
@@ -24,6 +28,7 @@ export const plugin = createPlugin({
     router.registerRoute('/patient', Patient);
     router.registerRoute('searchpatient', SearchPatient);
     router.registerRoute('/diagnosis', Diagnosis);
+    router.registerRoute('searchdiagnosis', SearchDiagnosis);
     router.registerRoute('/disease', Disease);
     router.registerRoute('SearchDisease', SearchDisease);
     router.registerRoute('/area', Area);
