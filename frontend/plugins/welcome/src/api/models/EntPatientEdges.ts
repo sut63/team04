@@ -94,12 +94,12 @@ export function EntPatientEdgesFromJSONTyped(json: any, ignoreDiscriminator: boo
     }
     return {
         
-        'bloodtype': !exists(json, 'Bloodtype') ? undefined : EntBloodtypeFromJSON(json['Bloodtype']),
-        'category': !exists(json, 'Category') ? undefined : EntCategoryFromJSON(json['Category']),
-        'diagnosis': !exists(json, 'Diagnosis') ? undefined : ((json['Diagnosis'] as Array<any>).map(EntDiagnosisFromJSON)),
-        'employee': !exists(json, 'Employee') ? undefined : EntEmployeeFromJSON(json['Employee']),
-        'gender': !exists(json, 'Gender') ? undefined : EntGenderFromJSON(json['Gender']),
-        'nametitle': !exists(json, 'Nametitle') ? undefined : EntNametitleFromJSON(json['Nametitle']),
+        'bloodtype': !exists(json, 'bloodtype') ? undefined : EntBloodtypeFromJSON(json['bloodtype']),
+        'category': !exists(json, 'category') ? undefined : EntCategoryFromJSON(json['category']),
+        'diagnosis': !exists(json, 'diagnosis') ? undefined : ((json['diagnosis'] as Array<any>).map(EntDiagnosisFromJSON)),
+        'employee': !exists(json, 'employee') ? undefined : EntEmployeeFromJSON(json['employee']),
+        'gender': !exists(json, 'gender') ? undefined : EntGenderFromJSON(json['gender']),
+        'nametitle': !exists(json, 'nametitle') ? undefined : EntNametitleFromJSON(json['nametitle']),
     };
 }
 

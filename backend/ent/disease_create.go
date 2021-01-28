@@ -155,11 +155,26 @@ func (dc *DiseaseCreate) Save(ctx context.Context) (*Disease, error) {
 	if _, ok := dc.mutation.DiseaseName(); !ok {
 		return nil, &ValidationError{Name: "DiseaseName", err: errors.New("ent: missing required field \"DiseaseName\"")}
 	}
+	if v, ok := dc.mutation.DiseaseName(); ok {
+		if err := disease.DiseaseNameValidator(v); err != nil {
+			return nil, &ValidationError{Name: "DiseaseName", err: fmt.Errorf("ent: validator failed for field \"DiseaseName\": %w", err)}
+		}
+	}
 	if _, ok := dc.mutation.Symptom(); !ok {
 		return nil, &ValidationError{Name: "Symptom", err: errors.New("ent: missing required field \"Symptom\"")}
 	}
+	if v, ok := dc.mutation.Symptom(); ok {
+		if err := disease.SymptomValidator(v); err != nil {
+			return nil, &ValidationError{Name: "Symptom", err: fmt.Errorf("ent: validator failed for field \"Symptom\": %w", err)}
+		}
+	}
 	if _, ok := dc.mutation.Contagion(); !ok {
 		return nil, &ValidationError{Name: "Contagion", err: errors.New("ent: missing required field \"Contagion\"")}
+	}
+	if v, ok := dc.mutation.Contagion(); ok {
+		if err := disease.ContagionValidator(v); err != nil {
+			return nil, &ValidationError{Name: "Contagion", err: fmt.Errorf("ent: validator failed for field \"Contagion\": %w", err)}
+		}
 	}
 	var (
 		err  error

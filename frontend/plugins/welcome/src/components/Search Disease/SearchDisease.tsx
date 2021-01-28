@@ -27,13 +27,16 @@ import {
     Link
 } from '@material-ui/core';
 
-import { EntPatient } from '../../api/models/EntPatient';
+import { EntDisease } from '../../api/models/EntDisease';
 
 import Swal from 'sweetalert2'
 import { Content } from '@backstage/core';
 import LocalHotelRoundedIcon from '@material-ui/icons/LocalHotelRounded';
+//import SentimentVeryDissatisfiedRoundedIcon from '@material-ui/icons/SentimentVeryDissatisfiedRounded';
+//import AddLocationRoundedIcon from '@material-ui/icons/AddLocationRounded';
 import { withStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
+
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -137,7 +140,7 @@ export default function ComponentsTable() {
     const [diseases, setDisease] = useState<EntDisease[]>([])
 
     //--------------------------
-    const [DiseaseName, setcheckDiseaseName] = useState(String);
+    const [DiseaseName, setDiseaseName] = useState(String);
     const profile = { givenName: 'ระบบค้นหาข้อมูลโรคติดต่อ' };
     const alertMessage = (icon: any, title: any) => {
         Toast.fire({
@@ -160,12 +163,12 @@ export default function ComponentsTable() {
     const DiseaseNamehandlehange = (event: React.ChangeEvent<{ value: unknown }>) => {
         setSearch(false);
         setcheckDiseaseName(false);
-        setcheckDiseaseName(event.target.value as string);
+        setDiseaseName(event.target.value as string);
 
     };
 
     const cleardata = () => {
-        setcheckDiseaseName("");
+        setDiseaseName("");
         setSearch(false);
         setcheckDiseaseName(false);
         setSearch(false);
@@ -185,7 +188,7 @@ export default function ComponentsTable() {
         var check = false;
         diseases.map(item => {
             if (DiseaseName != "") {
-                if (item.DiseaseName?.includes(DiseaseName)) {
+                if (item.diseaseName?.includes(DiseaseName)) {
                     setcheckDiseaseName(true);
                     alertMessage("success", "ค้นหาสำเร็จ");
                     check = true;
@@ -193,22 +196,28 @@ export default function ComponentsTable() {
             }
         })
         if (!check) {
-            alertMessage("error", "ไม่พบข้อมูล");
+            alertMessage("error", "ไม่พบโรคที่ค้นหา");
         }
         console.log(checkDiseaseName)
         if (DiseaseName == "") {
-            alertMessage("info", "แสดงข้อมูลผู้ป่วย");
+            alertMessage("info", "แสดงข้อมูลโรคติดต่อ");
         }
     };
 
     function redirectToDisease() {
-        window.location.href = "http://localhost:3000/Disease"
+        window.location.href = "http://localhost:3000/disease"
     }
 
     function redirectToSearchDisease() {
-        window.location.href = "http://localhost:3000/Searchdisease"
+        window.location.href = "http://localhost:3000/searchdisease"
+    }
+    function redirectToArea() {
+        window.location.href = "http://localhost:3000/area"
     }
 
+    function redirectToSearchArea() {
+        window.location.href = "http://localhost:3000/searcharea"
+    }
     //Java 
     function redirecLogOut() {
         //redirec Page ... http://localhost:3000/
@@ -232,20 +241,36 @@ export default function ComponentsTable() {
                         onClose={handleClose}
                     >
 
+
                         <StyledMenuItem button onClick={redirectToDisease}>
                             <ListItemIcon>
                                 <LocalHotelRoundedIcon fontSize="default" />
                             </ListItemIcon>
-                            <ListItemText primary="Add Patient" />
+                            <ListItemText primary="Add Disease" />
                         </StyledMenuItem>
 
                         <StyledMenuItem button onClick={redirectToSearchDisease}>
                             <ListItemIcon>
                                 <SearchIcon fontSize="default" />
                             </ListItemIcon>
-                            <ListItemText primary="Search Patient" />
+                            <ListItemText primary="Search Disease" />
                         </StyledMenuItem>
+                        <StyledMenuItem button onClick={redirectToArea}>
+                            <ListItemIcon>
+                                <LocalHotelRoundedIcon fontSize="default" />
+                            </ListItemIcon>
+                            <ListItemText primary="Add Area" />
+                        </StyledMenuItem>
+
+                        <StyledMenuItem button onClick={redirectToSearchArea}>
+                            <ListItemIcon>
+                                <SearchIcon fontSize="default" />
+                            </ListItemIcon>
+                            <ListItemText primary="Search Area" />
+                        </StyledMenuItem>
+
                     </StyledMenu>
+
 
                     <Typography variant="h4" className={classes.title}>
                         ระบบจัดการโรคติดต่อ
@@ -283,7 +308,7 @@ export default function ComponentsTable() {
                                             fontSize: '20px',
                                         }}>
                                         ค้นหาข้อมูลโรคติดต่อ
-            </h1>
+                        </h1>
                                 </div>
 
                                 <div>
@@ -291,7 +316,7 @@ export default function ComponentsTable() {
                                         className={classes.margin}
                                         variant="outlined"
                                     >
-                                        <div className={classes.paper}><strong>กรุณากรอกเลขประจำตัวประชาชน</strong></div>
+                                        <div className={classes.paper}><strong>กรุณากรอกชื่อโรคติดต่อ</strong></div>
                                         <TextField
                                             id="DiseaseName"
                                             value={DiseaseName}
@@ -371,14 +396,14 @@ export default function ComponentsTable() {
                                                 </TableHead>
                                                 <TableBody>
 
-                                                    {diseases.filter((filter: any) => filter.idcard.includes(DiseaseName)).map((item: any) => (
+                                                    {diseases.filter((filter: any) => filter.diseaseName.includes(DiseaseName)).map((item: any) => (
                                                         <TableRow key={item.id}>
                                                             <TableCell align="center">{item.edges?.employee?.userId}</TableCell>
-                                                            <TableCell align="center">{item.name}</TableCell>
-                                                            <TableCell align="center">{item.edges?.severity?.name}</TableCell>
+                                                            <TableCell align="center">{item.diseaseName}</TableCell>
+                                                            <TableCell align="center">{item.edges?.severity?.severityName}</TableCell>
                                                             <TableCell align="center">{item.symptom}</TableCell>
                                                             <TableCell align="center">{item.contagion}</TableCell>
-                                                            <TableCell align="center">{item.edges?.diseasetype?.name}</TableCell>
+                                                            <TableCell align="center">{item.edges?.diseasetype?.diseaseTypeName}</TableCell>
 
                                                         </TableRow>
                                                     ))}
@@ -405,11 +430,11 @@ export default function ComponentsTable() {
                                                             {diseases.map((item: any) => (
                                                                 <TableRow key={item.id}>
                                                                     <TableCell align="center">{item.edges?.employee?.userId}</TableCell>
-                                                                    <TableCell align="center">{item.name}</TableCell>
-                                                                    <TableCell align="center">{item.edges?.severity?.name}</TableCell>
+                                                                    <TableCell align="center">{item.diseaseName}</TableCell>
+                                                                    <TableCell align="center">{item.edges?.severity?.severityName}</TableCell>
                                                                     <TableCell align="center">{item.symptom}</TableCell>
                                                                     <TableCell align="center">{item.contagion}</TableCell>
-                                                                    <TableCell align="center">{item.edges?.diseasetype?.name}</TableCell>
+                                                                    <TableCell align="center">{item.edges?.diseasetype?.diseaseTypeName}</TableCell>
                                                                 </TableRow>
                                                             ))}
                                                         </TableBody>
