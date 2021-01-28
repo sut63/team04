@@ -139,6 +139,10 @@ const Disease: FC<{}> = () => {
   const [diseasetypes, setDiseasetypes] = React.useState<EntDiseasetype[]>([]);
   const [severitys, setSeveritys] = React.useState<EntSeverity[]>([]);
 
+  const [diseaseNameError, setDiseaseNameError] = React.useState('');
+  const [symptomError, setSymptomError] = React.useState('');
+  const [contagionError, setContagionError] = React.useState('');
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -202,13 +206,71 @@ const Disease: FC<{}> = () => {
 
   // set data to object disease
   const handleChange = (
-    event: React.ChangeEvent<{ name?: string; value: unknown }>,
+    event: React.ChangeEvent<{ name?: string; value: any }>,
   ) => {
     const name = event.target.name as keyof typeof disease;
     const { value } = event.target;
+    const validateValue = value.toString()
+    checkPattern(name, validateValue)
     setDisease({ ...disease, [name]: value });
     console.log(disease);
   };
+
+  // ฟังก์ชั่นสำหรับ validate ชื่อโรคติดต่อ
+  const validateDiseaseName = (val: string) => {
+    return val.match("[โรค]");
+  }
+
+  // ฟังก์ชั่นสำหรับ validate อาการ
+  const validateSymptom = (val: string) => {
+    return val.match("^[ก-ฮ]");
+  }
+
+  // ฟังก์ชั่นสำหรับ validate การแพร่กระจาย
+  const validateContagion = (val: string) => {
+    return val.match("^[ก-ฮ]");
+  }
+
+  // สำหรับตรวจสอบรูปแบบข้อมูลที่กรอก ว่าเป็นไปตามที่กำหนดหรือไม่
+  const checkPattern = (id: string, value: string) => {
+    switch (id) {
+      case 'DiseaseName':
+        validateDiseaseName(value) ? setDiseaseNameError('') : setDiseaseNameError('ต้องขึ้นต้นด้วยคำว่า โรค');
+        return;
+      case 'Symptom':
+        validateSymptom(value) ? setSymptomError('') : setSymptomError('รูปแบบอาการไม่ถูกต้องกรุณาป้อนเป็นตัวอักษร');
+        return;
+      case 'Contagion':
+        validateContagion(value) ? setContagionError('') : setContagionError('รูปแบบการแพร่กระจายไม่ถูกต้องกรุณาป้อนเป็นตัวอักษร')
+        return;
+      default:
+        return;
+    }
+  }
+
+  const alertMessage = (icon: any, title: any) => {
+    Toast.fire({
+      icon: icon,
+      title: title,
+    });
+  }
+
+  const checkCaseSaveError = (field: string) => {
+    switch (field) {
+      case 'DiseaseName':
+        alertMessage("error", "ต้องขึ้นต้นด้วยคำว่าโรค");
+        return;
+      case 'Symptom':
+        alertMessage("error", "รูปแบบอาการไม่ถูกต้องกรุณาป้อนเป็นตัวอักษร");
+        return;
+      case 'Contagion':
+        alertMessage("error", "รูปแบบการแพร่กระจายไม่ถูกต้องกรุณาป้อนเป็นตัวอักษร");
+        return;
+      default:
+        alertMessage("error", "บันทึกข้อมูลไม่สำเร็จ");
+        return;
+    }
+  }
 
   // clear input form
   function clear() {
@@ -241,24 +303,40 @@ const Disease: FC<{}> = () => {
 
     console.log(disease); // log ดูข้อมูล สามารถ Inspect ดูข้อมูลได้ F12 เลือก Tab Console
 
+
     fetch(apiUrl, requestOptions)
-      .then(response => {
-        console.log(response)
-        response.json()
-        if (response.ok === true) {
+      .then(response => response.json())
+      .then(data => {
+        console.log(data.save)
+        console.log(requestOptions)
+        if (data.status == true) {
           clear();
           Toast.fire({
             icon: 'success',
             title: 'บันทึกข้อมูลสำเร็จ',
           });
         } else {
-          Toast.fire({
-            icon: 'error',
-            title: 'บันทึกข้อมูลไม่สำเร็จ',
-          });
+          checkCaseSaveError(data.error.Name)
         }
-      })
-  }
+      });
+  };
+
+  //ยังใช้ไม่ได้
+  //   fetch(apiUrl, requestOptions)
+  //     .then(response => {
+  //       console.log(response)
+  //       response.json()
+  //       if (response.ok === true) {
+  //         clear();
+  //         Toast.fire({
+  //           icon: 'success',
+  //           title: 'บันทึกข้อมูลสำเร็จ',
+  //         });
+  //       } else {
+  //         checkCaseSaveError(response.error.Name)
+  //       }    
+  //     });
+  // };
 
   //logout
   function redirecLogOut() {
@@ -359,7 +437,7 @@ const Disease: FC<{}> = () => {
               <h2 style={{ textAlign: 'center' }}> เพิ่มข้อมูลโรคติดต่อ </h2>
             </Grid>
 
-            
+
             {/*  เก็บไว้ก่อน เผื่อได้ใช้ครับ 
 
             <Grid item xs={12}>
@@ -385,12 +463,14 @@ const Disease: FC<{}> = () => {
             <Grid item xs={10}>
               <TextField
                 required={true}
-                error={!disease.DiseaseName && showInputError}
+                //error={!disease.DiseaseName && showInputError}
+                error={!disease.DiseaseName && showInputError || diseaseNameError ? true : false}
                 id="DiseaseName"
                 name="DiseaseName"
                 type="string"
                 label="ชื่อโรค"
                 variant="outlined"
+                helperText={diseaseNameError}
                 fullWidth
                 multiline
                 value={disease.DiseaseName || ""}
@@ -422,10 +502,12 @@ const Disease: FC<{}> = () => {
             <Grid item xs={10}>
               <TextField
                 required={true}
-                error={!disease.Symptom && showInputError}
+                //error={!disease.Symptom && showInputError}
+                error={!disease.Symptom && showInputError || symptomError ? true : false}
                 name="Symptom"
                 label="อาการ"
                 variant="outlined"
+                helperText={symptomError}
                 fullWidth
                 multiline
                 value={disease.Symptom || ""}
@@ -436,10 +518,12 @@ const Disease: FC<{}> = () => {
             <Grid item xs={10}>
               <TextField
                 required={true}
-                error={!disease.Contagion && showInputError}
+                //error={!disease.Contagion && showInputError}
+                error={!disease.Contagion && showInputError || contagionError ? true : false}
                 name="Contagion"
                 label="การแพร่กระจาย"
                 variant="outlined"
+                helperText={contagionError}
                 fullWidth
                 multiline
                 value={disease.Contagion || ""}
