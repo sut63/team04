@@ -1,1 +1,1 @@
-export { default } from './Search Disease';
+export { default } from './SearchDisease';
