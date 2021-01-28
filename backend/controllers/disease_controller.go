@@ -92,14 +92,19 @@ func (ctl *DiseaseController) CreateDisease(c *gin.Context) {
 		SetSeverity(s).
 		Save(context.Background())
 
-	if err != nil {
-		c.JSON(400, gin.H{
-			"error": "saving failed",
+		if err != nil {
+			fmt.Println(err)
+			c.JSON(400, gin.H{
+				"status": false,
+				"error": err,
+			})
+			return
+		}
+	
+		c.JSON(200, gin.H{
+			"status": true,
+			"data": ds,
 		})
-		return
-	}
-
-	c.JSON(200, ds)
 }
 
 // ListDisease handles request to get a list of disease entities

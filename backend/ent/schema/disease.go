@@ -1,6 +1,9 @@
 package schema
 
 import (
+	"errors"
+	"regexp"
+
 	"github.com/facebookincubator/ent"
 	"github.com/facebookincubator/ent/schema/edge"
 	"github.com/facebookincubator/ent/schema/field"
@@ -14,9 +17,29 @@ type Disease struct {
 //Fields of the Disease
 func (Disease) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("DiseaseName"),
-		field.String("Symptom"),
-		field.String("Contagion"),
+
+		field.String("DiseaseName").Validate(func(s string) error{
+            match, _ := regexp.MatchString("[โรค]",s)
+            if !match {
+                return errors.New("รูปแบบโรคไม่ถูกต้อง")
+            }
+                return nil
+		}),
+		field.String("Symptom").Validate(func(s string) error{
+            match, _ := regexp.MatchString("^[ก-ฮ]",s)
+            if !match {
+                return errors.New("รูปแบบอาการไม่ถูกต้องกรุณาป้อนเป็นตัวอักษร")
+            }
+                return nil
+		}),
+		field.String("Contagion").Validate(func(s string) error{
+            match, _ := regexp.MatchString("^[ก-ฮ]",s)
+            if !match {
+                return errors.New("รูปแบบการแพร่กระจายไม่ถูกต้องกรุณาป้อนเป็นตัวอักษร")
+            }
+                return nil
+		}),
+
 	}
 }
 
