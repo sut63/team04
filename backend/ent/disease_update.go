@@ -223,6 +223,21 @@ func (du *DiseaseUpdate) RemoveDiagnosis(d ...*Diagnosis) *DiseaseUpdate {
 
 // Save executes the query and returns the number of rows/vertices matched by this operation.
 func (du *DiseaseUpdate) Save(ctx context.Context) (int, error) {
+	if v, ok := du.mutation.DiseaseName(); ok {
+		if err := disease.DiseaseNameValidator(v); err != nil {
+			return 0, &ValidationError{Name: "DiseaseName", err: fmt.Errorf("ent: validator failed for field \"DiseaseName\": %w", err)}
+		}
+	}
+	if v, ok := du.mutation.Symptom(); ok {
+		if err := disease.SymptomValidator(v); err != nil {
+			return 0, &ValidationError{Name: "Symptom", err: fmt.Errorf("ent: validator failed for field \"Symptom\": %w", err)}
+		}
+	}
+	if v, ok := du.mutation.Contagion(); ok {
+		if err := disease.ContagionValidator(v); err != nil {
+			return 0, &ValidationError{Name: "Contagion", err: fmt.Errorf("ent: validator failed for field \"Contagion\": %w", err)}
+		}
+	}
 
 	var (
 		err      error
@@ -739,6 +754,21 @@ func (duo *DiseaseUpdateOne) RemoveDiagnosis(d ...*Diagnosis) *DiseaseUpdateOne 
 
 // Save executes the query and returns the updated entity.
 func (duo *DiseaseUpdateOne) Save(ctx context.Context) (*Disease, error) {
+	if v, ok := duo.mutation.DiseaseName(); ok {
+		if err := disease.DiseaseNameValidator(v); err != nil {
+			return nil, &ValidationError{Name: "DiseaseName", err: fmt.Errorf("ent: validator failed for field \"DiseaseName\": %w", err)}
+		}
+	}
+	if v, ok := duo.mutation.Symptom(); ok {
+		if err := disease.SymptomValidator(v); err != nil {
+			return nil, &ValidationError{Name: "Symptom", err: fmt.Errorf("ent: validator failed for field \"Symptom\": %w", err)}
+		}
+	}
+	if v, ok := duo.mutation.Contagion(); ok {
+		if err := disease.ContagionValidator(v); err != nil {
+			return nil, &ValidationError{Name: "Contagion", err: fmt.Errorf("ent: validator failed for field \"Contagion\": %w", err)}
+		}
+	}
 
 	var (
 		err  error

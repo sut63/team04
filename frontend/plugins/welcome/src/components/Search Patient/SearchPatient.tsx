@@ -192,7 +192,7 @@ export default function ComponentsTable() {
       }
     })
     if (!check) {
-      alertMessage("error", "ไม่พบข้อมูล");
+      alertMessage("error", "ไม่มีข้อมูลผู้ป่วย กรุณากรอกใหม่อีกครั้ง");
     }
     console.log(checkidcard)
     if (idcard == "") {
