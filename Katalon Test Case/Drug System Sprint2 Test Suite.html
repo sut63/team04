@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta content="text/html; charset=UTF-8" http-equiv="content-type" />
+	<title>Sprint2 Test Suite</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Success Test Case</td></tr>
+</thead>
+<tbody>
+<tr><td>open</td><td>http://localhost:3000/searchdrug<datalist><option>http://localhost:3000/searchdrug</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>id=drugname<datalist><option>id=drugname</option><option>//input[@id='drugname']</option><option>//div[@id='root']/div/article/div/div/div/p/div[2]/div/div[2]/div/input</option><option>//input</option><option>css=#drugname</option></datalist></td><td></td>
+</tr>
+<tr><td>type</td><td>id=drugname<datalist><option>id=drugname</option><option>//input[@id='drugname']</option><option>//div[@id='root']/div/article/div/div/div/p/div[2]/div/div[2]/div/input</option><option>//input</option><option>css=#drugname</option></datalist></td><td>ยารักษาโรคเอดส์</td>
+</tr>
+<tr><td>click</td><td>//div[@id='root']/div/article/div/div/div/p/button/span/h3<datalist><option>//div[@id='root']/div/article/div/div/div/p/button/span/h3</option><option>//h3</option><option>css=h3</option></datalist></td><td></td>
+</tr>
+<tr><td>assertText</td><td>id=swal2-title<datalist><option>id=swal2-title</option><option>//h2[@id='swal2-title']</option><option>//h2</option><option>css=#swal2-title</option></datalist></td><td>ค้นหาสำเร็จ</td>
+</tr>
+</tbody></table>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Failed Test Case</td></tr>
+</thead>
+<tbody>
+<tr><td>open</td><td>http://localhost:3000/searchdrug<datalist><option>http://localhost:3000/searchdrug</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>id=drugname<datalist><option>id=drugname</option><option>//input[@id='drugname']</option><option>//div[@id='root']/div/article/div/div/div/p/div[2]/div/div[2]/div/input</option><option>//input</option><option>css=#drugname</option></datalist></td><td></td>
+</tr>
+<tr><td>type</td><td>id=drugname<datalist><option>id=drugname</option><option>//input[@id='drugname']</option><option>//div[@id='root']/div/article/div/div/div/p/div[2]/div/div[2]/div/input</option><option>//input</option><option>css=#drugname</option></datalist></td><td>ยา...</td>
+</tr>
+<tr><td>click</td><td>//div[@id='root']/div/article/div/div/div/p/button/span/h3<datalist><option>//div[@id='root']/div/article/div/div/div/p/button/span/h3</option><option>//h3</option><option>css=h3</option></datalist></td><td></td>
+</tr>
+<tr><td>assertText</td><td>id=swal2-title<datalist><option>id=swal2-title</option><option>//h2[@id='swal2-title']</option><option>//h2</option><option>css=#swal2-title</option></datalist></td><td>ไม่พบข้อมูล</td>
+</tr>
+</tbody></table>
+</body>
+</html>

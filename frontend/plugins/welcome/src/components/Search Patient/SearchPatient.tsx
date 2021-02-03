@@ -376,7 +376,7 @@ function redirectToSearchPatient() {
                             <TableRow key={item.id}>
                                 <TableCell align="center">{item.idcard}</TableCell>
                                 <TableCell align="center">{item.edges?.category?.categoryName}</TableCell>
-                                <TableCell align="center">{item.edges?.nametitle?.title}</TableCell>
+                                <TableCell align="center">{item.edges?.nametitle?.titl}</TableCell>
                                 <TableCell align="center">{item.patientName}</TableCell>
                                 <TableCell align="center">{item.edges?.gender?.genderName}</TableCell>
                                 <TableCell align="center">{item.edges?.bloodtype?.bloodtypeName}</TableCell>
