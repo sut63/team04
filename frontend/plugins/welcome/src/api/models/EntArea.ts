@@ -27,11 +27,23 @@ import {
  */
 export interface EntArea {
     /**
+     * AreaDistrict holds the value of the "AreaDistrict" field.
+     * @type {string}
+     * @memberof EntArea
+     */
+    areaDistrict?: string;
+    /**
      * AreaName holds the value of the "AreaName" field.
      * @type {string}
      * @memberof EntArea
      */
     areaName?: string;
+    /**
+     * AreaSubDistrict holds the value of the "AreaSubDistrict" field.
+     * @type {string}
+     * @memberof EntArea
+     */
+    areaSubDistrict?: string;
     /**
      * 
      * @type {EntAreaEdges}
@@ -56,7 +68,9 @@ export function EntAreaFromJSONTyped(json: any, ignoreDiscriminator: boolean): E
     }
     return {
         
+        'areaDistrict': !exists(json, 'AreaDistrict') ? undefined : json['AreaDistrict'],
         'areaName': !exists(json, 'AreaName') ? undefined : json['AreaName'],
+        'areaSubDistrict': !exists(json, 'AreaSubDistrict') ? undefined : json['AreaSubDistrict'],
         'edges': !exists(json, 'edges') ? undefined : EntAreaEdgesFromJSON(json['edges']),
         'id': !exists(json, 'id') ? undefined : json['id'],
     };
@@ -71,7 +85,9 @@ export function EntAreaToJSON(value?: EntArea | null): any {
     }
     return {
         
+        'AreaDistrict': value.areaDistrict,
         'AreaName': value.areaName,
+        'AreaSubDistrict': value.areaSubDistrict,
         'edges': EntAreaEdgesToJSON(value.edges),
         'id': value.id,
     };

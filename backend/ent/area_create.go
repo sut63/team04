@@ -29,6 +29,18 @@ func (ac *AreaCreate) SetAreaName(s string) *AreaCreate {
 	return ac
 }
 
+// SetAreaDistrict sets the AreaDistrict field.
+func (ac *AreaCreate) SetAreaDistrict(s string) *AreaCreate {
+	ac.mutation.SetAreaDistrict(s)
+	return ac
+}
+
+// SetAreaSubDistrict sets the AreaSubDistrict field.
+func (ac *AreaCreate) SetAreaSubDistrict(s string) *AreaCreate {
+	ac.mutation.SetAreaSubDistrict(s)
+	return ac
+}
+
 // SetDiseaseID sets the disease edge to Disease by id.
 func (ac *AreaCreate) SetDiseaseID(id int) *AreaCreate {
 	ac.mutation.SetDiseaseID(id)
@@ -115,6 +127,27 @@ func (ac *AreaCreate) Save(ctx context.Context) (*Area, error) {
 	if _, ok := ac.mutation.AreaName(); !ok {
 		return nil, &ValidationError{Name: "AreaName", err: errors.New("ent: missing required field \"AreaName\"")}
 	}
+	if v, ok := ac.mutation.AreaName(); ok {
+		if err := area.AreaNameValidator(v); err != nil {
+			return nil, &ValidationError{Name: "AreaName", err: fmt.Errorf("ent: validator failed for field \"AreaName\": %w", err)}
+		}
+	}
+	if _, ok := ac.mutation.AreaDistrict(); !ok {
+		return nil, &ValidationError{Name: "AreaDistrict", err: errors.New("ent: missing required field \"AreaDistrict\"")}
+	}
+	if v, ok := ac.mutation.AreaDistrict(); ok {
+		if err := area.AreaDistrictValidator(v); err != nil {
+			return nil, &ValidationError{Name: "AreaDistrict", err: fmt.Errorf("ent: validator failed for field \"AreaDistrict\": %w", err)}
+		}
+	}
+	if _, ok := ac.mutation.AreaSubDistrict(); !ok {
+		return nil, &ValidationError{Name: "AreaSubDistrict", err: errors.New("ent: missing required field \"AreaSubDistrict\"")}
+	}
+	if v, ok := ac.mutation.AreaSubDistrict(); ok {
+		if err := area.AreaSubDistrictValidator(v); err != nil {
+			return nil, &ValidationError{Name: "AreaSubDistrict", err: fmt.Errorf("ent: validator failed for field \"AreaSubDistrict\": %w", err)}
+		}
+	}
 	var (
 		err  error
 		node *Area
@@ -182,6 +215,22 @@ func (ac *AreaCreate) createSpec() (*Area, *sqlgraph.CreateSpec) {
 			Column: area.FieldAreaName,
 		})
 		a.AreaName = value
+	}
+	if value, ok := ac.mutation.AreaDistrict(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: area.FieldAreaDistrict,
+		})
+		a.AreaDistrict = value
+	}
+	if value, ok := ac.mutation.AreaSubDistrict(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: area.FieldAreaSubDistrict,
+		})
+		a.AreaSubDistrict = value
 	}
 	if nodes := ac.mutation.DiseaseIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

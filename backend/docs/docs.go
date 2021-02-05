@@ -3199,8 +3199,16 @@ var doc = `{
         "ent.Area": {
             "type": "object",
             "properties": {
+                "AreaDistrict": {
+                    "description": "AreaDistrict holds the value of the \"AreaDistrict\" field.",
+                    "type": "string"
+                },
                 "AreaName": {
                     "description": "AreaName holds the value of the \"AreaName\" field.",
+                    "type": "string"
+                },
+                "AreaSubDistrict": {
+                    "description": "AreaSubDistrict holds the value of the \"AreaSubDistrict\" field.",
                     "type": "string"
                 },
                 "edges": {

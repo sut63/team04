@@ -98,6 +98,20 @@ func AreaName(v string) predicate.Area {
 	})
 }
 
+// AreaDistrict applies equality check predicate on the "AreaDistrict" field. It's identical to AreaDistrictEQ.
+func AreaDistrict(v string) predicate.Area {
+	return predicate.Area(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldAreaDistrict), v))
+	})
+}
+
+// AreaSubDistrict applies equality check predicate on the "AreaSubDistrict" field. It's identical to AreaSubDistrictEQ.
+func AreaSubDistrict(v string) predicate.Area {
+	return predicate.Area(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldAreaSubDistrict), v))
+	})
+}
+
 // AreaNameEQ applies the EQ predicate on the "AreaName" field.
 func AreaNameEQ(v string) predicate.Area {
 	return predicate.Area(func(s *sql.Selector) {
@@ -206,6 +220,228 @@ func AreaNameEqualFold(v string) predicate.Area {
 func AreaNameContainsFold(v string) predicate.Area {
 	return predicate.Area(func(s *sql.Selector) {
 		s.Where(sql.ContainsFold(s.C(FieldAreaName), v))
+	})
+}
+
+// AreaDistrictEQ applies the EQ predicate on the "AreaDistrict" field.
+func AreaDistrictEQ(v string) predicate.Area {
+	return predicate.Area(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldAreaDistrict), v))
+	})
+}
+
+// AreaDistrictNEQ applies the NEQ predicate on the "AreaDistrict" field.
+func AreaDistrictNEQ(v string) predicate.Area {
+	return predicate.Area(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldAreaDistrict), v))
+	})
+}
+
+// AreaDistrictIn applies the In predicate on the "AreaDistrict" field.
+func AreaDistrictIn(vs ...string) predicate.Area {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Area(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldAreaDistrict), v...))
+	})
+}
+
+// AreaDistrictNotIn applies the NotIn predicate on the "AreaDistrict" field.
+func AreaDistrictNotIn(vs ...string) predicate.Area {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Area(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldAreaDistrict), v...))
+	})
+}
+
+// AreaDistrictGT applies the GT predicate on the "AreaDistrict" field.
+func AreaDistrictGT(v string) predicate.Area {
+	return predicate.Area(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldAreaDistrict), v))
+	})
+}
+
+// AreaDistrictGTE applies the GTE predicate on the "AreaDistrict" field.
+func AreaDistrictGTE(v string) predicate.Area {
+	return predicate.Area(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldAreaDistrict), v))
+	})
+}
+
+// AreaDistrictLT applies the LT predicate on the "AreaDistrict" field.
+func AreaDistrictLT(v string) predicate.Area {
+	return predicate.Area(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldAreaDistrict), v))
+	})
+}
+
+// AreaDistrictLTE applies the LTE predicate on the "AreaDistrict" field.
+func AreaDistrictLTE(v string) predicate.Area {
+	return predicate.Area(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldAreaDistrict), v))
+	})
+}
+
+// AreaDistrictContains applies the Contains predicate on the "AreaDistrict" field.
+func AreaDistrictContains(v string) predicate.Area {
+	return predicate.Area(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldAreaDistrict), v))
+	})
+}
+
+// AreaDistrictHasPrefix applies the HasPrefix predicate on the "AreaDistrict" field.
+func AreaDistrictHasPrefix(v string) predicate.Area {
+	return predicate.Area(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldAreaDistrict), v))
+	})
+}
+
+// AreaDistrictHasSuffix applies the HasSuffix predicate on the "AreaDistrict" field.
+func AreaDistrictHasSuffix(v string) predicate.Area {
+	return predicate.Area(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldAreaDistrict), v))
+	})
+}
+
+// AreaDistrictEqualFold applies the EqualFold predicate on the "AreaDistrict" field.
+func AreaDistrictEqualFold(v string) predicate.Area {
+	return predicate.Area(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldAreaDistrict), v))
+	})
+}
+
+// AreaDistrictContainsFold applies the ContainsFold predicate on the "AreaDistrict" field.
+func AreaDistrictContainsFold(v string) predicate.Area {
+	return predicate.Area(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldAreaDistrict), v))
+	})
+}
+
+// AreaSubDistrictEQ applies the EQ predicate on the "AreaSubDistrict" field.
+func AreaSubDistrictEQ(v string) predicate.Area {
+	return predicate.Area(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldAreaSubDistrict), v))
+	})
+}
+
+// AreaSubDistrictNEQ applies the NEQ predicate on the "AreaSubDistrict" field.
+func AreaSubDistrictNEQ(v string) predicate.Area {
+	return predicate.Area(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldAreaSubDistrict), v))
+	})
+}
+
+// AreaSubDistrictIn applies the In predicate on the "AreaSubDistrict" field.
+func AreaSubDistrictIn(vs ...string) predicate.Area {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Area(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldAreaSubDistrict), v...))
+	})
+}
+
+// AreaSubDistrictNotIn applies the NotIn predicate on the "AreaSubDistrict" field.
+func AreaSubDistrictNotIn(vs ...string) predicate.Area {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Area(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldAreaSubDistrict), v...))
+	})
+}
+
+// AreaSubDistrictGT applies the GT predicate on the "AreaSubDistrict" field.
+func AreaSubDistrictGT(v string) predicate.Area {
+	return predicate.Area(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldAreaSubDistrict), v))
+	})
+}
+
+// AreaSubDistrictGTE applies the GTE predicate on the "AreaSubDistrict" field.
+func AreaSubDistrictGTE(v string) predicate.Area {
+	return predicate.Area(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldAreaSubDistrict), v))
+	})
+}
+
+// AreaSubDistrictLT applies the LT predicate on the "AreaSubDistrict" field.
+func AreaSubDistrictLT(v string) predicate.Area {
+	return predicate.Area(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldAreaSubDistrict), v))
+	})
+}
+
+// AreaSubDistrictLTE applies the LTE predicate on the "AreaSubDistrict" field.
+func AreaSubDistrictLTE(v string) predicate.Area {
+	return predicate.Area(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldAreaSubDistrict), v))
+	})
+}
+
+// AreaSubDistrictContains applies the Contains predicate on the "AreaSubDistrict" field.
+func AreaSubDistrictContains(v string) predicate.Area {
+	return predicate.Area(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldAreaSubDistrict), v))
+	})
+}
+
+// AreaSubDistrictHasPrefix applies the HasPrefix predicate on the "AreaSubDistrict" field.
+func AreaSubDistrictHasPrefix(v string) predicate.Area {
+	return predicate.Area(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldAreaSubDistrict), v))
+	})
+}
+
+// AreaSubDistrictHasSuffix applies the HasSuffix predicate on the "AreaSubDistrict" field.
+func AreaSubDistrictHasSuffix(v string) predicate.Area {
+	return predicate.Area(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldAreaSubDistrict), v))
+	})
+}
+
+// AreaSubDistrictEqualFold applies the EqualFold predicate on the "AreaSubDistrict" field.
+func AreaSubDistrictEqualFold(v string) predicate.Area {
+	return predicate.Area(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldAreaSubDistrict), v))
+	})
+}
+
+// AreaSubDistrictContainsFold applies the ContainsFold predicate on the "AreaSubDistrict" field.
+func AreaSubDistrictContainsFold(v string) predicate.Area {
+	return predicate.Area(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldAreaSubDistrict), v))
 	})
 }
 

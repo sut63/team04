@@ -12,6 +12,8 @@ var (
 	AreasColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "area_name", Type: field.TypeString},
+		{Name: "area_district", Type: field.TypeString},
+		{Name: "area_sub_district", Type: field.TypeString},
 		{Name: "disease_area", Type: field.TypeInt, Nullable: true},
 		{Name: "employee_area", Type: field.TypeInt, Nullable: true},
 		{Name: "level_area", Type: field.TypeInt, Nullable: true},
@@ -25,28 +27,28 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:  "areas_diseases_area",
-				Columns: []*schema.Column{AreasColumns[2]},
+				Columns: []*schema.Column{AreasColumns[4]},
 
 				RefColumns: []*schema.Column{DiseasesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "areas_employees_area",
-				Columns: []*schema.Column{AreasColumns[3]},
+				Columns: []*schema.Column{AreasColumns[5]},
 
 				RefColumns: []*schema.Column{EmployeesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "areas_levels_area",
-				Columns: []*schema.Column{AreasColumns[4]},
+				Columns: []*schema.Column{AreasColumns[6]},
 
 				RefColumns: []*schema.Column{LevelsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "areas_statistics_area",
-				Columns: []*schema.Column{AreasColumns[5]},
+				Columns: []*schema.Column{AreasColumns[7]},
 
 				RefColumns: []*schema.Column{StatisticsColumns[0]},
 				OnDelete:   schema.SetNull,

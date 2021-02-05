@@ -65,6 +65,8 @@ type AreaMutation struct {
 	typ              string
 	id               *int
 	_AreaName        *string
+	_AreaDistrict    *string
+	_AreaSubDistrict *string
 	clearedFields    map[string]struct{}
 	disease          *int
 	cleareddisease   bool
@@ -192,6 +194,80 @@ func (m *AreaMutation) OldAreaName(ctx context.Context) (v string, err error) {
 // ResetAreaName reset all changes of the "AreaName" field.
 func (m *AreaMutation) ResetAreaName() {
 	m._AreaName = nil
+}
+
+// SetAreaDistrict sets the AreaDistrict field.
+func (m *AreaMutation) SetAreaDistrict(s string) {
+	m._AreaDistrict = &s
+}
+
+// AreaDistrict returns the AreaDistrict value in the mutation.
+func (m *AreaMutation) AreaDistrict() (r string, exists bool) {
+	v := m._AreaDistrict
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAreaDistrict returns the old AreaDistrict value of the Area.
+// If the Area object wasn't provided to the builder, the object is fetched
+// from the database.
+// An error is returned if the mutation operation is not UpdateOne, or database query fails.
+func (m *AreaMutation) OldAreaDistrict(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldAreaDistrict is allowed only on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldAreaDistrict requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAreaDistrict: %w", err)
+	}
+	return oldValue.AreaDistrict, nil
+}
+
+// ResetAreaDistrict reset all changes of the "AreaDistrict" field.
+func (m *AreaMutation) ResetAreaDistrict() {
+	m._AreaDistrict = nil
+}
+
+// SetAreaSubDistrict sets the AreaSubDistrict field.
+func (m *AreaMutation) SetAreaSubDistrict(s string) {
+	m._AreaSubDistrict = &s
+}
+
+// AreaSubDistrict returns the AreaSubDistrict value in the mutation.
+func (m *AreaMutation) AreaSubDistrict() (r string, exists bool) {
+	v := m._AreaSubDistrict
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAreaSubDistrict returns the old AreaSubDistrict value of the Area.
+// If the Area object wasn't provided to the builder, the object is fetched
+// from the database.
+// An error is returned if the mutation operation is not UpdateOne, or database query fails.
+func (m *AreaMutation) OldAreaSubDistrict(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldAreaSubDistrict is allowed only on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldAreaSubDistrict requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAreaSubDistrict: %w", err)
+	}
+	return oldValue.AreaSubDistrict, nil
+}
+
+// ResetAreaSubDistrict reset all changes of the "AreaSubDistrict" field.
+func (m *AreaMutation) ResetAreaSubDistrict() {
+	m._AreaSubDistrict = nil
 }
 
 // SetDiseaseID sets the disease edge to Disease by id.
@@ -364,9 +440,15 @@ func (m *AreaMutation) Type() string {
 // this mutation. Note that, in order to get all numeric
 // fields that were in/decremented, call AddedFields().
 func (m *AreaMutation) Fields() []string {
-	fields := make([]string, 0, 1)
+	fields := make([]string, 0, 3)
 	if m._AreaName != nil {
 		fields = append(fields, area.FieldAreaName)
+	}
+	if m._AreaDistrict != nil {
+		fields = append(fields, area.FieldAreaDistrict)
+	}
+	if m._AreaSubDistrict != nil {
+		fields = append(fields, area.FieldAreaSubDistrict)
 	}
 	return fields
 }
@@ -378,6 +460,10 @@ func (m *AreaMutation) Field(name string) (ent.Value, bool) {
 	switch name {
 	case area.FieldAreaName:
 		return m.AreaName()
+	case area.FieldAreaDistrict:
+		return m.AreaDistrict()
+	case area.FieldAreaSubDistrict:
+		return m.AreaSubDistrict()
 	}
 	return nil, false
 }
@@ -389,6 +475,10 @@ func (m *AreaMutation) OldField(ctx context.Context, name string) (ent.Value, er
 	switch name {
 	case area.FieldAreaName:
 		return m.OldAreaName(ctx)
+	case area.FieldAreaDistrict:
+		return m.OldAreaDistrict(ctx)
+	case area.FieldAreaSubDistrict:
+		return m.OldAreaSubDistrict(ctx)
 	}
 	return nil, fmt.Errorf("unknown Area field %s", name)
 }
@@ -404,6 +494,20 @@ func (m *AreaMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetAreaName(v)
+		return nil
+	case area.FieldAreaDistrict:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAreaDistrict(v)
+		return nil
+	case area.FieldAreaSubDistrict:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAreaSubDistrict(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Area field %s", name)
@@ -457,6 +561,12 @@ func (m *AreaMutation) ResetField(name string) error {
 	switch name {
 	case area.FieldAreaName:
 		m.ResetAreaName()
+		return nil
+	case area.FieldAreaDistrict:
+		m.ResetAreaDistrict()
+		return nil
+	case area.FieldAreaSubDistrict:
+		m.ResetAreaSubDistrict()
 		return nil
 	}
 	return fmt.Errorf("unknown Area field %s", name)
