@@ -64,9 +64,9 @@ export function EntDrugEdgesFromJSONTyped(json: any, ignoreDiscriminator: boolea
     }
     return {
         
-        'disease': !exists(json, 'disease') ? undefined : EntDiseaseFromJSON(json['disease']),
-        'drugtype': !exists(json, 'drugtype') ? undefined : EntDrugTypeFromJSON(json['drugtype']),
-        'employee': !exists(json, 'employee') ? undefined : EntEmployeeFromJSON(json['employee']),
+        'disease': !exists(json, 'Disease') ? undefined : EntDiseaseFromJSON(json['Disease']),
+        'drugtype': !exists(json, 'Drugtype') ? undefined : EntDrugTypeFromJSON(json['Drugtype']),
+        'employee': !exists(json, 'Employee') ? undefined : EntEmployeeFromJSON(json['Employee']),
     };
 }
 
