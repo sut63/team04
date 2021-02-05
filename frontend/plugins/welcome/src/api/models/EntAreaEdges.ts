@@ -74,10 +74,10 @@ export function EntAreaEdgesFromJSONTyped(json: any, ignoreDiscriminator: boolea
     }
     return {
         
-        'disease': !exists(json, 'disease') ? undefined : EntDiseaseFromJSON(json['disease']),
-        'employee': !exists(json, 'employee') ? undefined : EntEmployeeFromJSON(json['employee']),
-        'level': !exists(json, 'level') ? undefined : EntLevelFromJSON(json['level']),
-        'statistic': !exists(json, 'statistic') ? undefined : EntStatisticFromJSON(json['statistic']),
+        'disease': !exists(json, 'Disease') ? undefined : EntDiseaseFromJSON(json['Disease']),
+        'employee': !exists(json, 'Employee') ? undefined : EntEmployeeFromJSON(json['Employee']),
+        'level': !exists(json, 'Level') ? undefined : EntLevelFromJSON(json['Level']),
+        'statistic': !exists(json, 'Statistic') ? undefined : EntStatisticFromJSON(json['Statistic']),
     };
 }
 
