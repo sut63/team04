@@ -3,6 +3,7 @@
 package ent
 
 import (
+	"github.com/B6001186/Contagions/ent/area"
 	"github.com/B6001186/Contagions/ent/diagnosis"
 	"github.com/B6001186/Contagions/ent/disease"
 	"github.com/B6001186/Contagions/ent/drug"
@@ -14,6 +15,20 @@ import (
 // code (default values, validators or hooks) and stitches it
 // to their package variables.
 func init() {
+	areaFields := schema.Area{}.Fields()
+	_ = areaFields
+	// areaDescAreaName is the schema descriptor for AreaName field.
+	areaDescAreaName := areaFields[0].Descriptor()
+	// area.AreaNameValidator is a validator for the "AreaName" field. It is called by the builders before save.
+	area.AreaNameValidator = areaDescAreaName.Validators[0].(func(string) error)
+	// areaDescAreaDistrict is the schema descriptor for AreaDistrict field.
+	areaDescAreaDistrict := areaFields[1].Descriptor()
+	// area.AreaDistrictValidator is a validator for the "AreaDistrict" field. It is called by the builders before save.
+	area.AreaDistrictValidator = areaDescAreaDistrict.Validators[0].(func(string) error)
+	// areaDescAreaSubDistrict is the schema descriptor for AreaSubDistrict field.
+	areaDescAreaSubDistrict := areaFields[2].Descriptor()
+	// area.AreaSubDistrictValidator is a validator for the "AreaSubDistrict" field. It is called by the builders before save.
+	area.AreaSubDistrictValidator = areaDescAreaSubDistrict.Validators[0].(func(string) error)
 	diagnosisFields := schema.Diagnosis{}.Fields()
 	_ = diagnosisFields
 	// diagnosisDescDiagnosticMessages is the schema descriptor for DiagnosticMessages field.

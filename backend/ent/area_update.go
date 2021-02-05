@@ -37,6 +37,18 @@ func (au *AreaUpdate) SetAreaName(s string) *AreaUpdate {
 	return au
 }
 
+// SetAreaDistrict sets the AreaDistrict field.
+func (au *AreaUpdate) SetAreaDistrict(s string) *AreaUpdate {
+	au.mutation.SetAreaDistrict(s)
+	return au
+}
+
+// SetAreaSubDistrict sets the AreaSubDistrict field.
+func (au *AreaUpdate) SetAreaSubDistrict(s string) *AreaUpdate {
+	au.mutation.SetAreaSubDistrict(s)
+	return au
+}
+
 // SetDiseaseID sets the disease edge to Disease by id.
 func (au *AreaUpdate) SetDiseaseID(id int) *AreaUpdate {
 	au.mutation.SetDiseaseID(id)
@@ -144,6 +156,21 @@ func (au *AreaUpdate) ClearEmployee() *AreaUpdate {
 
 // Save executes the query and returns the number of rows/vertices matched by this operation.
 func (au *AreaUpdate) Save(ctx context.Context) (int, error) {
+	if v, ok := au.mutation.AreaName(); ok {
+		if err := area.AreaNameValidator(v); err != nil {
+			return 0, &ValidationError{Name: "AreaName", err: fmt.Errorf("ent: validator failed for field \"AreaName\": %w", err)}
+		}
+	}
+	if v, ok := au.mutation.AreaDistrict(); ok {
+		if err := area.AreaDistrictValidator(v); err != nil {
+			return 0, &ValidationError{Name: "AreaDistrict", err: fmt.Errorf("ent: validator failed for field \"AreaDistrict\": %w", err)}
+		}
+	}
+	if v, ok := au.mutation.AreaSubDistrict(); ok {
+		if err := area.AreaSubDistrictValidator(v); err != nil {
+			return 0, &ValidationError{Name: "AreaSubDistrict", err: fmt.Errorf("ent: validator failed for field \"AreaSubDistrict\": %w", err)}
+		}
+	}
 
 	var (
 		err      error
@@ -217,6 +244,20 @@ func (au *AreaUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Type:   field.TypeString,
 			Value:  value,
 			Column: area.FieldAreaName,
+		})
+	}
+	if value, ok := au.mutation.AreaDistrict(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: area.FieldAreaDistrict,
+		})
+	}
+	if value, ok := au.mutation.AreaSubDistrict(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: area.FieldAreaSubDistrict,
 		})
 	}
 	if au.mutation.DiseaseCleared() {
@@ -383,6 +424,18 @@ func (auo *AreaUpdateOne) SetAreaName(s string) *AreaUpdateOne {
 	return auo
 }
 
+// SetAreaDistrict sets the AreaDistrict field.
+func (auo *AreaUpdateOne) SetAreaDistrict(s string) *AreaUpdateOne {
+	auo.mutation.SetAreaDistrict(s)
+	return auo
+}
+
+// SetAreaSubDistrict sets the AreaSubDistrict field.
+func (auo *AreaUpdateOne) SetAreaSubDistrict(s string) *AreaUpdateOne {
+	auo.mutation.SetAreaSubDistrict(s)
+	return auo
+}
+
 // SetDiseaseID sets the disease edge to Disease by id.
 func (auo *AreaUpdateOne) SetDiseaseID(id int) *AreaUpdateOne {
 	auo.mutation.SetDiseaseID(id)
@@ -490,6 +543,21 @@ func (auo *AreaUpdateOne) ClearEmployee() *AreaUpdateOne {
 
 // Save executes the query and returns the updated entity.
 func (auo *AreaUpdateOne) Save(ctx context.Context) (*Area, error) {
+	if v, ok := auo.mutation.AreaName(); ok {
+		if err := area.AreaNameValidator(v); err != nil {
+			return nil, &ValidationError{Name: "AreaName", err: fmt.Errorf("ent: validator failed for field \"AreaName\": %w", err)}
+		}
+	}
+	if v, ok := auo.mutation.AreaDistrict(); ok {
+		if err := area.AreaDistrictValidator(v); err != nil {
+			return nil, &ValidationError{Name: "AreaDistrict", err: fmt.Errorf("ent: validator failed for field \"AreaDistrict\": %w", err)}
+		}
+	}
+	if v, ok := auo.mutation.AreaSubDistrict(); ok {
+		if err := area.AreaSubDistrictValidator(v); err != nil {
+			return nil, &ValidationError{Name: "AreaSubDistrict", err: fmt.Errorf("ent: validator failed for field \"AreaSubDistrict\": %w", err)}
+		}
+	}
 
 	var (
 		err  error
@@ -561,6 +629,20 @@ func (auo *AreaUpdateOne) sqlSave(ctx context.Context) (a *Area, err error) {
 			Type:   field.TypeString,
 			Value:  value,
 			Column: area.FieldAreaName,
+		})
+	}
+	if value, ok := auo.mutation.AreaDistrict(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: area.FieldAreaDistrict,
+		})
+	}
+	if value, ok := auo.mutation.AreaSubDistrict(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: area.FieldAreaSubDistrict,
 		})
 	}
 	if auo.mutation.DiseaseCleared() {
