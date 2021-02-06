@@ -138,14 +138,7 @@ const Diagnosis: FC<{}> = () => {
   const http = new DefaultApi();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
+ 
   const [diagnosis, setDiagnosiss] = React.useState<Partial<Diagnosis>>({});
   const [disease, setDiseases] = React.useState<EntDisease[]>([]);
   const [employee, setEmployees] = React.useState<EntEmployee[]>([]);
@@ -166,6 +159,14 @@ const Diagnosis: FC<{}> = () => {
     const res = await http.listPatient({ limit: undefined, offset: 0 });
     setPatients(res);
   }
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
 
   // Lifecycle Hooks
   useEffect(() => {
