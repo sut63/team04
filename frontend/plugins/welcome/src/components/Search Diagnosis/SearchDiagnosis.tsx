@@ -206,7 +206,7 @@ export default function ComponentsTable() {
         }
         console.log(checkpatient);
         if (patient == "") {
-            alertMessage("info", "กรุณากรอกชื่อแผนกเพื่อทำการค้นหา");
+            alertMessage("info", "กรุณากรอกผู้ป่วยเพื่อทำการค้นหา");
         }
     };
 
