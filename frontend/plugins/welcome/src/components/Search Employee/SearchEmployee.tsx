@@ -171,18 +171,11 @@ export default function ComponentsTable() {
         getEmployees();
     }, [loading]);
 
-
-    const deleteEmployees = async (id: number) => {
-        const res = await api.deleteEmployee({ id: id });
-        setLoading(true);
-        alertMessage("success", "ลบข้อมูลเรียบร้อยแล้ว");
-    };
-
     const inputHandleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
         setSearch(false);
         setCheckDepartment(false);
         setDepartment(event.target.value as string);
-        if (event.target.value == "" ){
+        if (event.target.value == "") {
             renewtable();
         }
     };
@@ -309,49 +302,37 @@ export default function ComponentsTable() {
                     </Grid>
 
                     <TableContainer component={Paper}>
-                                        <Table className={classes.table} aria-label="simple table">
-                                            <TableHead>
-                                                <TableRow>
-                                                    <TableCell align="center">รหัสพนักงาน</TableCell>
-                                                    <TableCell align="center">คำนำหน้าชื่อ</TableCell>
-                                                    <TableCell align="center">ชื่อ-นามสกุล</TableCell>
-                                                    <TableCell align="center">เบอร์โทรศัพท์</TableCell>
-                                                    <TableCell align="center">วัน/เดือน/ปีเกิด</TableCell>
-                                                    <TableCell align="center">แผนกที่รับผิดชอบ</TableCell>
-                                                    <TableCell align="center">สถานที่ทำงาน</TableCell>
-                                                    <TableCell align="center">อีเมล</TableCell>
-                                                    <TableCell align="center">รหัสผ่านชั่วคราว</TableCell>
-                                                    <TableCell align="center">เวลาออกเวร</TableCell>
-                                                </TableRow>
-                                            </TableHead>
-                                            <TableBody>
-                                                {employee.map((item: any) => (
-                                                    <TableRow key={item.id}>
-                                                        <TableCell align="center">{item.userId}</TableCell>
-                                                        <TableCell align="center">{item.edges?.nametitle?.title}</TableCell>
-                                                        <TableCell align="center">{item.employeeName}</TableCell>
-                                                        <TableCell align="center">{item.tel}</TableCell>
-                                                        <TableCell align="center">{item.birthdayDate}</TableCell>
-                                                        <TableCell align="center">{item.edges?.department?.departmentName}</TableCell>
-                                                        <TableCell align="center">{item.edges?.place?.placeName}</TableCell>
-                                                        <TableCell align="center">{item.email}</TableCell>
-                                                        <TableCell align="center">{item.password}</TableCell>
-                                                        <TableCell align="center">
-                                                            <Button
-                                                                onClick={() => {
-                                                                    deleteEmployees(item.id);
-                                                                }}
-                                                                style={{ marginLeft: 10 }}
-                                                                variant="contained"
-                                                                color="secondary"
-                                                            >
-                                                                Delete </Button>
-                                                        </TableCell>
-                                                    </TableRow>
-                                                ))}
-                                            </TableBody>
-                                        </Table>
-                                    </TableContainer>
+                        <Table className={classes.table} aria-label="simple table">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell align="center">รหัสพนักงาน</TableCell>
+                                    <TableCell align="center">คำนำหน้าชื่อ</TableCell>
+                                    <TableCell align="center">ชื่อ-นามสกุล</TableCell>
+                                    <TableCell align="center">เบอร์โทรศัพท์</TableCell>
+                                    <TableCell align="center">วัน/เดือน/ปีเกิด</TableCell>
+                                    <TableCell align="center">แผนกที่รับผิดชอบ</TableCell>
+                                    <TableCell align="center">สถานที่ทำงาน</TableCell>
+                                    <TableCell align="center">อีเมล</TableCell>
+                                    <TableCell align="center">รหัสผ่านชั่วคราว</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {employee.map((item: any) => (
+                                    <TableRow key={item.id}>
+                                        <TableCell align="center">{item.userId}</TableCell>
+                                        <TableCell align="center">{item.edges?.nametitle?.title}</TableCell>
+                                        <TableCell align="center">{item.employeeName}</TableCell>
+                                        <TableCell align="center">{item.tel}</TableCell>
+                                        <TableCell align="center">{item.birthdayDate}</TableCell>
+                                        <TableCell align="center">{item.edges?.department?.departmentName}</TableCell>
+                                        <TableCell align="center">{item.edges?.place?.placeName}</TableCell>
+                                        <TableCell align="center">{item.email}</TableCell>
+                                        <TableCell align="center">{item.password}</TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
                 </Grid>
             </Content>
         </div>
