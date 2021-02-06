@@ -26,7 +26,7 @@ func (Drug) Fields() []ent.Field {
 				return nil
 			}).
 			NotEmpty(),
-			
+
 		field.String("Howto").
 			Validate(func(s string) error {
 				match, _ := regexp.MatchString("ปริมาณ.*", s)
