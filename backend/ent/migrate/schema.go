@@ -238,7 +238,7 @@ var (
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "user_id", Type: field.TypeString},
 		{Name: "employee_name", Type: field.TypeString},
-		{Name: "tel", Type: field.TypeString},
+		{Name: "tel", Type: field.TypeString, Size: 10},
 		{Name: "birthday_date", Type: field.TypeTime},
 		{Name: "email", Type: field.TypeString},
 		{Name: "password", Type: field.TypeString},

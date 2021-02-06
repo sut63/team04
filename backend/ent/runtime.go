@@ -7,6 +7,7 @@ import (
 	"github.com/B6001186/Contagions/ent/diagnosis"
 	"github.com/B6001186/Contagions/ent/disease"
 	"github.com/B6001186/Contagions/ent/drug"
+	"github.com/B6001186/Contagions/ent/employee"
 	"github.com/B6001186/Contagions/ent/patient"
 	"github.com/B6001186/Contagions/ent/schema"
 )
@@ -155,6 +156,42 @@ func init() {
 			return nil
 		}
 	}()
+	employeeFields := schema.Employee{}.Fields()
+	_ = employeeFields
+	// employeeDescUserId is the schema descriptor for UserId field.
+	employeeDescUserId := employeeFields[0].Descriptor()
+	// employee.UserIdValidator is a validator for the "UserId" field. It is called by the builders before save.
+	employee.UserIdValidator = employeeDescUserId.Validators[0].(func(string) error)
+	// employeeDescEmployeeName is the schema descriptor for EmployeeName field.
+	employeeDescEmployeeName := employeeFields[1].Descriptor()
+	// employee.EmployeeNameValidator is a validator for the "EmployeeName" field. It is called by the builders before save.
+	employee.EmployeeNameValidator = employeeDescEmployeeName.Validators[0].(func(string) error)
+	// employeeDescTel is the schema descriptor for Tel field.
+	employeeDescTel := employeeFields[2].Descriptor()
+	// employee.TelValidator is a validator for the "Tel" field. It is called by the builders before save.
+	employee.TelValidator = func() func(string) error {
+		validators := employeeDescTel.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(_Tel string) error {
+			for _, fn := range fns {
+				if err := fn(_Tel); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	// employeeDescEmail is the schema descriptor for Email field.
+	employeeDescEmail := employeeFields[4].Descriptor()
+	// employee.EmailValidator is a validator for the "Email" field. It is called by the builders before save.
+	employee.EmailValidator = employeeDescEmail.Validators[0].(func(string) error)
+	// employeeDescPassword is the schema descriptor for Password field.
+	employeeDescPassword := employeeFields[5].Descriptor()
+	// employee.PasswordValidator is a validator for the "Password" field. It is called by the builders before save.
+	employee.PasswordValidator = employeeDescPassword.Validators[0].(func(string) error)
 	patientFields := schema.Patient{}.Fields()
 	_ = patientFields
 	// patientDescIdcard is the schema descriptor for Idcard field.

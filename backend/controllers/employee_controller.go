@@ -109,13 +109,18 @@ func (ctl *EmployeeController) CreateEmployee(c *gin.Context) {
 		Save(context.Background())
 
 	if err != nil {
+		fmt.Println(err)
 		c.JSON(400, gin.H{
-			"error": "saving employee failed",
+			"status": false,
+			"error": err,
 		})
 		return
 	}
 
-	c.JSON(200, e)
+	c.JSON(200, gin.H{
+		"status": true,
+		"data": e,
+	})
 }
 
 // ListEmployee handles request to get a list of employee entities
