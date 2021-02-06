@@ -257,7 +257,7 @@ func (ctl *PatientController) UpdatePatient(c *gin.Context) {
 	}
 	obj.ID = int(id)
 	fmt.Println(obj.ID)
-	p, err := ctl.client.Patient.
+	pa, err := ctl.client.Patient.
 		UpdateOneID(int(id)).
 		SetPatientName(obj.PatientName).
 		Save(context.Background())
@@ -268,17 +268,17 @@ func (ctl *PatientController) UpdatePatient(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, p)
+	c.JSON(200, pa)
 }
 
 // NewPatientController creates and registers handles for the patient controller
 func NewPatientController(router gin.IRouter, client *ent.Client) *PatientController {
-	pc := &PatientController{
+	pac := &PatientController{
 		client: client,
 		router: router,
 	}
-	pc.register()
-	return pc
+	pac.register()
+	return pac
 }
 
 func (ctl *PatientController) register() {

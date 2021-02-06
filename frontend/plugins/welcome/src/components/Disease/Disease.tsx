@@ -347,7 +347,7 @@ const Disease: FC<{}> = () => {
   // go to Welcome 
   function redirecTables() {
     //redirec Page ... http://localhost:3000/Table
-    window.location.href = "http://localhost:3000/Table";
+    window.location.href = "http://localhost:3000/searchdisease";
   }
 
 

@@ -12,7 +12,6 @@ import SearchEmployee from './components/Search Employee';
 import SearchDrug from './components/Search Drug';
 import SearchPatient from './components/Search Patient';
 import SearchArea from './components/Search Area';
-
 import SearchDisease from './components/Search Disease';
 import SearchDiagnosis from './components/Search Diagnosis';
 
