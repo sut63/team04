@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta content="text/html; charset=UTF-8" http-equiv="content-type" />
+	<title>Search Patient System Test Case</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Success Test Case</td></tr>
+</thead>
+<tbody>
+<tr><td>open</td><td>http://localhost:3000/searchpatient<datalist><option>http://localhost:3000/searchpatient</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>//input[@value='']<datalist><option>//input[@value='']</option><option>//div[@id='root']/div/article/div[2]/div/div/div/input</option><option>//input</option><option>css=input.MuiInputBase-input.MuiOutlinedInput-input</option></datalist></td><td></td>
+</tr>
+<tr><td>type</td><td>//input[@value='']<datalist><option>//input[@value='']</option><option>//div[@id='root']/div/article/div[2]/div/div/div/input</option><option>//input</option><option>css=input.MuiInputBase-input.MuiOutlinedInput-input</option></datalist></td><td>1301801191391</td>
+</tr>
+<tr><td>click</td><td>//div[@id='root']/div/article/div[2]/div/button/span<datalist><option>//div[@id='root']/div/article/div[2]/div/button/span</option><option>//div[2]/div/button/span</option><option>css=button[name="searchData"] &gt; span.MuiButton-label</option></datalist></td><td></td>
+</tr>
+<tr><td>assertText</td><td>id=swal2-title<datalist><option>//div[3]/div/div</option><option>css=div.swal2-header</option><option>id=swal2-title</option></datalist></td><td>ค้นหาสำเร็จ</td>
+</tr>
+</tbody></table>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Failed Test Case</td></tr>
+</thead>
+<tbody>
+<tr><td>open</td><td>http://localhost:3000/searchpatient<datalist><option>http://localhost:3000/searchpatient</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>//input[@value='']<datalist><option>//input[@value='']</option><option>//div[@id='root']/div/article/div[2]/div/div/div/input</option><option>//input</option><option>css=input.MuiInputBase-input.MuiOutlinedInput-input</option></datalist></td><td></td>
+</tr>
+<tr><td>type</td><td>//input[@value='']<datalist><option>//input[@value='']</option><option>//div[@id='root']/div/article/div[2]/div/div/div/input</option><option>//input</option><option>css=input.MuiInputBase-input.MuiOutlinedInput-input</option></datalist></td><td>12345698712012</td>
+</tr>
+<tr><td>click</td><td>//div[@id='root']/div/article/div[2]/div/button/span<datalist><option>//div[@id='root']/div/article/div[2]/div/button/span</option><option>//div[2]/div/button/span</option><option>css=button[name="searchData"] &gt; span.MuiButton-label</option></datalist></td><td></td>
+</tr>
+<tr><td>assertText</td><td>id=swal2-title<datalist><option>id=swal2-title</option><option>//h2[@id='swal2-title']</option><option>//h2</option><option>css=#swal2-title</option></datalist></td><td>ไม่มีข้อมูลผู้ป่วย กรุณากรอกใหม่อีกครั้ง</td>
+</tr>
+</tbody></table>
+</body>
+</html>

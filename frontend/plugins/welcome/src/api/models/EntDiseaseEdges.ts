@@ -94,12 +94,12 @@ export function EntDiseaseEdgesFromJSONTyped(json: any, ignoreDiscriminator: boo
     }
     return {
         
-        'area': !exists(json, 'area') ? undefined : ((json['area'] as Array<any>).map(EntAreaFromJSON)),
-        'diagnosis': !exists(json, 'diagnosis') ? undefined : ((json['diagnosis'] as Array<any>).map(EntDiagnosisFromJSON)),
-        'diseasetype': !exists(json, 'diseasetype') ? undefined : EntDiseasetypeFromJSON(json['diseasetype']),
-        'drug': !exists(json, 'drug') ? undefined : ((json['drug'] as Array<any>).map(EntDrugFromJSON)),
-        'employee': !exists(json, 'employee') ? undefined : EntEmployeeFromJSON(json['employee']),
-        'severity': !exists(json, 'severity') ? undefined : EntSeverityFromJSON(json['severity']),
+        'area': !exists(json, 'Area') ? undefined : ((json['Area'] as Array<any>).map(EntAreaFromJSON)),
+        'diagnosis': !exists(json, 'Diagnosis') ? undefined : ((json['Diagnosis'] as Array<any>).map(EntDiagnosisFromJSON)),
+        'diseasetype': !exists(json, 'Diseasetype') ? undefined : EntDiseasetypeFromJSON(json['Diseasetype']),
+        'drug': !exists(json, 'Drug') ? undefined : ((json['Drug'] as Array<any>).map(EntDrugFromJSON)),
+        'employee': !exists(json, 'Employee') ? undefined : EntEmployeeFromJSON(json['Employee']),
+        'severity': !exists(json, 'Severity') ? undefined : EntSeverityFromJSON(json['Severity']),
     };
 }
 
