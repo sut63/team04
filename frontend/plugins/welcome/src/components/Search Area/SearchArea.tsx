@@ -167,12 +167,7 @@ export default function ComponentsTable() {
         getAreas();
     }, [loading]);
 
-    const deleteAreas = async (id: number) => {
-        const res = await api.deleteArea({ id: id });
-        setLoading(true);
-        alertMessage("success", "ลบข้อมูลเรียบร้อยแล้ว");
-    };
-
+    
     const alertMessage = (icon: any, title: any) => {
         Toast.fire({
             icon: icon,
@@ -353,16 +348,6 @@ export default function ComponentsTable() {
                                     <TableCell align="center">{item.edges?.disease?.diseaseName}</TableCell>
                                     <TableCell align="center">{item.edges?.employee?.userId}</TableCell>
                                     <TableCell align="center">
-                                        <Button
-                                            onClick={() => {
-                                                deleteAreas(item.id);
-                                            }}
-                                            style={{ marginLeft: 10 }}
-                                            variant="contained"
-                                            color="secondary"
-                                        >
-                                            Delete
-               </Button>
                                     </TableCell>
                                 </TableRow>
                             ))}
