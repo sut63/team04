@@ -114,3 +114,16 @@ var ForeignKeys = []string{
 	"nametitle_employee",
 	"place_employee",
 }
+
+var (
+	// UserIdValidator is a validator for the "UserId" field. It is called by the builders before save.
+	UserIdValidator func(string) error
+	// EmployeeNameValidator is a validator for the "EmployeeName" field. It is called by the builders before save.
+	EmployeeNameValidator func(string) error
+	// TelValidator is a validator for the "Tel" field. It is called by the builders before save.
+	TelValidator func(string) error
+	// EmailValidator is a validator for the "Email" field. It is called by the builders before save.
+	EmailValidator func(string) error
+	// PasswordValidator is a validator for the "Password" field. It is called by the builders before save.
+	PasswordValidator func(string) error
+)

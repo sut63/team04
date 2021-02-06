@@ -304,6 +304,31 @@ func (eu *EmployeeUpdate) RemovePatient(p ...*Patient) *EmployeeUpdate {
 
 // Save executes the query and returns the number of rows/vertices matched by this operation.
 func (eu *EmployeeUpdate) Save(ctx context.Context) (int, error) {
+	if v, ok := eu.mutation.UserId(); ok {
+		if err := employee.UserIdValidator(v); err != nil {
+			return 0, &ValidationError{Name: "UserId", err: fmt.Errorf("ent: validator failed for field \"UserId\": %w", err)}
+		}
+	}
+	if v, ok := eu.mutation.EmployeeName(); ok {
+		if err := employee.EmployeeNameValidator(v); err != nil {
+			return 0, &ValidationError{Name: "EmployeeName", err: fmt.Errorf("ent: validator failed for field \"EmployeeName\": %w", err)}
+		}
+	}
+	if v, ok := eu.mutation.Tel(); ok {
+		if err := employee.TelValidator(v); err != nil {
+			return 0, &ValidationError{Name: "Tel", err: fmt.Errorf("ent: validator failed for field \"Tel\": %w", err)}
+		}
+	}
+	if v, ok := eu.mutation.Email(); ok {
+		if err := employee.EmailValidator(v); err != nil {
+			return 0, &ValidationError{Name: "Email", err: fmt.Errorf("ent: validator failed for field \"Email\": %w", err)}
+		}
+	}
+	if v, ok := eu.mutation.Password(); ok {
+		if err := employee.PasswordValidator(v); err != nil {
+			return 0, &ValidationError{Name: "Password", err: fmt.Errorf("ent: validator failed for field \"Password\": %w", err)}
+		}
+	}
 
 	var (
 		err      error
@@ -995,6 +1020,31 @@ func (euo *EmployeeUpdateOne) RemovePatient(p ...*Patient) *EmployeeUpdateOne {
 
 // Save executes the query and returns the updated entity.
 func (euo *EmployeeUpdateOne) Save(ctx context.Context) (*Employee, error) {
+	if v, ok := euo.mutation.UserId(); ok {
+		if err := employee.UserIdValidator(v); err != nil {
+			return nil, &ValidationError{Name: "UserId", err: fmt.Errorf("ent: validator failed for field \"UserId\": %w", err)}
+		}
+	}
+	if v, ok := euo.mutation.EmployeeName(); ok {
+		if err := employee.EmployeeNameValidator(v); err != nil {
+			return nil, &ValidationError{Name: "EmployeeName", err: fmt.Errorf("ent: validator failed for field \"EmployeeName\": %w", err)}
+		}
+	}
+	if v, ok := euo.mutation.Tel(); ok {
+		if err := employee.TelValidator(v); err != nil {
+			return nil, &ValidationError{Name: "Tel", err: fmt.Errorf("ent: validator failed for field \"Tel\": %w", err)}
+		}
+	}
+	if v, ok := euo.mutation.Email(); ok {
+		if err := employee.EmailValidator(v); err != nil {
+			return nil, &ValidationError{Name: "Email", err: fmt.Errorf("ent: validator failed for field \"Email\": %w", err)}
+		}
+	}
+	if v, ok := euo.mutation.Password(); ok {
+		if err := employee.PasswordValidator(v); err != nil {
+			return nil, &ValidationError{Name: "Password", err: fmt.Errorf("ent: validator failed for field \"Password\": %w", err)}
+		}
+	}
 
 	var (
 		err  error

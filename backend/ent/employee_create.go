@@ -206,11 +206,26 @@ func (ec *EmployeeCreate) Save(ctx context.Context) (*Employee, error) {
 	if _, ok := ec.mutation.UserId(); !ok {
 		return nil, &ValidationError{Name: "UserId", err: errors.New("ent: missing required field \"UserId\"")}
 	}
+	if v, ok := ec.mutation.UserId(); ok {
+		if err := employee.UserIdValidator(v); err != nil {
+			return nil, &ValidationError{Name: "UserId", err: fmt.Errorf("ent: validator failed for field \"UserId\": %w", err)}
+		}
+	}
 	if _, ok := ec.mutation.EmployeeName(); !ok {
 		return nil, &ValidationError{Name: "EmployeeName", err: errors.New("ent: missing required field \"EmployeeName\"")}
 	}
+	if v, ok := ec.mutation.EmployeeName(); ok {
+		if err := employee.EmployeeNameValidator(v); err != nil {
+			return nil, &ValidationError{Name: "EmployeeName", err: fmt.Errorf("ent: validator failed for field \"EmployeeName\": %w", err)}
+		}
+	}
 	if _, ok := ec.mutation.Tel(); !ok {
 		return nil, &ValidationError{Name: "Tel", err: errors.New("ent: missing required field \"Tel\"")}
+	}
+	if v, ok := ec.mutation.Tel(); ok {
+		if err := employee.TelValidator(v); err != nil {
+			return nil, &ValidationError{Name: "Tel", err: fmt.Errorf("ent: validator failed for field \"Tel\": %w", err)}
+		}
 	}
 	if _, ok := ec.mutation.BirthdayDate(); !ok {
 		return nil, &ValidationError{Name: "BirthdayDate", err: errors.New("ent: missing required field \"BirthdayDate\"")}
@@ -218,8 +233,18 @@ func (ec *EmployeeCreate) Save(ctx context.Context) (*Employee, error) {
 	if _, ok := ec.mutation.Email(); !ok {
 		return nil, &ValidationError{Name: "Email", err: errors.New("ent: missing required field \"Email\"")}
 	}
+	if v, ok := ec.mutation.Email(); ok {
+		if err := employee.EmailValidator(v); err != nil {
+			return nil, &ValidationError{Name: "Email", err: fmt.Errorf("ent: validator failed for field \"Email\": %w", err)}
+		}
+	}
 	if _, ok := ec.mutation.Password(); !ok {
 		return nil, &ValidationError{Name: "Password", err: errors.New("ent: missing required field \"Password\"")}
+	}
+	if v, ok := ec.mutation.Password(); ok {
+		if err := employee.PasswordValidator(v); err != nil {
+			return nil, &ValidationError{Name: "Password", err: fmt.Errorf("ent: validator failed for field \"Password\": %w", err)}
+		}
 	}
 	var (
 		err  error

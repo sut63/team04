@@ -123,15 +123,15 @@ const StyledMenuItem = withStyles((theme) => ({
 }))(MenuItem);
 
 interface Employee {
-  birthdayDate: Date;
-  email: string;
-  employeeName: string;
-  tel: string;
-  userId: string;
-  place: number;
-  nametitle: number;
-  department: number;
-  password: string;
+  BirthdayDate: Date;
+  Email: string;
+  EmployeeName: string;
+  Tel: string;
+  UserId: string;
+  Place: number;
+  Nametitle: number;
+  Department: number;
+  Password: string;
 }
 
 const Employee: FC<{}> = () => {
@@ -142,6 +142,9 @@ const Employee: FC<{}> = () => {
   const [departments, setDepartments] = React.useState<EntDepartment[]>([]);
   const [nametitles, setNametitles] = React.useState<EntNametitle[]>([]);
   const [places, setPlaces] = React.useState<EntPlace[]>([]);
+  const [userIDError, setUserIDError] = React.useState('');
+  const [emailError, setEmailError] = React.useState('');
+  const [telError, setTelError] = React.useState('');
   const [showInputError, setShowInputError] = React.useState(false); // for error input show
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -179,16 +182,69 @@ const Employee: FC<{}> = () => {
 
 
   const handleInputChange = (
-    event: React.ChangeEvent<{ name?: string; value: unknown }>,
-  ) => {
+    event: React.ChangeEvent<{ name?: string; value: any }>) => {
     const name = event.target.name as keyof typeof employee;
     const { value } = event.target;
+    const validateValue = value.toString()
+    checkPattern(name, validateValue)
     setEmployee({ ...employee, [name]: value });
+  }
+
+  const validateUserID = (val: string) => {
+    return val.match("[N,M,E,MR,P]\\d{5}");
+  }
+
+  const validateEmail = (val: string) => {
+    return val.match("^[a-zA-Z0-9.!#$%&'*+\\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
+  }
+
+  const validateTel =(val: string) => {
+    return val.length == 10 ? true : false;
+  }
+
+  const checkPattern  = (id: string, value: string) => {
+    switch(id) {
+      case 'UserId':
+        validateUserID(value) ? setUserIDError('') : setUserIDError('รหัสพนักงานขึ้นต้นด้วย N,M,E,MR,P ตามด้วยตัวเลข 5 ตัว');
+        return;
+      case 'Tel':
+        validateTel(value) ? setTelError('') : setTelError('หมายเลขโทรศัพท์จำนวน 10 หลัก');
+        return;
+      case 'Email':
+        validateEmail(value) ? setEmailError('') : setEmailError('รูปแบบอีเมลไม่ถูกต้อง');
+        return;
+      default:
+        return;
+    }
+  }
+
+  const alertMessage = (icon: any, title: any) => {
+    Toast.fire({
+      icon: icon,
+      title: title,
+    });
+  }
+
+  const checkCaseSaveError = (field: string) => {
+    switch(field) {
+      case 'UserId':
+        alertMessage("error","รหัสพนักงานขึ้นต้นด้วย N,M,E,MR,P ตามด้วยตัวเลข 5 ตัว");
+        return;
+      case 'Tel':
+        alertMessage("error","หมายเลขโทรศัพท์จำนวน 10 หลัก");
+        return;
+      case 'Email':
+        alertMessage("error","รูปแบบอีเมลไม่ถูกต้อง");
+        return;
+      default:
+        alertMessage("error","บันทึกข้อมูลไม่สำเร็จ");
+        return;
+    }
   }
 
   function clear() {
     setEmployee({});
-    setShowInputError(false);
+  /*  setShowInputError(false); */
   }
 
   const Toast = Swal.mixin({
@@ -205,14 +261,14 @@ const Employee: FC<{}> = () => {
 
   function save() {
     setShowInputError(true);
-    let { userId, nametitle, employeeName, tel, email, birthdayDate, department, place, password } = employee;
-    if (!userId || !nametitle || !employeeName || !tel || !email || !birthdayDate || !department || !place || !password) {
+    let { UserId, Nametitle, EmployeeName, Tel, Email, BirthdayDate, Department, Place, Password } = employee;
+    if (!UserId || !Nametitle || !EmployeeName || !Tel || !Email || !BirthdayDate || !Department || !Place || !Password) {
       Toast.fire({
         icon: 'error',
         title: 'กรุณากรอกข้อมูลให้ครบถ้วน',
       });
       return;
-    }
+    } 
 
     const apiUrl = 'http://localhost:8080/api/v1/employees';
     const requestOptions = {
@@ -220,26 +276,22 @@ const Employee: FC<{}> = () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(employee),
     };
-    console.log(employee);
 
     fetch(apiUrl, requestOptions)
-      .then(response => {
-        console.log(response)
-        response.json()
-        if (response.ok === true) {
-          clear();
-          Toast.fire({
-            icon: 'success',
-            title: 'บันทึกข้อมูลสำเร็จ',
-          });
-        } else {
-          Toast.fire({
-            icon: 'error',
-            title: 'บันทึกข้อมูลไม่สำเร็จ',
-          });
-        }
-      })
-  }
+    .then(response => response.json())
+    .then(data => {console.log(data.save)
+      console.log(requestOptions)
+      if (data.status == true) {
+        clear();
+        Toast.fire({
+          icon: 'success',
+          title: 'บันทึกข้อมูลสำเร็จ',
+        });
+      } else {
+        checkCaseSaveError(data.error.Name)
+      }
+    });
+  };
 
   function redirectToEmployee() {
     window.location.href = "http://localhost:3000/employee";
@@ -324,13 +376,14 @@ function redirectToSearchEmployee() {
               <FormControl variant="outlined" className={classes.formControl}>
                 <TextField
                   required
-                  error={!employee.userId && showInputError}
-                  name="userId"
+                  error={userIDError ? true : false}
+                  name="UserId"
                   label="รหัสพนักงาน"
                   variant="outlined"
                   type="string"
                   size="medium"
-                  value={employee.userId || ''}
+                  helperText={userIDError}
+                  value={employee.UserId || ''}
                   onChange={handleInputChange}
                 />
               </FormControl>
@@ -340,10 +393,10 @@ function redirectToSearchEmployee() {
               <FormControl required variant="outlined" className={classes.formControl}>
                 <InputLabel>คำนำหน้าชื่อ</InputLabel>
                 <Select
-                  error={!employee.nametitle && showInputError}
-                  name="nametitle"
+               //   error={!employee.nametitle && showInputError}
+                  name="Nametitle"
                   label="คำนำหน้าชื่อ"
-                  value={employee.nametitle || ''}
+                  value={employee.Nametitle || ''}
                   onChange={handleInputChange}
                 >
                   {nametitles.map(item => {
@@ -361,13 +414,13 @@ function redirectToSearchEmployee() {
               <FormControl variant="outlined" className={classes.formControl}>
                 <TextField
                   required
-                  error={!employee.employeeName && showInputError}
-                  name="employeeName"
+                //  error={!employee.employeeName && showInputError}
+                  name="EmployeeName"
                   label="ชื่อ-นามสกุล"
                   variant="outlined"
                   type="string"
                   size="medium"
-                  value={employee.employeeName || ''}
+                  value={employee.EmployeeName || ''}
                   onChange={handleInputChange}
                 />
               </FormControl>
@@ -377,13 +430,15 @@ function redirectToSearchEmployee() {
               <FormControl variant="outlined" className={classes.formControl}>
                 <TextField
                   required
-                  error={!employee.tel && showInputError}
-                  name="tel"
+                  error={telError ? true : false}
+                  name="Tel"
                   label="เบอร์โทรศัพท์"
+                  inputProps={{ maxLength: 10 }}
+                  helperText={telError}
                   variant="outlined"
                   type="int"
                   size="medium"
-                  value={employee.tel || ''}
+                  value={employee.Tel || ''}
                   onChange={handleInputChange}
                 />
               </FormControl>
@@ -394,11 +449,11 @@ function redirectToSearchEmployee() {
                 <TextField
                   variant="outlined"
                   required
-                  error={!employee.birthdayDate && showInputError}
+               //   error={!employee.birthdayDate && showInputError}
                   label="วัน/เดือน/ปีเกิด"
-                  name="birthdayDate"
+                  name="BirthdayDate"
                   type="date"
-                  value={employee.birthdayDate || ''}
+                  value={employee.BirthdayDate || ''}
                   className={classes.textTime}
                   InputLabelProps={{
                     shrink: true,
@@ -413,10 +468,10 @@ function redirectToSearchEmployee() {
                 <InputLabel>แผนกที่รับผิดชอบ</InputLabel>
                 <Select
                   required
-                  error={!employee.department && showInputError}
-                  name="department"
+              //    error={!employee.department && showInputError}
+                  name="Department"
                   label="แผนกที่รับผิดชอบ"
-                  value={employee.department || ''}
+                  value={employee.Department || ''}
                   onChange={handleInputChange}
                 >
                   {departments.map(item => {
@@ -435,10 +490,10 @@ function redirectToSearchEmployee() {
                 <InputLabel>สถานที่ทำงาน</InputLabel>
                 <Select
                   required
-                  error={!employee.place && showInputError}
-                  name="place"
+               //   error={!employee.place && showInputError}
+                  name="Place"
                   label="สถานที่ทำงาน"
-                  value={employee.place || ''}
+                  value={employee.Place || ''}
                   onChange={handleInputChange}
                 >
                   {places.map(item => {
@@ -456,13 +511,14 @@ function redirectToSearchEmployee() {
               <FormControl variant="outlined" className={classes.formControl}>
                 <TextField
                   required
-                  error={!employee.email && showInputError}
-                  name="email"
+                  error={emailError ? true : false}
+                  helperText= {emailError}
+                  name="Email"
                   label="อีเมล"
                   variant="outlined"
                   type="string"
                   size="medium"
-                  value={employee.email || ''}
+                  value={employee.Email || ''}
                   onChange={handleInputChange}
                 />
               </FormControl>
@@ -472,13 +528,13 @@ function redirectToSearchEmployee() {
               <FormControl variant="outlined" className={classes.formControl}>
                 <TextField
                   required
-                  error={!employee.password && showInputError}
-                  name="password"
+                //  error={!employee.password && showInputError}
+                  name="Password"
                   label="รหัสผ่านชั่วคราว"
                   variant="outlined"
                   size="medium"
                   type="string"
-                  value={employee.password || ''}
+                  value={employee.Password || ''}
                   onChange={handleInputChange}
                 />
               </FormControl>
