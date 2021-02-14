@@ -7,7 +7,8 @@ require (
 	github.com/facebookincubator/ent v0.2.7
 	github.com/gin-contrib/cors v1.3.1
 	github.com/gin-gonic/gin v1.5.0
-	github.com/go-openapi/spec v0.20.2 // indirect
+	github.com/go-openapi/spec v0.20.3 // indirect
+	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mattn/go-sqlite3 v1.13.0
 	github.com/swaggo/files v0.0.0-20190704085106-630677cd5c14
 	github.com/swaggo/gin-swagger v1.2.0
