@@ -40,9 +40,8 @@ import {
 } from '@material-ui/core';
 import GroupAddRoundedIcon from '@material-ui/icons/GroupAddRounded';
 import SearchIcon from '@material-ui/icons/Search';
-import { EntDepartment } from '../../api/models/EntDepartment';
-import { EntEmployee } from '../../api';
-
+import { EntPatient } from '../../api/models/EntPatient';
+import { EntDiagnosis } from '../../api';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -268,7 +267,7 @@ export default function ComponentsTable() {
                         style={{ float: 'right', marginBottom: 'auto' }}
                         color="primary"
                         component={RouterLink}
-                        to="/Employee"
+                        to="/Diagnosis"
                         variant="contained"
                     >
                         เพิ่มข้อมูลการจัดเก็บการวินิจฉัย
