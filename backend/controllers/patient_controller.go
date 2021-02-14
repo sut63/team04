@@ -61,7 +61,7 @@ func (ctl *PatientController) CreatePatient(c *gin.Context) {
 
 	if err != nil {
 		c.JSON(400, gin.H{
-			"error": "Category not found",
+			"error": "category not found",
 		})
 		return
 	}

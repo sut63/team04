@@ -73,7 +73,7 @@ func (ctl *CategoryController) GetCategory(c *gin.Context) {
 		})
 		return
 	}
-	b, err := ctl.client.Category.
+	ct, err := ctl.client.Category.
 		Query().
 		Where(category.IDEQ(int(id))).
 		Only(context.Background())
@@ -84,7 +84,7 @@ func (ctl *CategoryController) GetCategory(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, b)
+	c.JSON(200, ct)
 }
 
 // ListCategory handles request to get a list of category entities
@@ -132,12 +132,12 @@ func (ctl *CategoryController) ListCategory(c *gin.Context) {
 
 // NewCategoryController creates and registers handles for the category controller
 func NewCategoryController(router gin.IRouter, client *ent.Client) *CategoryController {
-	bc := &CategoryController{
+	ctc := &CategoryController{
 		client: client,
 		router: router,
 	}
-	bc.register()
-	return bc
+	ctc.register()
+	return ctc
 }
 
 func (ctl *CategoryController) register() {
