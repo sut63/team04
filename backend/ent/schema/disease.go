@@ -26,14 +26,14 @@ func (Disease) Fields() []ent.Field {
                 return nil
 		}),
 		field.String("Symptom").Validate(func(s string) error{
-            match, _ := regexp.MatchString("^[ก-ฮ]",s)
+            match, _ := regexp.MatchString("^[ก-๙]",s)
             if !match {
                 return errors.New("รูปแบบอาการไม่ถูกต้องกรุณาป้อนเป็นตัวอักษร")
             }
                 return nil
 		}),
 		field.String("Contagion").Validate(func(s string) error{
-            match, _ := regexp.MatchString("^[ก-ฮ]",s)
+            match, _ := regexp.MatchString("^[ก-๙]",s)
             if !match {
                 return errors.New("รูปแบบการแพร่กระจายไม่ถูกต้องกรุณาป้อนเป็นตัวอักษร")
             }
