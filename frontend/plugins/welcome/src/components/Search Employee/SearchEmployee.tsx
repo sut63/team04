@@ -145,7 +145,7 @@ export default function ComponentsTable() {
     const [checkdepartment, setCheckDepartment] = useState(false);
     const [employee, setEmployee] = useState(Array);
     const [department, setDepartment] = useState(String);
-
+    const [chooseemployee, setChooseEmployee] = useState(Array);
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
     };
@@ -188,19 +188,26 @@ export default function ComponentsTable() {
 
     const checksearch = async () => {
         var check = false;
+        var str = "asdfxzc";
+        var temparr:any[] = [];
+        str.slice()
         employee.map((item: any) => {
             if (department != "") {
                 if ((item.edges?.department?.departmentName).includes(department)) {
                     setCheckDepartment(true);
-                    alertMessage("success", "ค้นหาสำเร็จ");
                     check = true;
-                    employee.splice(0, employee.length);
-                    employee.push(item);
-                }
+                    temparr.push(item);
+                } 
             }
         })
         if (!check) {
             alertMessage("error", "ไม่พบข้อมูล");
+        } else {
+            employee.splice(0, employee.length);
+            temparr.map((item: any) => {
+                employee.push(item);
+            })
+            alertMessage("success", "ค้นหาสำเร็จ");
         }
         console.log(checkdepartment);
         if (department == "") {
