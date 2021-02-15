@@ -133,10 +133,10 @@ const StyledMenuItem = withStyles((theme) => ({
 
 interface Drug {
   employee: number;
-  drugname: string;
+  DrugName: string;
   drugtype: number;
-  howto: string;
-  property: string;
+  Howto: string;
+  Property: string;
   disease: number;
 
   // create_by: number;
@@ -217,13 +217,13 @@ const Drug: FC<{}> = () => {
 
   const checkCaseSaveError = (field: string) => {
     switch(field) {
-      case 'drugname':
+      case 'DrugName':
         alertMessage("error","รูปแบบชื่อยาไม่ถูกต้อง");
         return;
-      case 'howto':
+      case 'Howto':
         alertMessage("error","รูปแบบวิธีการใช้ไม่ถูกต้อง");
         return;
-      case 'property':
+      case 'Property':
         alertMessage("error","รูปแบบสรรพคุณไม่ถูกต้อง");
         return;
       default:
@@ -248,8 +248,8 @@ function redirectToSearchDrug() {
   // function save data
   function save() {
     setShowInputError(true);
-     let { drugname, property, howto} = drug;
-     if (!drugname || !property || !howto ) {
+     let { DrugName, Property, Howto} = drug;
+     if (!DrugName || !Property || !Howto ) {
        Toast.fire({
          icon: 'error',
          title: 'กรุณากรอกข้อมูลให้ครบถ้วน',
@@ -294,13 +294,13 @@ function redirectToSearchDrug() {
   // สำหรับตรวจสอบรูปแบบข้อมูลที่กรอก ว่าเป็นไปตามที่กำหนดหรือไม่
   const checkPattern = (id: string, value: string) => {
     switch (id) {
-      case 'drugname':
+      case 'DrugName':
         validateDrugName(value) ? setDrugNameError('') : setDrugNameError('ต้องขึ้นต้นด้วยคำว่า ยา');
         return;
-      case 'howto':
+      case 'Howto':
         validateHowto(value) ? setHowtoError('') : setHowtoError('รูปแบบวิธีการใช้ขึ้นต้นด้วยคำว่า ปริมาณ');
         return;
-      case 'property':
+      case 'Property':
         validateProperty(value) ? setPropertyError('') : setPropertyError('รูปแบบวิธีการใช้ขึ้นต้นด้วยคำว่า รักษา')
         return;
       default:
@@ -376,16 +376,16 @@ function redirectToSearchDrug() {
             <TextField
               required={true}
             //  error={!drug.DrugName && showInputError}
-              id="drugname"
-              name="drugname"
-              error={!drug.drugname && showInputError || drugNameError ? true : false}
+              id="DrugName"
+              name="DrugName"
+              error={!drug.DrugName && showInputError || drugNameError ? true : false}
               type="string"
               label="ชื่อยา , วัคซีน "
               variant="outlined"
               helperText={drugNameError}
               fullWidth
               multiline
-              value={drug.drugname || ''}
+              value={drug.DrugName || ''}
               onChange={handleChange}
             />
           </Grid>
@@ -442,14 +442,14 @@ function redirectToSearchDrug() {
             //  error={!drug.DrugName && showInputError}
               id="Property"
               name="property"
-              error={!drug.property && showInputError || propertyError ? true : false}
+              error={!drug.Property && showInputError || propertyError ? true : false}
               type="string"
               label="สรรพคุณยา"
               helperText={propertyError}
               variant="outlined"
               fullWidth
               multiline
-              value={drug.property || ''}
+              value={drug.Property || ''}
               onChange={handleChange}
             />
           </Grid>
@@ -458,16 +458,16 @@ function redirectToSearchDrug() {
             <TextField
               required={true}
             //  error={!drug.DrugName && showInputError}
-              id="howto"
-              name="howto"
-              error={!drug.howto && showInputError || howtoError ? true : false}
+              id="Howto"
+              name="Howto"
+              error={!drug.Howto && showInputError || howtoError ? true : false}
               type="string"
               label="วิธีการใช้"
               helperText={howtoError}
               variant="outlined"
               fullWidth
               multiline
-              value={drug.howto || ''}
+              value={drug.Howto || ''}
               onChange={handleChange}
             />
           </Grid>
