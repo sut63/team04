@@ -17,9 +17,9 @@ type Drug struct {
 // Fields of the Drug.
 func (Drug) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("DrugName").
+		field.String("drugname").
 			Validate(func(s string) error {
-				match, _ := regexp.MatchString("ยา.*", s)
+				match, _ := regexp.MatchString("[ยา]", s)
 				if !match {
 					return errors.New("รูปแบบชื่อยาไม่ถูกต้อง")
 				}
@@ -27,18 +27,18 @@ func (Drug) Fields() []ent.Field {
 			}).
 			NotEmpty(),
 
-		field.String("Howto").
+		field.String("howto").
 			Validate(func(s string) error {
-				match, _ := regexp.MatchString("ปริมาณ.*", s)
+				match, _ := regexp.MatchString("[ปริมาณ]", s)
 				if !match {
 					return errors.New("รูปแบบวิธีการใช้ไม่ถูกต้อง")
 				}
 				return nil
 			}).NotEmpty(),
 
-		field.String("Property").
+		field.String("property").
 			Validate(func(s string) error {
-				match, _ := regexp.MatchString("รักษา.*", s)
+				match, _ := regexp.MatchString("[รักษา]", s)
 				if !match {
 					return errors.New("รูปแบบสรรพคุณไม่ถูกต้อง")
 				}
