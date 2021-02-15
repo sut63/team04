@@ -18,21 +18,21 @@ type Area struct {
 func (Area) Fields() []ent.Field {
    return []ent.Field{
       field.String("AreaName").Validate(func(s string) error{
-         match, _ := regexp.MatchString("^[ก-ฮ]",s)
+         match, _ := regexp.MatchString("^[ก-๙]",s)
          if !match {
              return errors.New("รูปแบบชื่อสถานที่ไม่ถูกต้อง")
          }
              return nil
      }),
      field.String("AreaDistrict").Validate(func(s string) error{
-      match, _ := regexp.MatchString("^[ก-ฮ]",s)
+      match, _ := regexp.MatchString("^[ก-๙]",s)
       if !match {
           return errors.New("รูปแบบชื่ออำเภอไม่ถูกต้อง")
       }
           return nil
       }),
       field.String("AreaSubDistrict").Validate(func(s string) error{
-       match, _ := regexp.MatchString("^[ก-ฮ]",s)
+       match, _ := regexp.MatchString("^[ก-๙]",s)
        if !match {
          return errors.New("รูปแบบชื่อตำบลไม่ถูกต้อง")
       }
