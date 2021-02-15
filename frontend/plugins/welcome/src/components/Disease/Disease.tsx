@@ -223,12 +223,12 @@ const Disease: FC<{}> = () => {
 
   // ฟังก์ชั่นสำหรับ validate อาการ
   const validateSymptom = (val: string) => {
-    return val.match("^[ก-ฮ]");
+    return val.match("^[ก-๙]");
   }
 
   // ฟังก์ชั่นสำหรับ validate การแพร่กระจาย
   const validateContagion = (val: string) => {
-    return val.match("^[ก-ฮ]");
+    return val.match("^[ก-๙]");
   }
 
   // สำหรับตรวจสอบรูปแบบข้อมูลที่กรอก ว่าเป็นไปตามที่กำหนดหรือไม่

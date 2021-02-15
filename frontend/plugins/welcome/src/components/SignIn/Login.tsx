@@ -1,10 +1,8 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
@@ -13,14 +11,16 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Swal from 'sweetalert2'; // alert
+import { DefaultApi } from '../../api/apis';
+import { EntEmployee } from '../../api/models/EntEmployee';
 
 
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © KOB4k | '}
-      <Link color="inherit" href="https://github.com/KOB4k/SA-63_G7.git">
-        Your Github
+      {'Copyright © SE Team04 | '}
+      <Link color="inherit" href="https://github.com/sut63/team04">
+        My Github
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -57,18 +57,17 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  buttonStyle: {
+    marginTop: 20
+  },
 }));
-
-interface Login {
-  username: string;
-  password: string;
-
-}
 
 const Login: FC<{}> = () => {
   const classes = useStyles();
-
-  const [login, setLogin] = React.useState<Partial<Login>>({});
+  const api = new DefaultApi();
+  const [employees, setEmployees] = useState<EntEmployee[]>([]);
+  const [userID, setUserID] = React.useState(String);
+  const [password, setPassword] = React.useState(String);
 
   // alert setting
   const Toast = Swal.mixin({
@@ -83,103 +82,93 @@ const Login: FC<{}> = () => {
     },
   });
 
+  const userIDHandleChange = (event: any) => {
+    setUserID(event.target.value as string);
+  };
 
-  function redirecLogin() {
+  const passwordHandleChange = (event: any) => {
+    setPassword(event.target.value as string);
+  };
 
-    if ((login.username == "MR12345" && login.password == "12345mr")
-    ) {
+  const getEmployee = async () => {
+    const res: any = await api.listEmployee({ limit: 0, offset: 0 });
+    setEmployees(res);
+  };
 
-      Toast.fire({
-        icon: 'success',
-        title: 'เข้าสู่ระบบสำเร็จ',
-      });
+  useEffect(() => {
+    getEmployee();
+  }, []);
 
-      window.location.href = "http://localhost:3000/employee";
-      console.log("LOGIN TO Employee");
-
-      window.localStorage.setItem("usernameRole","Epidemiolgist") // local
-      window.localStorage.setItem("username","MR12345") // local 
-
-    }
-
-    else if ((login.username == "N12345" && login.password == "12345n")
-    ) {
-
-      Toast.fire({
-        icon: 'success',
-        title: 'เข้าสู่ระบบสำเร็จ',
-      });
-      
-      //redirec Page ... http://localhost:3000/Table
-      window.location.href = "http://localhost:3000/patient";
-      console.log("LOGIN TO Patient");
-      
-      window.localStorage.setItem("usernameRole","Nurse") // local
-      window.localStorage.setItem("username","N12345") // local
-    }
-
-    else if ((login.username == "M12345" && login.password == "12345m")
-    ) {
-
-      Toast.fire({
-        icon: 'success',
-        title: 'เข้าสู่ระบบสำเร็จ',
-      });
-      
-      //redirec Page ... http://localhost:3000/Table
-      window.location.href = "http://localhost:3000/diagnosis";
-      console.log("LOGIN TO Diagnosis");
-      
-      window.localStorage.setItem("usernameRole","Medical") // local
-      window.localStorage.setItem("username","M12345") // local
-    }
-
-    else if ((login.username == "E12345" && login.password == "12345e")
-    ) {
-
-      Toast.fire({
-        icon: 'success',
-        title: 'เข้าสู่ระบบสำเร็จ',
-      });
-      
-      //redirec Page ... http://localhost:3000/Table
-      window.location.href = "http://localhost:3000/Disease"; 
-      console.log("LOGIN TO DISEASE");
-      
-      window.localStorage.setItem("usernameRole","Epidemiolgist") // local
-      window.localStorage.setItem("username","E12345") // local
-    }
-      else if ((login.username == "P12345" && login.password == "12345p")
-    ) {
-
-      Toast.fire({
-        icon: 'success',
-        title: 'เข้าสู่ระบบสำเร็จ',
-      });
-      
-      //redirec Page ... http://localhost:3000/Table
-      window.location.href = "http://localhost:3000/drug";
-      console.log("LOGIN TO Drug");
-      
-      window.localStorage.setItem("usernameRole","Pharmacist") // local
-      window.localStorage.setItem("username","P12345") // local
-
-    } else {
+  function SigninCheck() {
+    var success = false;
+    employees.map((item: any) => {
+      if (item.userId == userID && item.password == password) {
+        if (item.edges?.department.departmentName === "เจ้าหน้าที่เวชระเบียน") {
+          success = true;
+          Toast.fire({
+            icon: 'success',
+            title: 'เข้าสู่ระบบสำเร็จ',
+          });
+          setInterval(() => {
+            window.location.href = "http://localhost:3000/employee";
+          }, 700);
+          window.localStorage.setItem("username", userID);
+        } else if (item.edges?.department.departmentName === "เภสัชกร") {
+          success = true;
+          Toast.fire({
+            icon: 'success',
+            title: 'เข้าสู่ระบบสำเร็จ',
+          });
+          setInterval(() => {
+            window.location.href = "http://localhost:3000/drug";
+          }, 700);
+          window.localStorage.setItem("username", userID);
+        } else if (item.edges?.department.departmentName === "แพทย์") {
+          success = true;
+          Toast.fire({
+            icon: 'success',
+            title: 'เข้าสู่ระบบสำเร็จ',
+          });
+          setInterval(() => {
+            window.location.href = "http://localhost:3000/diagnosis";
+          }, 700);
+          window.localStorage.setItem("username", userID);
+        } else if (item.edges?.department.departmentName === "แพทย์ระบาดวิทยา") {
+          success = true;
+          Toast.fire({
+            icon: 'success',
+            title: 'เข้าสู่ระบบสำเร็จ',
+          });
+          setInterval(() => {
+            window.location.href = "http://localhost:3000/disease";
+          }, 700);
+          window.localStorage.setItem("username", userID);
+        } else if (item.edges?.department.departmentName === "พยาบาล") {
+          success = true;
+          Toast.fire({
+            icon: 'success',
+            title: 'เข้าสู่ระบบสำเร็จ',
+          });
+          setInterval(() => {
+            window.location.href = "http://localhost:3000/patient";
+          }, 700);
+          window.localStorage.setItem("username", userID);
+        }
+      }else if (userID == "MR12345" && password == "12345mr") {
+        success = true;
+        Toast.fire({
+          icon: 'success',
+          title: 'เข้าสู่ระบบสำเร็จ',
+        });
+        window.location.href = "http://localhost:3000/employee";
+      }
+    });
+    if(!success){
       Toast.fire({
         icon: 'error',
-        title: 'username หรือ password ไม่ถูกต้อง',
+        title: 'รหัสพนักงานหรือรหัสผ่านไม่ถูกต้อง',
       });
     }
-
-  }
-
-  const handleChange = (
-    event: React.ChangeEvent<{ name?: string; value: unknown }>,
-  ) => {
-    const name = event.target.name as keyof typeof login;
-    const { value } = event.target;
-    setLogin({ ...login, [name]: value });
-    console.log(login);
   };
 
   return (
@@ -205,9 +194,7 @@ const Login: FC<{}> = () => {
               name="username"
               autoComplete="username"
               autoFocus
-              value={login.username || ""}
-              onChange={handleChange}
-
+              onChange={userIDHandleChange}
             />
             <TextField
               variant="outlined"
@@ -219,34 +206,17 @@ const Login: FC<{}> = () => {
               type="password"
               id="password"
               autoComplete="current-password"
-              value={login.password || ""}
-              onChange={handleChange}
-
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
+              onChange={passwordHandleChange}
             />
             <Button
               fullWidth
+              className={classes.buttonStyle}
               variant="contained"
               color="primary"
-              onClick={redirecLogin}
+              onClick={SigninCheck}
             >
               Sign In
             </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
             <Box mt={5}>
               <Copyright />
             </Box>

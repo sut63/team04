@@ -205,7 +205,7 @@ export default function ComponentsTable() {
             }
         })
         if (!check) {
-            alertMessage("error", "ไม่พบข้อมูล");
+            alertMessage("error", "ไม่พบโรคที่ค้นหา กรุณากรอกชื่อโรคใหม่");
         }
         console.log(checkdiseasename);
         if (diseasename == "") {

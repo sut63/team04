@@ -192,17 +192,17 @@ const Area: FC<{}> = () => {
   }
   // ฟังก์ชั่นสำหรับ validate จังหวัด
   const validateAreaName = (val: string) => {
-    return val.match("^[ก-ฮ]");
+    return val.match("^[ก-๙]");
   }
 
   // ฟังก์ชั่นสำหรับ validate อำเภอ
   const validateAreaDistrict = (val: string) => {
-    return val.match("^[ก-ฮ]");
+    return val.match("^[ก-๙]");
   }
 
   // ฟังก์ชั่นสำหรับ validate ตำบล
   const validateAreaSubDistrict = (val: string) => {
-    return val.match("^[ก-ฮ]");
+    return val.match("^[ก-๙]");
   }
 
   // สำหรับตรวจสอบรูปแบบข้อมูลที่กรอก ว่าเป็นไปตามที่กำหนดหรือไม่
