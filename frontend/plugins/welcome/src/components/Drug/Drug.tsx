@@ -150,9 +150,9 @@ const Drug: FC<{}> = () => {
   const [diseases, setDiseases] = React.useState<EntDisease[]>([]);
   const [drugtypes, setDrugTypes] = React.useState<EntDrugType[]>([]);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [DrugNameError, setDrugNameError] = React.useState('');
-  const [HowtoError, setHowtoError] = React.useState('');
-  const [PropertyError, setPropertyError] = React.useState('');
+  const [drugNameError, setDrugNameError] = React.useState('');
+  const [howtoError, setHowtoError] = React.useState('');
+  const [propertyError, setPropertyError] = React.useState('');
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -183,16 +183,15 @@ const Drug: FC<{}> = () => {
 
   // set data to object playlist_video
   const handleChange = (
-    event: React.ChangeEvent<{ name?: string; value: unknown }>,
+    event: React.ChangeEvent<{ name?: string; value: any }>,
   ) => {
-    const name = event.target.name as keyof typeof Drug;
+    const name = event.target.name as keyof typeof drug;
     const { value } = event.target;
+    const validateValue = value.toString()
+    checkPattern(name, validateValue)
     setDrug({ ...drug, [name]: value });
     console.log(drug);
   };
-
-
-
 
   const alertMessage = (icon: any, title: any) => {
     Toast.fire({
@@ -201,15 +200,30 @@ const Drug: FC<{}> = () => {
     });
   }
 
+    // ฟังก์ชั่นสำหรับ validate ชื่อโรคติดต่อ
+    const validateDrugName = (val: string) => {
+      return val.match("[ยา]");
+    }
+  
+    // ฟังก์ชั่นสำหรับ validate อาการ
+    const validateHowto= (val: string) => {
+      return val.match("[ปริมาณ]");
+    }
+  
+    // ฟังก์ชั่นสำหรับ validate การแพร่กระจาย
+    const validateProperty = (val: string) => {
+      return val.match("[รักษา]");
+    }
+
   const checkCaseSaveError = (field: string) => {
     switch(field) {
-      case 'DrugName':
+      case 'drugname':
         alertMessage("error","รูปแบบชื่อยาไม่ถูกต้อง");
         return;
-      case 'Howto':
+      case 'howto':
         alertMessage("error","รูปแบบวิธีการใช้ไม่ถูกต้อง");
         return;
-      case 'Property':
+      case 'property':
         alertMessage("error","รูปแบบสรรพคุณไม่ถูกต้อง");
         return;
       default:
@@ -234,14 +248,14 @@ function redirectToSearchDrug() {
   // function save data
   function save() {
     setShowInputError(true);
-    // let { DrugName, drugtype, Property, Howto, disease } = drug;
-    // if (!DrugName || !drugtype || !Property || !Howto || !disease) {
-    //   Toast.fire({
-    //     icon: 'error',
-    //     title: 'กรุณากรอกข้อมูลให้ครบถ้วน',
-    //   });
-    //   return;
-    // }
+     let { drugname, property, howto} = drug;
+     if (!drugname || !property || !howto ) {
+       Toast.fire({
+         icon: 'error',
+         title: 'กรุณากรอกข้อมูลให้ครบถ้วน',
+       });
+       return;
+     }
 
     //เช็คแล้วเก็บค่าไว้ใน employee
     drug.employee = employees.filter(emp => emp.userId === window.localStorage.getItem("username"))[0].id;
@@ -277,6 +291,22 @@ function redirectToSearchDrug() {
     window.location.href = "http://localhost:3000/";
   }
 
+  // สำหรับตรวจสอบรูปแบบข้อมูลที่กรอก ว่าเป็นไปตามที่กำหนดหรือไม่
+  const checkPattern = (id: string, value: string) => {
+    switch (id) {
+      case 'drugname':
+        validateDrugName(value) ? setDrugNameError('') : setDrugNameError('ต้องขึ้นต้นด้วยคำว่า ยา');
+        return;
+      case 'howto':
+        validateHowto(value) ? setHowtoError('') : setHowtoError('รูปแบบวิธีการใช้ขึ้นต้นด้วยคำว่า ปริมาณ');
+        return;
+      case 'property':
+        validateProperty(value) ? setPropertyError('') : setPropertyError('รูปแบบวิธีการใช้ขึ้นต้นด้วยคำว่า รักษา')
+        return;
+      default:
+        return;
+    }
+  }
 
   return (
     
@@ -348,10 +378,11 @@ function redirectToSearchDrug() {
             //  error={!drug.DrugName && showInputError}
               id="drugname"
               name="drugname"
-              error={DrugNameError ? true : false}
+              error={!drug.drugname && showInputError || drugNameError ? true : false}
               type="string"
               label="ชื่อยา , วัคซีน "
               variant="outlined"
+              helperText={drugNameError}
               fullWidth
               multiline
               value={drug.drugname || ''}
@@ -411,9 +442,10 @@ function redirectToSearchDrug() {
             //  error={!drug.DrugName && showInputError}
               id="Property"
               name="property"
-              error={PropertyError ? true : false}
+              error={!drug.property && showInputError || propertyError ? true : false}
               type="string"
               label="สรรพคุณยา"
+              helperText={propertyError}
               variant="outlined"
               fullWidth
               multiline
@@ -428,9 +460,10 @@ function redirectToSearchDrug() {
             //  error={!drug.DrugName && showInputError}
               id="howto"
               name="howto"
-              error={HowtoError ? true : false}
+              error={!drug.howto && showInputError || howtoError ? true : false}
               type="string"
               label="วิธีการใช้"
+              helperText={howtoError}
               variant="outlined"
               fullWidth
               multiline
