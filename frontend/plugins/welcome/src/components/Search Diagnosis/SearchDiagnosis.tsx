@@ -145,6 +145,7 @@ export default function ComponentsTable() {
     const [checkpatient, setCheckPatient] = useState(false);
     const [diagnosis, setDiagnosis] = useState(Array);
     const [patient, setPatient] = useState(String);
+    const [choosediagnosis, setChooseDiagnosis] = useState(Array);
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -189,19 +190,26 @@ export default function ComponentsTable() {
 
     const checksearch = async () => {
         var check = false;
+        var str = "asdfxzc";
+        var temparr:any[] = [];
+        str.slice()
         diagnosis.map((item: any) => {
             if (patient != "") {
                 if ((item.edges?.patient?.patientName).includes(patient)) {
                     setCheckPatient(true);
-                    alertMessage("success", "ค้นหาสำเร็จ");
                     check = true;
-                    diagnosis.splice(0, diagnosis.length);
-                    diagnosis.push(item);
+                    temparr.push(item);
                 }
             }
         })
         if (!check) {
             alertMessage("error", "ไม่พบข้อมูล");
+        } else {
+            diagnosis.splice(0, diagnosis.length);
+            temparr.map((item: any) => {
+                diagnosis.push(item);
+            })
+            alertMessage("success", "ค้นหาสำเร็จ");
         }
         console.log(checkpatient);
         if (patient == "") {
@@ -312,6 +320,7 @@ export default function ComponentsTable() {
                                                 <TableCell align="center">การวินิจฉัยโรค หรือ อาการที่แสดง </TableCell>
                                                 <TableCell align="center">การรักษา (เช่น แผนไทย)  </TableCell>
                                                 <TableCell align="center">วันที่ทำการวินิจฉัย</TableCell>
+                                                <TableCell align="center">แพทย์ผู้ทำการวินิจฉัย</TableCell>
                                                 </TableRow>
                                             </TableHead>
                                             <TableBody>
@@ -323,6 +332,7 @@ export default function ComponentsTable() {
                                                         <TableCell align="center">{item.diagnosticMessages}</TableCell>
                                                         <TableCell align="center">{item.treatment}</TableCell>
                                                         <TableCell align="center">{item.diagnosisDate}</TableCell>
+                                                        <TableCell align="center">{item.edges?.employee?.employeeName}</TableCell>
                                                     </TableRow>
                                                 ))}
                                             </TableBody>
