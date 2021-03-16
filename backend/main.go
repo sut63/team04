@@ -3,10 +3,15 @@ package main
 import (
 	"context"
 	"log"
+	"fmt"
+	"time"
 
 	"github.com/B6001186/Contagions/controllers"
 	_ "github.com/B6001186/Contagions/docs"
 	"github.com/B6001186/Contagions/ent"
+	"github.com/B6001186/Contagions/ent/department"
+	"github.com/B6001186/Contagions/ent/nametitle"
+	"github.com/B6001186/Contagions/ent/place"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	_ "github.com/mattn/go-sqlite3"
@@ -63,6 +68,14 @@ type Employees struct {
 // Employee  defines the struct for the employee
 type Employee struct {
 	UserID string
+	EmployeeName string
+	Tel string
+	BirthdayDate string
+	Email string
+	Password string
+	Nametitle int
+	Department int
+	Place int
 }
 
 // Categorys  defines the struct for the categorys
@@ -417,6 +430,58 @@ func main() {
 		client.Statistic.
 			Create().
 			SetStatisticName(st.StatisticName).
+			Save(context.Background())
+	}
+
+	// Set Employees Data
+	employees := Employees{
+		Employee: []Employee{
+			Employee{"MR12345","Admin","0821300459","1999-04-25T00:00:00+00:00","Faii25042542@gmail.com","12345mr",5,3,1},
+		},
+	}
+
+	for _, e := range employees.Employee {
+
+		dep, err := client.Department.
+			Query().
+			Where(department.IDEQ(int(e.Department))).
+			Only(context.Background())
+		if err != nil {
+			fmt.Println(err.Error())
+			return
+		}
+
+		nt, err := client.Nametitle.
+			Query().
+			Where(nametitle.IDEQ(int(e.Nametitle))).
+			Only(context.Background())
+		if err != nil {
+			fmt.Println(err.Error())
+			return
+		}
+
+		pl, err := client.Place.
+			Query().
+			Where(place.IDEQ(int(e.Place))).
+			Only(context.Background())
+		if err != nil {
+			fmt.Println(err.Error())
+			return
+		}
+
+		birth, err := time.Parse(time.RFC3339, e.BirthdayDate)
+
+		client.Employee.
+			Create().
+			SetUserId(e.UserID).
+			SetEmployeeName(e.EmployeeName).
+			SetTel(e.Tel).
+			SetBirthdayDate(birth).
+			SetEmail(e.Email).
+			SetPassword(e.Password).
+			SetDepartment(dep).
+			SetNametitle(nt).
+			SetPlace(pl).
 			Save(context.Background())
 	}
 
