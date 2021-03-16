@@ -154,13 +154,6 @@ const Login: FC<{}> = () => {
           }, 700);
           window.localStorage.setItem("username", userID);
         }
-      }else if (userID == "MR12345" && password == "12345mr") {
-        success = true;
-        Toast.fire({
-          icon: 'success',
-          title: 'เข้าสู่ระบบสำเร็จ',
-        });
-        window.location.href = "http://localhost:3000/employee";
       }
     });
     if(!success){
