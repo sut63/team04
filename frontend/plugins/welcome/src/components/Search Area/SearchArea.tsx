@@ -193,19 +193,25 @@ export default function ComponentsTable() {
 
     const checksearch = async () => {
         var check = false;
+        var str = "asdfxzc";
+        var temparr:any[] = [];
         areas.map((item: any) => {
             if (areaname != "") {
                 if ((item.areaName).includes(areaname)) {
                     setCheckAreaname(true);
-                    alertMessage("success", "ค้นหาสำเร็จ");
                     check = true;
-                    areas.splice(0, areas.length);
-                    areas.push(item);
+                    temparr.push(item);
                 }
             }
         })
         if (!check) {
             alertMessage("error", "ไม่พบข้อมูล");
+        }else {
+            areas.splice(0, areas.length);
+            temparr.map((item: any) => {
+                areas.push(item);
+            })
+            alertMessage("success", "ค้นหาสำเร็จ");
         }
         console.log(checkareaname);
         if (areaname == "") {
